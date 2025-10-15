@@ -1,0 +1,2331 @@
+.container {
+  min-height: 100vh;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+}
+
+.rotateY90 {
+  transform: rotateY(90deg);
+}
+
+.rotateY0 {
+  transform: rotateY(0deg);
+}
+
+.header {
+  background: linear-gradient(to right, #03856E, #005044);
+  padding-bottom: 20rem;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1rem;
+  margin-top: -18rem;
+  position: relative;
+  z-index: 10;
+}
+
+.mainCard {
+  width: 100%;
+  max-width: 1244px;
+  margin: 0 1rem;
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  background-color: white;
+  transition: all 0.7s ease-out;
+}
+
+.mainCardInitial {
+  transform: translateY(5rem);
+  opacity: 0;
+}
+
+.mainCardLoaded {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.tabContainer {
+  display: flex;
+  margin-bottom: 0;
+}
+
+.tabButton {
+  flex: 1;
+  height: 63px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 19px;
+  line-height: 26px;
+  font-family: "Hana2-CM, sans-serif";
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.tabButtonActive {
+  background-color: white;
+  color: #666666;
+}
+
+.tabButtonInactive {
+  background-color: #ECF0F1;
+  color: #666666;
+}
+
+.tabContent {
+  padding: 2rem;
+}
+
+.simpleLoginContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.socialButton {
+  width: 100%;
+  height: 56px;
+  border-radius: 8px;
+  border: 1px solid #E5E5E5;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  font-size: 16px;
+  line-height: 23px;
+  font-family: "Hana2-Medium, sans-serif";
+  color: #333333;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.socialButton:hover {
+  background-color: #F8F9FA;
+  border-color: #D1D5DB;
+}
+
+.socialButtonIcon {
+  width: 24px;
+  height: 24px;
+}
+
+.idLoginContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.inputLabel {
+  font-size: 14px;
+  line-height: 20px;
+  font-family: "Hana2-Medium, sans-serif";
+  color: #333333;
+}
+
+.input {
+  width: 100%;
+  height: 48px;
+  padding: 0 1rem;
+  border: 1px solid #E5E5E5;
+  border-radius: 8px;
+  font-size: 16px;
+  line-height: 23px;
+  font-family: "Hana2-Regular, sans-serif";
+  color: #333333;
+  background-color: white;
+  transition: border-color 0.3s ease;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #03856E;
+}
+
+.inputError {
+  border-color: #E53E3E;
+}
+
+.errorMessage {
+  font-size: 12px;
+  line-height: 18px;
+  font-family: "Hana2-Regular, sans-serif";
+  color: #E53E3E;
+}
+
+.loginButton {
+  width: 100%;
+  height: 48px;
+  border-radius: 8px;
+  background-color: #03856E;
+  color: white;
+  font-size: 16px;
+  line-height: 23px;
+  font-family: "Hana2-Medium, sans-serif";
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.loginButton:hover {
+  background-color: #005044;
+}
+
+.loginButton:disabled {
+  background-color: #A0AEC0;
+  cursor: not-allowed;
+}
+
+.linkButton {
+  background: none;
+  border: none;
+  color: #03856E;
+  font-size: 14px;
+  line-height: 20px;
+  font-family: "Hana2-Regular, sans-serif";
+  cursor: pointer;
+  text-decoration: underline;
+  transition: color 0.3s ease;
+}
+
+.linkButton:hover {
+  color: #005044;
+}
+
+.signupButton {
+  width: 100%;
+  height: 48px;
+  border-radius: 8px;
+  background-color: #F8F9FA;
+  color: #03856E;
+  font-size: 16px;
+  line-height: 23px;
+  font-family: "Hana2-Medium, sans-serif";
+  border: 1px solid #03856E;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.signupButton:hover {
+  background-color: #03856E;
+  color: white;
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.modal {
+  background-color: white;
+  border-radius: 10px;
+  padding: 2rem;
+  max-width: 400px;
+  width: 90vw;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modalContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.modalHeader {
+  text-align: center;
+}
+
+.modalTitle {
+  font-size: 20px;
+  line-height: 26px;
+  font-family: "Hana2-CM, sans-serif";
+  color: #333333;
+  margin-bottom: 0.5rem;
+}
+
+.modalMessage {
+  font-size: 16px;
+  line-height: 24px;
+  font-family: "Hana2-Regular, sans-serif";
+  color: #666666;
+}
+
+.modalButton {
+  width: 100%;
+  height: 48px;
+  border-radius: 8px;
+  background-color: #03856E;
+  color: white;
+  font-size: 16px;
+  line-height: 23px;
+  font-family: "Hana2-Medium, sans-serif";
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.modalButton:hover {
+  background-color: #005044;
+}
+
+.stepIndicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.stepDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #E5E5E5;
+  transition: background-color 0.3s ease;
+}
+
+.stepDotActive {
+  background-color: #03856E;
+}
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.accountList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.accountItem {
+  padding: 1rem;
+  border: 1px solid #E5E5E5;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.accountItem:hover {
+  border-color: #03856E;
+  background-color: #F8F9FA;
+}
+
+.accountItemSelected {
+  border-color: #03856E;
+  background-color: #F0FDF4;
+}
+
+.accountInfo {
+  font-size: 14px;
+  line-height: 20px;
+  font-family: "Hana2-Regular, sans-serif";
+  color: #333333;
+}
+
+.accountNumber {
+  font-size: 16px;
+  line-height: 23px;
+  font-family: "Hana2-Medium, sans-serif";
+  color: #333333;
+  margin-bottom: 0.25rem;
+}
+
+.accountBalance {
+  font-size: 12px;
+  line-height: 18px;
+  font-family: "Hana2-Regular, sans-serif";
+  color: #666666;
+}
+
+.successContainer {
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.successIcon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 1rem;
+  color: #03856E;
+}
+
+.successTitle {
+  font-size: 20px;
+  line-height: 26px;
+  font-family: "Hana2-CM, sans-serif";
+  color: #333333;
+  margin-bottom: 0.5rem;
+}
+
+.successMessage {
+  font-size: 16px;
+  line-height: 24px;
+  font-family: "Hana2-Regular, sans-serif";
+  color: #666666;
+  margin-bottom: 2rem;
+}
+
+.backButton {
+  width: 100%;
+  height: 48px;
+  border-radius: 8px;
+  background-color: #F8F9FA;
+  color: #666666;
+  font-size: 16px;
+  line-height: 23px;
+  font-family: "Hana2-Medium, sans-serif";
+  border: 1px solid #E5E5E5;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.backButton:hover {
+  background-color: #E5E5E5;
+}
+
+.smsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.smsInputGroup {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.smsInput {
+  flex: 1;
+  height: 48px;
+  padding: 0 1rem;
+  border: 1px solid #E5E5E5;
+  border-radius: 8px;
+  font-size: 16px;
+  line-height: 23px;
+  font-family: "Hana2-Regular, sans-serif";
+  color: #333333;
+  background-color: white;
+  transition: border-color 0.3s ease;
+}
+
+.smsInput:focus {
+  outline: none;
+  border-color: #03856E;
+}
+
+.smsButton {
+  height: 48px;
+  padding: 0 1rem;
+  border-radius: 8px;
+  background-color: #03856E;
+  color: white;
+  font-size: 14px;
+  line-height: 20px;
+  font-family: "Hana2-Medium, sans-serif";
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  white-space: nowrap;
+}
+
+.smsButton:hover {
+  background-color: #005044;
+}
+
+.smsButton:disabled {
+  background-color: #A0AEC0;
+  cursor: not-allowed;
+}
+
+.smsMessage {
+  font-size: 12px;
+  line-height: 18px;
+  font-family: "Hana2-Regular, sans-serif";
+  text-align: center;
+}
+
+.smsMessageSuccess {
+  color: #03856E;
+}
+
+.smsMessageError {
+  color: #E53E3E;
+}
+
+.timer {
+  font-size: 12px;
+  line-height: 18px;
+  font-family: "Hana2-Medium, sans-serif";
+  color: #03856E;
+  text-align: center;
+}
+
+.tabContent {
+  width: 100%;
+  height: 480px;
+  background-color: white;
+  display: flex;
+  transition: all 0.3s;
+}
+
+.tabContentNoPadding {
+  padding: 0;
+}
+
+.tabContentWithPadding {
+  padding: 60px;
+}
+
+.tabContentMobilePadding {
+  padding: 20px;
+}
+
+.tabContentTransitioning {
+  transform: rotateY(90deg);
+  opacity: 0;
+}
+
+.tabContentNormal {
+  transform: rotateY(0deg);
+  opacity: 1;
+}
+
+.simpleLoginWrapper {
+  width: 100%;
+  display: flex;
+}
+
+.simpleLoginLeft {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-right: 60px;
+}
+
+.simpleLoginLeftMobile {
+  display: none;
+}
+
+.simpleLoginImage {
+  width: 307px;
+  height: 307px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.simpleLoginImageImg {
+  width: 307px;
+  height: 307px;
+}
+
+.simpleLoginDescription {
+  font-size: 14px;
+  line-height: 20px;
+  color: #666666;
+  text-align: center;
+  width: 229px;
+  margin-top: 1rem;
+  font-family: "Hana2-Medium, sans-serif";
+}
+
+.simpleLoginRight {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.socialButtonWrapper {
+  width: 362px;
+  max-width: 90vw;
+}
+
+.progressContainer {
+  width: 346px;
+  max-width: 90vw;
+  margin-bottom: 2rem;
+}
+
+.progressBar {
+  width: 100%;
+  background-color: #E9ECEF;
+  border-radius: 9999px;
+  height: 8px;
+  position: relative;
+  cursor: pointer;
+}
+
+.progressFill {
+  background-color: #03856E;
+  height: 8px;
+  border-radius: 9999px;
+  transition: all 0.3s ease-out;
+}
+
+.formSection {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.inputContainer {
+  position: relative;
+  height: 63px;
+}
+
+.formInput {
+  width: 346px;
+  max-width: 90vw;
+  height: 48px;
+  padding: 0 1rem;
+  border-radius: 8px;
+  border: 1px solid #DDDEE4;
+  background-color: white;
+  font-size: 15px;
+  line-height: 23px;
+  color: #333333;
+  font-family: "Hana2-Medium, sans-serif";
+}
+
+.formInput::placeholder {
+  color: #8F8F8F;
+}
+
+.formInput:focus {
+  border-color: #03856E;
+  outline: none;
+}
+
+.formInputDisabled {
+  background-color: #F5F5F5;
+}
+
+.ssnContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ssnInput1 {
+  width: 157px;
+  height: 48px;
+  padding: 0 1rem;
+  border-radius: 8px;
+  border: 1px solid #DDDEE4;
+  background-color: white;
+  font-size: 15px;
+  line-height: 23px;
+  color: #333333;
+  font-family: "Hana2-Medium, sans-serif";
+}
+
+.ssnInput1::placeholder {
+  color: #8F8F8F;
+}
+
+.ssnInput1:focus {
+  border-color: #03856E;
+  outline: none;
+}
+
+.ssnDash {
+  font-size: 18px;
+  line-height: 23px;
+  color: #8F8F8F;
+  font-family: "Hana2-Medium, sans-serif";
+}
+
+.ssnInput2 {
+  width: 163px;
+  height: 48px;
+  padding: 0 1rem;
+  border-radius: 8px;
+  border: 1px solid #DDDEE4;
+  background-color: white;
+  font-size: 15px;
+  line-height: 23px;
+  color: #333333;
+  font-family: "Hana2-Medium, sans-serif";
+}
+
+.ssnInput2::placeholder {
+  color: #8F8F8F;
+}
+
+.ssnInput2:focus {
+  border-color: #03856E;
+  outline: none;
+}
+
+.phoneContainer {
+  position: relative;
+  width: 346px;
+  max-width: 90vw;
+}
+
+.phoneInput {
+  width: 100%;
+  height: 48px;
+  padding: 0 1rem;
+  padding-right: 100px;
+  border-radius: 8px;
+  border: 1px solid #DDDEE4;
+  background-color: white;
+  font-size: 15px;
+  line-height: 23px;
+  color: #333333;
+  font-family: "Hana2-Medium, sans-serif";
+}
+
+.phoneInput::placeholder {
+  color: #8F8F8F;
+}
+
+.phoneInput:focus {
+  border-color: #03856E;
+  outline: none;
+}
+
+.phoneInputDisabled {
+  background-color: #F5F5F5;
+}
+
+.phoneButton {
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 80px;
+  height: 36px;
+  border-radius: 8px;
+  color: white;
+  font-size: 12px;
+  line-height: 16px;
+  font-family: "Hana2-Medium, sans-serif";
+  border: none;
+  transition: background-color 0.3s;
+}
+
+.phoneButtonEnabled {
+  background-color: #03856E;
+  cursor: pointer;
+}
+
+.phoneButtonEnabled:hover {
+  background-color: #005044;
+}
+
+.phoneButtonDisabled {
+  background-color: #CDCDCD;
+  cursor: not-allowed;
+}
+
+.errorMessage {
+  position: absolute;
+  top: 50px;
+  left: 0;
+  height: 13px;
+  font-size: 10px;
+  line-height: 13px;
+  color: #ED1651;
+  text-align: left;
+  font-family: "Hana2-Medium, sans-serif";
+}
+
+.successMessage {
+  position: absolute;
+  top: 50px;
+  left: 0;
+  height: 13px;
+  font-size: 10px;
+  line-height: 13px;
+  color: #03856E;
+  text-align: left;
+  font-family: "Hana2-Medium, sans-serif";
+}
+
+.verificationContainer {
+  position: relative;
+  width: 346px;
+  max-width: 90vw;
+}
+
+.verificationInput {
+  width: 100%;
+  height: 48px;
+  padding: 0 1rem;
+  padding-right: 100px;
+  border-radius: 8px;
+  border: 1px solid #DDDEE4;
+  background-color: white;
+  font-size: 15px;
+  line-height: 23px;
+  color: #333333;
+  font-family: "Hana2-Medium, sans-serif";
+}
+
+.verificationInput::placeholder {
+  color: #8F8F8F;
+}
+
+.verificationInput:focus {
+  border-color: #03856E;
+  outline: none;
+}
+
+.verificationButton {
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 80px;
+  height: 36px;
+  border-radius: 8px;
+  color: white;
+  font-size: 12px;
+  line-height: 16px;
+  font-family: "Hana2-Medium, sans-serif";
+  border: none;
+  transition: background-color 0.3s;
+}
+
+.verificationButtonEnabled {
+  background-color: #03856E;
+  cursor: pointer;
+}
+
+.verificationButtonEnabled:hover {
+  background-color: #005044;
+}
+
+.verificationButtonDisabled {
+  background-color: #CDCDCD;
+  cursor: not-allowed;
+}
+
+.timerText {
+  font-size: 10px;
+  line-height: 13px;
+  color: #03856E;
+  text-align: left;
+  font-family: "Hana2-Medium, sans-serif";
+}
+
+.unlockSsnInput1 {
+  width: 155px;
+  height: 48px;
+  padding: 0 1rem;
+  border-radius: 8px;
+  border: 1px solid #DDDEE4;
+  background-color: white;
+  font-size: 15px;
+  line-height: 23px;
+  color: #333333;
+  font-family: "Hana2-Medium, sans-serif";
+}
+
+.unlockSsnInput1::placeholder {
+  color: #8F8F8F;
+}
+
+.unlockSsnInput1:focus {
+  border-color: #03856E;
+  outline: none;
+}
+
+.unlockSsnInput2 {
+  width: 155px;
+  height: 48px;
+  padding: 0 1rem;
+  border-radius: 8px;
+  border: 1px solid #DDDEE4;
+  background-color: white;
+  font-size: 15px;
+  line-height: 23px;
+  color: #333333;
+  font-family: "Hana2-Medium, sans-serif";
+}
+
+.unlockSsnInput2::placeholder {
+  color: #8F8F8F;
+}
+
+.unlockSsnInput2:focus {
+  border-color: #03856E;
+  outline: none;
+}
+
+.findSsnInput1 {
+  width: 155px;
+  height: 48px;
+  padding: 0 1rem;
+  border-radius: 8px;
+  border: 1px solid #DDDEE4;
+  background-color: white;
+  font-size: 15px;
+  line-height: 23px;
+  color: #333333;
+  font-family: "Hana2-Medium, sans-serif";
+}
+
+.findSsnInput1::placeholder {
+  color: #8F8F8F;
+}
+
+.findSsnInput1:focus {
+  border-color: #03856E;
+  outline: none;
+}
+
+.findSsnInput2 {
+  width: 155px;
+  height: 48px;
+  padding: 0 1rem;
+  border-radius: 8px;
+  border: 1px solid #DDDEE4;
+  background-color: white;
+  font-size: 15px;
+  line-height: 23px;
+  color: #333333;
+  font-family: "Hana2-Medium, sans-serif";
+}
+
+.findSsnInput2::placeholder {
+  color: #8F8F8F;
+}
+
+.findSsnInput2:focus {
+  border-color: #03856E;
+  outline: none;
+}
+
+.accountPasswordInput {
+  width: 346px;
+  max-width: 90vw;
+  height: 48px;
+  padding: 0 1rem;
+  border-radius: 8px;
+  border: 1px solid #DDDEE4;
+  background-color: white;
+  font-size: 15px;
+  line-height: 23px;
+  color: #333333;
+  font-family: "Hana2-Medium, sans-serif";
+}
+
+.accountPasswordInput::placeholder {
+  color: #8F8F8F;
+}
+
+.accountPasswordInput:focus {
+  border-color: #03856E;
+  outline: none;
+}
+
+.phoneInputWithButton {
+  width: 100%;
+  height: 48px;
+  padding: 0 1rem;
+  padding-right: 100px;
+  border-radius: 8px;
+  border: 1px solid #DDDEE4;
+  background-color: white;
+  font-size: 15px;
+  line-height: 23px;
+  color: #333333;
+  font-family: "Hana2-Medium, sans-serif";
+}
+
+.phoneInputWithButton::placeholder {
+  color: #8F8F8F;
+}
+
+.phoneInputWithButton:focus {
+  border-color: #03856E;
+  outline: none;
+}
+
+.phoneInputWithButtonDisabled {
+  background-color: #F5F5F5;
+}
+
+.verificationInputWithButton {
+  width: 100%;
+  height: 48px;
+  padding: 0 1rem;
+  padding-right: 100px;
+  border-radius: 8px;
+  border: 1px solid #DDDEE4;
+  background-color: white;
+  font-size: 15px;
+  line-height: 23px;
+  color: #333333;
+  font-family: "Hana2-Medium, sans-serif";
+}
+
+.verificationInputWithButton::placeholder {
+  color: #8F8F8F;
+}
+
+.verificationInputWithButton:focus {
+  border-color: #03856E;
+  outline: none;
+}
+
+.phoneButtonSmall {
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 80px;
+  height: 36px;
+  border-radius: 8px;
+  color: white;
+  font-size: 12px;
+  line-height: 16px;
+  font-family: "Hana2-Medium, sans-serif";
+  border: none;
+  transition: background-color 0.3s;
+}
+
+.phoneButtonSmallEnabled {
+  background-color: #03856E;
+  cursor: pointer;
+}
+
+.phoneButtonSmallEnabled:hover {
+  background-color: #005044;
+}
+
+.phoneButtonSmallDisabled {
+  background-color: #CDCDCD;
+  cursor: not-allowed;
+}
+
+.verificationButtonSmall {
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 80px;
+  height: 36px;
+  border-radius: 8px;
+  color: white;
+  font-size: 12px;
+  line-height: 16px;
+  font-family: "Hana2-Medium, sans-serif";
+  border: none;
+  transition: background-color 0.3s;
+}
+
+.verificationButtonSmallEnabled {
+  background-color: #03856E;
+  cursor: pointer;
+}
+
+.verificationButtonSmallEnabled:hover {
+  background-color: #005044;
+}
+
+.verificationButtonSmallDisabled {
+  background-color: #CDCDCD;
+  cursor: not-allowed;
+}
+
+.errorText {
+  font-size: 10px;
+  line-height: 13px;
+  color: #ED1651;
+  text-align: left;
+  font-family: "Hana2-Medium, sans-serif";
+}
+
+.successText {
+  font-size: 10px;
+  line-height: 13px;
+  color: #03856E;
+  text-align: left;
+  font-family: "Hana2-Medium, sans-serif";
+}
+
+.timerTextSmall {
+  font-size: 10px;
+  line-height: 13px;
+  color: #03856E;
+  text-align: right;
+  font-family: "Hana2-Medium, sans-serif";
+}
+
+.descriptionText {
+  font-size: 18px;
+  line-height: 26px;
+  color: #666666;
+  font-family: "Hana2-CM, sans-serif";
+}
+
+.descriptionTextSmall {
+  font-size: 14px;
+  line-height: 20px;
+  color: #666666;
+  text-align: center;
+  margin-top: 1rem;
+  font-family: "Hana2-Medium, sans-serif";
+}
+
+.titleText {
+  font-size: 24px;
+  line-height: 31px;
+  color: #333333;
+  font-family: "Hana2-CM, sans-serif";
+}
+
+.titleTextGray {
+  font-size: 24px;
+  line-height: 31px;
+  color: #666666;
+  font-family: "Hana2-CM, sans-serif";
+}
+
+.subtitleText {
+  font-size: 13px;
+  line-height: 17px;
+  color: #333333;
+  font-family: "Hana2-CM, sans-serif";
+}
+
+.subtitleTextGray {
+  font-size: 13px;
+  line-height: 17px;
+  color: #666666;
+  font-family: "Hana2-CM, sans-serif";
+}
+
+.buttonLarge {
+  width: 346px;
+  max-width: 90vw;
+  height: 55px;
+  background-color: #03856E;
+  border-radius: 5px;
+  color: white;
+  font-size: 18px;
+  line-height: 23px;
+  font-family: "Hana2-Medium, sans-serif";
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.buttonLarge:hover {
+  background-color: #005044;
+}
+
+.buttonMedium {
+  width: 100%;
+  height: 48px;
+  background-color: #03856E;
+  border-radius: 8px;
+  color: white;
+  font-size: 16px;
+  line-height: 23px;
+  font-family: "Hana2-Medium, sans-serif";
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.buttonMedium:hover {
+  background-color: #005044;
+}
+
+.buttonMediumDisabled {
+  background-color: #CDCDCD;
+  cursor: not-allowed;
+}
+
+.buttonMediumDisabled:hover {
+  background-color: #CDCDCD;
+}
+
+.linkText {
+  font-size: 14px;
+  line-height: 20px;
+  color: #E57614;
+  text-align: center;
+  font-family: "Hana2-Medium, sans-serif";
+}
+
+.linkTextGray {
+  font-size: 14px;
+  line-height: 20px;
+  color: #666666;
+  text-align: center;
+  font-family: "Hana2-Medium, sans-serif";
+}
+
+.accountText {
+  font-size: 14px;
+  line-height: 20px;
+  color: #222222;
+  font-family: "Hana2-Medium, sans-serif";
+}
+
+.accountTextBlack {
+  font-size: 14px;
+  line-height: 20px;
+  color: black;
+  font-family: "Hana2-Medium, sans-serif";
+}
+
+.idInput {
+  width: 100%;
+  height: 48px;
+  padding: 0 1rem;
+  padding-right: 90px;
+  border-radius: 8px;
+  border: 1px solid #DDDEE4;
+  background-color: white;
+  font-size: 15px;
+  line-height: 23px;
+  color: #333333;
+  font-family: "Hana2-Medium, sans-serif";
+}
+
+.idInput::placeholder {
+  color: #8F8F8F;
+}
+
+.idInput:focus {
+  border-color: #03856E;
+  outline: none;
+}
+
+.idCheckButton {
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 80px;
+  height: 36px;
+  border-radius: 8px;
+  color: white;
+  font-size: 12px;
+  line-height: 16px;
+  font-family: "Hana2-Medium, sans-serif";
+  border: none;
+  transition: background-color 0.3s;
+}
+
+.idCheckButtonEnabled {
+  background-color: #03856E;
+  cursor: pointer;
+}
+
+.idCheckButtonEnabled:hover {
+  background-color: #005044;
+}
+
+.idCheckButtonDisabled {
+  background-color: #CDCDCD;
+  cursor: not-allowed;
+}
+
+.ssnDashText {
+  font-size: 18px;
+  line-height: 23px;
+  color: #8F8F8F;
+  font-family: "Hana2-Medium, sans-serif";
+}
+
+.timerTextCenter {
+  font-size: 12px;
+  line-height: 18px;
+  color: #03856E;
+  text-align: center;
+  margin-top: 0.5rem;
+  font-family: "Hana2-Medium, sans-serif";
+}
+
+.relativeContainer {
+  position: relative;
+  height: 63px;
+}
+
+.relativeContainerSmall {
+  position: relative;
+  width: 346px;
+  max-width: 90vw;
+}
+
+.absoluteErrorContainer {
+  position: absolute;
+  top: 50px;
+  left: 0;
+  height: 13px;
+}
+
+.absoluteErrorContainerFlex {
+  position: absolute;
+  top: 50px;
+  left: 0;
+  height: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 346px;
+  max-width: 90vw;
+}
+
+.spaceY20 {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.spaceY10 {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.spaceY7 {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.spaceY1 {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.textLeft {
+  text-align: left;
+}
+
+.accountCard {
+  width: 346px;
+  max-width: 90vw;
+  height: 58px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.accountCardSelected {
+  border: 2px solid #03856E;
+  background-color: #F0FDF4;
+}
+
+.accountCardUnselected {
+  border: 1px solid #E5E5E5;
+  background-color: white;
+}
+
+.accountCardUnselected:hover {
+  border-color: #03856E;
+  background-color: #F8F9FA;
+}
+
+.accountCardContent {
+  display: flex;
+  align-items: center;
+}
+
+.accountLogo {
+  width: 18px;
+  height: 16px;
+  margin-right: 0.5rem;
+}
+
+.accountLogoImg {
+  width: 100%;
+  height: 100%;
+}
+
+.accountInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.accountNumber {
+  font-size: 14px;
+  line-height: 17px;
+  color: #333333;
+  font-family: "Hana2-CM, sans-serif";
+}
+
+.newBadge {
+  margin-left: 0.5rem;
+  font-size: 10px;
+  background-color: #FF6B6B;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+.accountBalance {
+  margin-left: 26px;
+  font-size: 13px;
+  line-height: 17px;
+  color: #666666;
+  font-family: "Hana2-CM, sans-serif";
+}
+
+.buttonLargeWithCondition {
+  width: 346px;
+  max-width: 90vw;
+  height: 55px;
+  border-radius: 5px;
+  color: white;
+  font-size: 16px;
+  line-height: 23px;
+  margin-top: 1.5rem;
+  transition: background-color 0.3s;
+  font-family: "Hana2-Medium, sans-serif";
+  border: none;
+  cursor: pointer;
+}
+
+.buttonLargeWithConditionEnabled {
+  background-color: #03856E;
+}
+
+.buttonLargeWithConditionEnabled:hover {
+  background-color: #005044;
+}
+
+.buttonLargeWithConditionDisabled {
+  background-color: #CDCDCD;
+  cursor: not-allowed;
+}
+
+.buttonLargeWithConditionDisabled:hover {
+  background-color: #CDCDCD;
+}
+
+.hanaPointCard {
+  width: 346px;
+  max-width: 90vw;
+}
+
+.hanaPointCardInner {
+  width: 100%;
+  height: 58px;
+  border-radius: 10px;
+  background-color: white;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.25);
+}
+
+.hanaPointContent {
+  display: flex;
+  align-items: center;
+}
+
+.hanaPointLogo {
+  width: 20px;
+  height: 18px;
+  margin-right: 0.5rem;
+}
+
+.hanaPointLogoImg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.hanaPointInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.hanaPointName {
+  font-size: 14px;
+  line-height: 17px;
+  color: #333333;
+  font-family: "Hana2-CM, sans-serif";
+}
+
+.newBadgeGreen {
+  margin-left: 0.5rem;
+  font-size: 10px;
+  background-color: #03856E;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+.hanaPointBalance {
+  margin-left: 22px;
+  font-size: 13px;
+  line-height: 17px;
+  color: #666666;
+  font-family: "Hana2-CM, sans-serif";
+}
+
+.loadingSpinner {
+  display: flex;
+  justify-content: center;
+  padding: 2.5rem 0;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+  border-radius: 50%;
+  height: 3rem;
+  width: 3rem;
+  border-bottom: 2px solid #03856E;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.simpleLoginLeftNoPadding {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-right: 60px;
+}
+
+.simpleLoginImageNoPadding {
+  width: 307px;
+  height: 307px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.simpleLoginImageImgNoPadding {
+  width: 307px;
+  height: 307px;
+}
+
+.progressBarContainer {
+  width: 346px;
+  max-width: 90vw;
+  margin-bottom: 2rem;
+}
+
+.progressBarFull {
+  width: 100%;
+  background-color: #E9ECEF;
+  border-radius: 9999px;
+  height: 8px;
+  position: relative;
+  cursor: pointer;
+}
+
+.progressFillFull {
+  background-color: #03856E;
+  height: 8px;
+  border-radius: 9999px;
+  transition: all 0.3s ease-out;
+}
+
+.loginInput {
+  width: 100%;
+  height: 48px;
+  padding: 0 1rem;
+  border-radius: 8px;
+  border: 1px solid #DDDEE4;
+  background-color: white;
+  font-size: 15px;
+  line-height: 23px;
+  color: #333333;
+  font-family: "Hana2-Medium, sans-serif";
+}
+
+.loginInput::placeholder {
+  color: #8F8F8F;
+}
+
+.loginInput:focus {
+  border-color: #03856E;
+  outline: none;
+}
+
+.loginButtonWithCondition {
+  width: 346px;
+  max-width: 90vw;
+  height: 55px;
+  border-radius: 5px;
+  color: white;
+  font-size: 16px;
+  line-height: 23px;
+  margin-top: 1.5rem;
+  transition: background-color 0.3s;
+  font-family: "Hana2-Medium, sans-serif";
+  border: none;
+  cursor: pointer;
+}
+
+.loginButtonWithConditionEnabled {
+  background-color: #03856E;
+}
+
+.loginButtonWithConditionEnabled:hover {
+  background-color: #005044;
+}
+
+.loginButtonWithConditionDisabled {
+  background-color: #CDCDCD;
+  cursor: not-allowed;
+}
+
+.loginButtonWithConditionDisabled:hover {
+  background-color: #CDCDCD;
+}
+
+.linkContainer {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 346px;
+  max-width: 90vw;
+}
+
+.linkItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: opacity 0.3s;
+}
+
+.linkItem:hover {
+  opacity: 0.7;
+}
+
+.linkArrow {
+  width: 14px;
+  height: 8px;
+}
+
+.successImage {
+  width: 307px;
+  height: 307px;
+}
+
+.successImageImg {
+  width: 307px;
+  height: 307px;
+}
+
+.fullWidthFlex {
+  width: 100%;
+  display: flex;
+}
+
+.flex1Column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-right: 60px;
+}
+
+.imageContainer {
+  width: 307px;
+  height: 307px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.imageContainerImg {
+  width: 307px;
+  height: 307px;
+}
+
+.flex1ColumnCenter {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.flexColumnCenter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.textCenter {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.flexItemsCenter {
+  display: flex;
+  align-items: center;
+}
+
+.flexSpaceX2 {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.flexColumnHidden {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-right: 60px;
+}
+
+@media (max-width: 768px) {
+  .flexColumnHidden {
+    display: none;
+  }
+  
+  .flex1Column {
+    padding-right: 20px;
+  }
+}
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.modalContent {
+  background-color: white;
+  border-radius: 10px;
+  padding: 2rem;
+  max-width: 400px;
+  width: 90vw;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modalContentLarge {
+  background-color: white;
+  border-radius: 10px;
+  padding: 2rem;
+  max-width: 400px;
+  width: 90vw;
+}
+
+.spaceY6 {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.spaceY4 {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.spaceY3 {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.spaceY2 {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.textCenterModal {
+  text-align: center;
+}
+
+.modalTitle {
+  font-size: 20px;
+  line-height: 26px;
+  color: #333333;
+  margin-bottom: 0.5rem;
+  font-family: "Hana2-CM, sans-serif";
+}
+
+.modalDescription {
+  font-size: 14px;
+  line-height: 20px;
+  color: #666666;
+  font-family: "Hana2-Medium, sans-serif";
+}
+
+.modalInput {
+  width: 100%;
+  height: 48px;
+  padding: 0 1rem;
+  border-radius: 8px;
+  border: 1px solid #DDDEE4;
+  background-color: white;
+  font-size: 15px;
+  line-height: 23px;
+  color: #333333;
+  font-family: "Hana2-Medium, sans-serif";
+}
+
+.modalInput::placeholder {
+  color: #8F8F8F;
+}
+
+.modalInput:focus {
+  border-color: #03856E;
+  outline: none;
+}
+
+.flexSpaceX3 {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.flex1 {
+  flex: 1;
+}
+
+.modalButtonSecondary {
+  flex: 1;
+  height: 48px;
+  border-radius: 8px;
+  border: 1px solid #DDDEE4;
+  background-color: white;
+  color: #666666;
+  font-size: 16px;
+  line-height: 23px;
+  font-family: "Hana2-Medium, sans-serif";
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.modalButtonSecondary:hover {
+  background-color: #F5F5F5;
+}
+
+.modalButtonPrimary {
+  flex: 1;
+  height: 48px;
+  border-radius: 8px;
+  color: white;
+  font-size: 16px;
+  line-height: 23px;
+  font-family: "Hana2-Medium, sans-serif";
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.modalButtonPrimaryEnabled {
+  background-color: #03856E;
+}
+
+.modalButtonPrimaryEnabled:hover {
+  background-color: #005044;
+}
+
+.modalButtonPrimaryDisabled {
+  background-color: #CDCDCD;
+  cursor: not-allowed;
+}
+
+.iconContainer {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.iconImage {
+  width: 80px;
+  height: 80px;
+}
+
+.iconContainerSmall {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.iconImageSmall {
+  width: 60px;
+  height: 60px;
+}
+
+.messageContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+}
+
+.timerText {
+  font-size: 12px;
+  line-height: 16px;
+  color: #03856E;
+  font-family: "Hana2-Medium, sans-serif";
+}
+
+.modalTitleError {
+  font-size: 18px;
+  line-height: 24px;
+  color: #333333;
+  margin-bottom: 0.5rem;
+  font-family: "Hana2-CM, sans-serif";
+}
+
+.modalButton {
+  width: 100%;
+  height: 50px;
+  border-radius: 8px;
+  border: 1px solid #DDDEE4;
+  background-color: white;
+  color: #333333;
+  font-size: 14px;
+  line-height: 23px;
+  font-family: "Hana2-Regular, sans-serif";
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.modalButton:hover {
+  background-color: #F5F5F5;
+}
+
+.resultCard {
+  background-color: #F5F5F5;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.resultLabel {
+  font-size: 12px;
+  line-height: 16px;
+  color: #666666;
+  margin-bottom: 0.25rem;
+  font-family: "Hana2-Medium, sans-serif";
+}
+
+.resultValue {
+  font-size: 16px;
+  line-height: 20px;
+  color: #333333;
+  font-weight: bold;
+  font-family: "Hana2-CM, sans-serif";
+}
+
+.simpleLoginRightCentered {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.relativeFullHeight {
+  position: relative;
+  height: 100%;
+  padding: 0 1rem 0.75rem;
+}
+
+.cardPadding {
+  padding: 0 1rem 0.75rem;
+}
+
+.marginLeft26 {
+  margin-left: 26px;
+}
+
+.marginLeft22 {
+  margin-left: 22px;
+}
+
+.marginLeft2 {
+  margin-left: 0.5rem;
+}
+
+.width18Height16 {
+  width: 18px;
+  height: 16px;
+  margin-right: 0.5rem;
+}
+
+.width20Height18 {
+  width: 20px;
+  height: 18px;
+  margin-right: 0.5rem;
+}
+
+.flexJustifyCenter {
+  display: flex;
+  justify-content: center;
+  padding: 2.5rem 0;
+}
+
+.modalContentResponsive {
+  width: 346px;
+  max-width: 90vw;
+}
+
+.progressBarResponsive {
+  width: 346px;
+  max-width: 90vw;
+  margin-bottom: 2rem;
+}
+
+.linkContainerResponsive {
+  width: 346px;
+  max-width: 90vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 1.5rem;
+}
+
+.marginTop4 {
+  margin-top: 1rem;
+}
+
+.modalOverlayHighZ {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 60;
+}
+
+.flexColumnMdResponsive {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .flexColumnMdResponsive {
+    flex: 1;
+  }
+}
+
+.textLeftMedium {
+  font-size: 14px;
+  line-height: 20px;
+  color: #666666;
+  text-align: center;
+  margin-top: 1rem;
+  font-family: "Hana2-Medium, sans-serif";
+}
+
+.text18Gray {
+  font-size: 18px;
+  line-height: 26px;
+  color: #666666;
+  font-family: "Hana2-CM, sans-serif";
+}
+
+.text14Black {
+  font-size: 14px;
+  line-height: 17px;
+  color: #333333;
+  font-family: "Hana2-CM, sans-serif";
+}
+
+.text13Gray {
+  font-size: 13px;
+  line-height: 17px;
+  color: #666666;
+  font-family: "Hana2-CM, sans-serif";
+}
+
+.text20Black {
+  font-size: 20px;
+  line-height: 31px;
+  color: #333333;
+  font-family: "Hana2-CM, sans-serif";
+}
+
+.text18Gray31 {
+  font-size: 18px;
+  line-height: 31px;
+  color: #666666;
+  font-family: "Hana2-CM, sans-serif";
+}
+
+.buttonGreenLarge {
+  width: 346px;
+  max-width: 90vw;
+  height: 55px;
+  background-color: #03856E;
+  border-radius: 5px;
+  color: white;
+  font-size: 16px;
+  line-height: 23px;
+  font-family: "Hana2-Medium, sans-serif";
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.buttonGreenLarge:hover {
+  background-color: #005044;
+}
+
+.modalTitle20 {
+  font-size: 20px;
+  line-height: 26px;
+  color: #333333;
+  margin-bottom: 0.5rem;
+  font-family: "Hana2-CM, sans-serif";
+}
+
+.modalDescription14 {
+  font-size: 14px;
+  line-height: 20px;
+  color: #666666;
+  font-family: "Hana2-Medium, sans-serif";
+}
+
+.modalInputFull {
+  width: 100%;
+  height: 48px;
+  padding: 0 1rem;
+  border-radius: 8px;
+  border: 1px solid #DDDEE4;
+  background-color: white;
+  font-size: 15px;
+  line-height: 23px;
+  color: #333333;
+  font-family: "Hana2-Medium, sans-serif";
+}
+
+.modalInputFull::placeholder {
+  color: #8F8F8F;
+}
+
+.modalInputFull:focus {
+  border-color: #03856E;
+  outline: none;
+}
+
+.text18Gray8F {
+  font-size: 18px;
+  line-height: 23px;
+  color: #8F8F8F;
+  font-family: "Hana2-Medium, sans-serif";
+}
+
+.text10RedLeft {
+  font-size: 10px;
+  line-height: 13px;
+  color: #ED1651;
+  text-align: left;
+  margin-top: 0.25rem;
+  font-family: "Hana2-Medium, sans-serif";
+}
+
+.flexSpaceX3Modal {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.modalButtonSecondaryFull {
+  flex: 1;
+  height: 48px;
+  border-radius: 8px;
+  border: 1px solid #DDDEE4;
+  background-color: white;
+  color: #666666;
+  font-size: 16px;
+  line-height: 23px;
+  font-family: "Hana2-Medium, sans-serif";
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.modalButtonSecondaryFull:hover {
+  background-color: #F5F5F5;
+}
+
+.flexJustifyBetween {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+}
+
+.text12Green {
+  font-size: 12px;
+  line-height: 16px;
+  color: #03856E;
+  font-family: "Hana2-Medium, sans-serif";
+}
+
+.iconContainer80 {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.iconImage80 {
+  width: 80px;
+  height: 80px;
+}
+
+.iconContainer60 {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.iconImage60 {
+  width: 60px;
+  height: 60px;
+}
+
+.text18BlackMB {
+  font-size: 18px;
+  line-height: 24px;
+  color: #333333;
+  margin-bottom: 0.5rem;
+  font-family: "Hana2-CM, sans-serif";
+}
+
+.text14GrayNormal {
+  font-size: 14px;
+  line-height: 20px;
+  color: #666666;
+  font-family: "Hana2-Medium, sans-serif";
+}
+
+.text14GrayMB {
+  font-size: 14px;
+  line-height: 20px;
+  color: #666666;
+  margin-bottom: 1rem;
+  font-family: "Hana2-Medium, sans-serif";
+}
+
+.modalButtonFullHeight {
+  width: 100%;
+  height: 50px;
+  border-radius: 8px;
+  border: 1px solid #DDDEE4;
+  background-color: white;
+  color: #333333;
+  font-size: 14px;
+  line-height: 23px;
+  font-family: "Hana2-Regular, sans-serif";
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.modalButtonFullHeight:hover {
+  background-color: #F5F5F5;
+}
+
+.resultCardBg {
+  background-color: #F5F5F5;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.text12Gray {
+  font-size: 12px;
+  line-height: 16px;
+  color: #666666;
+  margin-bottom: 0.25rem;
+  font-family: "Hana2-Medium, sans-serif";
+}
+
+.text16BlackBold {
+  font-size: 16px;
+  line-height: 20px;
+  color: #333333;
+  font-weight: bold;
+  font-family: "Hana2-CM, sans-serif";
+}
+
+@media (max-width: 768px) {
+  .tabContentWithPadding {
+    padding: 20px;
+  }
+  
+  .simpleLoginLeft {
+    display: none;
+  }
+  
+  .simpleLoginLeftMobile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-right: 20px;
+  }
+}

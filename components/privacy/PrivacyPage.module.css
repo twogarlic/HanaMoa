@@ -1,0 +1,246 @@
+:root {
+  --ink: #111111;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+  --brand: #111111; /* 탭 활성: 검정 */
+  --bg-soft: #f8f9fb;
+  --link: #1f2937;
+}
+
+.page {
+  padding-bottom: 80px;
+  color: #111;
+  background: #fff;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.pageTitle {
+  font-size: clamp(28px, 5.5vw, 48px);
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 130px 0 8px;
+  font-family: "Hana2-Medium", sans-serif;
+}
+
+/* 탭 (중앙 정렬: pill) */
+.tabs {
+  position: sticky;
+  top: 64px; /* 상단 헤더 보정 - 동적으로 설정됨 */
+  z-index: 10;
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+  padding: 10px 0;
+  margin-bottom: 24px;
+}
+
+.tabs ul {
+  display: flex;
+  gap: 16px;
+  justify-content: flex-start;
+  align-items: center;
+  list-style: none;
+  margin: 0 auto;
+  padding: 0 24px;
+  max-width: 1100px;
+}
+
+.pill {
+  display: inline-block;
+  padding: 12px 20px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  color: #111;
+  text-decoration: none;
+  background: #fff;
+  font-weight: 700;
+}
+
+.pill:hover { 
+  background: var(--bg-soft); 
+}
+
+.pill.active {
+  background: #0E1110;
+  color: #fff;
+  border-color: #0E1110;
+}
+
+/* 리드 문단 */
+.lead p {
+  color: var(--muted);
+  font-size: 1.0625rem;
+  margin: 10px 0;
+  font-family: "Hana2-Regular", sans-serif;
+}
+
+.mono { 
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace; 
+}
+
+/* 목차 (스크린샷처럼 상단 보더 + 2열) */
+.toc {
+  border-top: 2px solid #111;
+  margin: 28px 0 6px;
+  padding-top: 18px;
+}
+
+.toc ol {
+  list-style: decimal;
+  padding-left: 1.2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 56px;
+  row-gap: 10px;
+}
+
+.toc a {
+  color: var(--link);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  font-family: "Hana2-Regular", sans-serif;
+}
+
+@media (max-width: 720px) {
+  .toc ol { 
+    grid-template-columns: 1fr; 
+  }
+}
+
+/* 섹션 */
+.sec { 
+  margin-top: 36px; 
+}
+
+.sec h3 {
+  font-size: 22px;
+  font-weight: 800;
+  margin: 0 0 10px;
+  font-family: "Hana2-Bold", sans-serif;
+}
+
+.sec p { 
+  margin: 8px 0; 
+  font-family: "Hana2-Regular", sans-serif;
+}
+
+/* 리스트 */
+.dot { 
+  list-style: disc; 
+  padding-left: 20px; 
+}
+
+.dot > li { 
+  margin: 4px 0; 
+  font-family: "Hana2-Regular", sans-serif;
+}
+
+.hangul { 
+  list-style: none; 
+  padding-left: 0; 
+  counter-reset: hnum; 
+}
+
+.hangul > li { 
+  position: relative; 
+  padding-left: 1.6em; 
+  margin: 8px 0; 
+  font-family: "Hana2-Regular", sans-serif;
+}
+
+.hangul > li::before {
+  counter-increment: hnum;
+  content: counter(hnum) ".";
+  position: absolute;
+  left: 0; 
+  top: 0;
+  font-weight: 800;
+}
+
+.mL { 
+  margin-left: 12px; 
+}
+
+.mt { 
+  margin-top: 10px; 
+}
+
+.muted { 
+  color: var(--muted); 
+}
+
+/* 표 */
+.table { 
+  overflow-x: auto; 
+  margin-top: 10px; 
+}
+
+.table table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border: 1px solid var(--border);
+  min-width: 480px;
+}
+
+.table thead th {
+  background: var(--bg-soft);
+  padding: 10px;
+  font-weight: 800;
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+  font-family: "Hana2-Bold", sans-serif;
+}
+
+.table tbody td, 
+.table tbody th {
+  padding: 10px;
+  border-top: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  font-family: "Hana2-Regular", sans-serif;
+  text-align: center;
+}
+
+.row .th { 
+  background: var(--bg-soft); 
+  width: 30%; 
+}
+
+.center { 
+  text-align: center; 
+}
+
+.small { 
+  font-size: 12px; 
+  color: var(--muted); 
+  margin-top: 6px; 
+  font-family: "Hana2-Regular", sans-serif;
+}
+
+.etc { 
+  padding-left: 16px; 
+  font-family: "Hana2-Regular", sans-serif;
+}
+
+/* 링크 모음 */
+.links { 
+  list-style: none; 
+  padding-left: 0; 
+}
+
+.links li { 
+  margin: 8px 0; 
+  font-family: "Hana2-Regular", sans-serif;
+}
+
+.btnTxt { 
+  font-weight: 700; 
+  text-decoration: underline; 
+  text-underline-offset: 2px; 
+  font-family: "Hana2-Bold", sans-serif;
+}

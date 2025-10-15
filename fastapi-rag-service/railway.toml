@@ -1,0 +1,13 @@
+[build]
+builder = "dockerfile"
+dockerfilePath = "Dockerfile"
+
+[deploy]
+healthcheckPath = "/health"
+healthcheckTimeout = 600
+restartPolicyType = "never"
+
+[env]
+PYTHONPATH = "/app"
+FORCE_REBUILD = "v4"
+

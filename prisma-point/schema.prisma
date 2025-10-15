@@ -1,0 +1,72 @@
+// 하나머니 전용 데이터베이스 스키마
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma-point"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("HANA_POINT_DATABASE_URL")
+}
+
+// 하나머니 포인트 계정
+model HanaPoint {
+  id              String              @id @default(cuid())
+  userId          String?             @unique 
+  name            String              
+  ssn             String              @unique 
+  phone           String             
+  balance         Int                 @default(0) // 현재 포인트 잔액
+  totalEarned     Int                 @default(0) // 누적 적립 포인트
+  totalUsed       Int                 @default(0) // 누적 사용 포인트
+  isLinked        Boolean             @default(false) 
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+  histories       HanaPointHistory[]
+  
+  @@index([name, ssn]) 
+  @@map("hana_points")
+}
+
+// 하나머니 포인트 사용 내역
+model HanaPointHistory {
+  id              String      @id @default(cuid())
+  pointId         String     
+  type            PointType  
+  amount          Int        
+  balance         Int         
+  description     String     
+  sourceSystem    String      @default("hana-moa") 
+  sourceId        String?    
+  expiresAt       DateTime?   
+  createdAt       DateTime    @default(now())
+  
+  point           HanaPoint   @relation(fields: [pointId], references: [id], onDelete: Cascade)
+  
+  @@index([pointId])
+  @@index([createdAt])
+  @@index([type])
+  @@map("hana_point_histories")
+}
+
+enum PointType {
+  EARN    
+  USE     
+  EXPIRE 
+  REFUND  
+}
+
+// 출석체크 테이블
+model Attendance {
+  id        String   @id @default(cuid())
+  userId    String   
+  date      String  
+  points    Int      
+  createdAt DateTime @default(now())
+  
+  @@unique([userId, date]) 
+  @@index([userId])
+  @@index([date])
+  @@map("attendances")
+}

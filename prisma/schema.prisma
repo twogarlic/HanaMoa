@@ -1,0 +1,685 @@
+// 하나모아 전용 데이터베이스 스키마
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL_RAILWAY")
+}
+
+model User {
+  id           String    @id @default(cuid())
+  userId       String    @unique
+  password     String
+  name         String
+  ssn          String    @unique
+  phone        String    @unique
+  provider     String?
+  providerId   String?
+  email        String?
+  profileImage String?   @default("fox") 
+  isPublicProfile Boolean @default(false) 
+  isPostsPublic Boolean @default(false) 
+  notificationsEnabled Boolean @default(true) 
+  loginFailCount Int?    @default(0) 
+  isLocked     Boolean?  @default(false)
+  lockedUntil  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  accounts     Account[]
+  holdings     Holding[]
+  orders       Order[]
+  posts        Post[]
+  comments     Comment[]
+  postLikes    PostLike[]
+  followers    UserFollow[] @relation("UserFollower")
+  following    UserFollow[] @relation("UserFollowing")
+  recurringOrders RecurringOrder[]
+  coinbox      Coinbox? 
+  friends      Friend[] @relation("UserFriends") 
+  sentGifts    Gift[] @relation("GiftSender") 
+  receivedGifts Gift[] @relation("GiftReceiver") 
+  sentFriendRequests    FriendRequest[] @relation("FriendRequestSender") 
+  receivedFriendRequests FriendRequest[] @relation("FriendRequestReceiver") 
+  notifications         Notification[] 
+  goals                 Goal[]
+  serviceRequests       ServiceRequest[] 
+  fcmToken             FCMToken?
+  transactions         Transaction[] 
+  pollVotes            PollVote[] 
+  sentPendingGifts     PendingGift[] @relation("PendingGiftSender") 
+  claimedPendingGifts  PendingGift[] @relation("PendingGiftClaimer") 
+  productExchanges    ProductExchange[] 
+  productReviews      ProductReview[]
+
+  @@map("users")
+}
+
+model Account {
+  id              String   @id @default(cuid())
+  accountNumber   String   @unique
+  accountName     String
+  accountPassword String
+  balance         Float    @default(0)
+  userId          String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  user            User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  orders          Order[]
+  transactions    Transaction[]
+
+  @@index([userId], map: "accounts_userId_fkey")
+  @@map("accounts")
+}
+
+model Order {
+  id          String      @id @default(cuid())
+  orderNumber String      @unique
+  userId      String
+  accountId   String
+  asset       String
+  orderType   String
+  priceType   String
+  limitPrice  Float?
+  quantity    Float
+  totalAmount Float
+  status      OrderStatus @default(PENDING)
+  executedAt  DateTime?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  executions  Execution[]
+  account     Account     @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([asset])
+  @@index([status])
+  @@index([createdAt])
+  @@index([accountId], map: "orders_accountId_fkey")
+  @@map("orders")
+}
+
+model Execution {
+  id                String   @id @default(cuid())
+  orderId           String
+  executionPrice    Float
+  executionQuantity Float
+  executionAmount   Float
+  executedAt        DateTime @default(now())
+  order             Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+  @@index([executedAt])
+  @@map("executions")
+}
+
+model Holding {
+  id           String   @id @default(cuid())
+  userId       String
+  asset        String
+  quantity     Float    @default(0)
+  averagePrice Float    @default(0)
+  totalAmount  Float    @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, asset])
+  @@index([userId])
+  @@index([asset])
+  @@map("holdings")
+}
+
+// 커뮤니티 게시글 테이블
+model Post {
+  id          String    @id @default(cuid())
+  userId      String   
+  asset       String    @default("gold") 
+  content     String   
+  imageUrl    String?   @db.Text 
+  pollId      String?  
+  likes       Int       @default(0) 
+  comments    Int       @default(0) 
+  isDeleted   Boolean   @default(false) 
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  poll        Poll?     @relation(fields: [pollId], references: [id], onDelete: SetNull)
+  commentList Comment[]
+  likeList    PostLike[]
+  
+  @@index([userId])
+  @@index([asset])
+  @@index([pollId])
+  @@index([createdAt])
+  @@index([isDeleted])
+  @@map("posts")
+}
+
+// 커뮤니티 댓글 테이블
+model Comment {
+  id          String    @id @default(cuid())
+  postId      String    
+  userId      String  
+  content     String    
+  isDeleted   Boolean   @default(false) 
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  post        Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([postId])
+  @@index([userId])
+  @@index([createdAt])
+  @@index([isDeleted])
+  @@map("comments")
+}
+
+// 게시글 좋아요 테이블
+model PostLike {
+  id        String   @id @default(cuid())
+  postId    String   
+  userId    String   
+  createdAt DateTime @default(now())
+  
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@unique([postId, userId]) 
+  @@index([postId])
+  @@index([userId])
+  @@map("post_likes")
+}
+
+// 사용자 팔로우 테이블
+model UserFollow {
+  id          String   @id @default(cuid())
+  followerId  String   
+  followingId String   
+  createdAt   DateTime @default(now())
+  
+  follower    User     @relation("UserFollower", fields: [followerId], references: [id], onDelete: Cascade)
+  following   User     @relation("UserFollowing", fields: [followingId], references: [id], onDelete: Cascade)
+  
+  @@unique([followerId, followingId])
+  @@index([followerId])
+  @@index([followingId])
+  @@map("user_follows")
+}
+
+// 투표 테이블
+model Poll {
+  id          String       @id @default(cuid())
+  title       String      
+  description String?      
+  isMultiple  Boolean      @default(false) 
+  endDate     DateTime?   
+  isActive    Boolean      @default(true) 
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  
+  // 관계
+  posts       Post[]       
+  options     PollOption[]
+  votes       PollVote[]  
+  
+  @@index([isActive])
+  @@index([createdAt])
+  @@map("polls")
+}
+
+// 투표 선택지 테이블
+model PollOption {
+  id        String     @id @default(cuid())
+  pollId    String    
+  text      String     
+  order     Int        
+  createdAt DateTime   @default(now())
+  
+  // 관계
+  poll      Poll       @relation(fields: [pollId], references: [id], onDelete: Cascade)
+  votes     PollVote[] 
+  
+  @@index([pollId])
+  @@index([order])
+  @@map("poll_options")
+}
+
+// 투표 기록 테이블
+model PollVote {
+  id        String     @id @default(cuid())
+  pollId    String     
+  optionId  String    
+  userId    String     
+  createdAt DateTime   @default(now())
+  
+  // 관계
+  poll      Poll       @relation(fields: [pollId], references: [id], onDelete: Cascade)
+  option    PollOption @relation(fields: [optionId], references: [id], onDelete: Cascade)
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@unique([pollId, optionId, userId]) 
+  @@index([pollId])
+  @@index([userId])
+  @@map("poll_votes")
+}
+
+// 저금통 테이블
+model Coinbox {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  accountNumber   String   @unique
+  accountName     String   @default("하나모아 저금통")
+  balance         Float    @default(0) 
+  maxLimit        Float    @default(100000) 
+  isActive        Boolean  @default(true) 
+  interestRate    Float    @default(4.00) 
+  lastInterestDate DateTime? 
+  totalInterest   Float    @default(0) 
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("coinboxes")
+}
+
+// 친구 테이블
+model Friend {
+  id          String   @id @default(cuid())
+  userId      String   
+  friendId    String  
+  friendName  String   
+  friendPhone String   
+  isAccepted  Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  user        User     @relation("UserFriends", fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, friendId]) 
+  @@index([userId])
+  @@index([friendId])
+  @@map("friends")
+}
+
+// 친구 신청 테이블
+model FriendRequest {
+  id          String      @id @default(cuid())
+  senderId    String     
+  receiverId  String     
+  status      RequestStatus @default(PENDING) 
+  message     String?  
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  
+  sender      User        @relation("FriendRequestSender", fields: [senderId], references: [id], onDelete: Cascade)
+  receiver    User        @relation("FriendRequestReceiver", fields: [receiverId], references: [id], onDelete: Cascade)
+  
+  @@unique([senderId, receiverId]) 
+  @@index([senderId])
+  @@index([receiverId])
+  @@index([status])
+  @@map("friend_requests")
+}
+
+// 선물 테이블
+model Gift {
+  id              String      @id @default(cuid())
+  senderId        String     
+  receiverId      String     
+  asset           String     
+  quantity        Float      
+  messageCard     String?    
+  message         String?    
+  status          GiftStatus  @default(PENDING)
+  sentAt          DateTime? 
+  receivedAt      DateTime?  
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  
+  sender          User        @relation("GiftSender", fields: [senderId], references: [id], onDelete: Cascade)
+  receiver        User        @relation("GiftReceiver", fields: [receiverId], references: [id], onDelete: Cascade)
+  
+  @@index([senderId])
+  @@index([receiverId])
+  @@index([status])
+  @@index([createdAt])
+  @@map("gifts")
+}
+
+enum OrderStatus {
+  PENDING
+  PARTIAL
+  COMPLETED
+  CANCELLED
+  REJECTED
+}
+
+enum GiftStatus {
+  PENDING  
+  SENT     
+  RECEIVED
+  DECLINED  
+  EXPIRED  
+}
+
+enum RequestStatus {
+  PENDING   
+  ACCEPTED  
+  DECLINED  
+}
+
+// 알림 테이블
+model Notification {
+  id          String           @id @default(cuid())
+  userId      String           
+  type        NotificationType 
+  title       String          
+  message     String          
+  data        Json?            
+  isRead      Boolean          @default(false) 
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  
+  user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([isRead])
+  @@index([createdAt])
+  @@map("notifications")
+}
+
+// 목표 테이블
+model Goal {
+  id            String      @id @default(cuid())
+  userId        String     
+  title         String      
+  targetAmount  Float     
+  currentAmount Float       @default(0) 
+  startDate     DateTime   
+  targetDate    DateTime    
+  asset         String      
+  description   String?     
+  color         String      @default("#03856E")
+  status        GoalStatus  @default(ACTIVE)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([status])
+  @@index([startDate])
+  @@index([targetDate])
+  @@map("goals")
+}
+
+enum GoalStatus {
+  ACTIVE   
+  COMPLETED 
+  FAILED    
+  PAUSED    
+  CANCELLED 
+}
+
+enum NotificationType {
+  ORDER_EXECUTED   
+  FRIEND_REQUEST    
+  GIFT_RECEIVED    
+  GOAL_ACHIEVED    
+  SYSTEM           
+  NEW_POST      
+  RECURRING_ORDER_FAILED 
+}
+
+// 수령 신청 테이블 
+model ServiceRequest {
+  id              String            @id @default(cuid())
+  reservationNumber String          @unique
+  userId          String           
+  branchId        String          
+  branchName      String           
+  branchAddress   String            
+  branchPhone     String           
+  assetType       String            
+  assetUnit       String          
+  assetAmount     Float             
+  requestDate     DateTime         
+  reservationDate DateTime          
+  reservationTime String           
+  status          ServiceRequestStatus @default(PENDING) 
+  completedAt     DateTime?        
+  cancelledAt     DateTime?       
+  cancelReason    String?          
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  
+  user            User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([status])
+  @@index([reservationDate])
+  @@index([reservationTime])
+  @@index([createdAt])
+  @@map("service_requests")
+}
+
+enum ServiceRequestStatus {
+  PENDING    
+  APPROVED    
+  REJECTED   
+  COMPLETED  
+  CANCELLED  
+}
+
+// 거래 내역 테이블
+model Transaction {
+  id          String            @id @default(cuid())
+  userId      String            
+  accountId   String           
+  type        TransactionType  
+  amount      Float             
+  balance     Float            
+  description String?         
+  referenceId String?         
+  createdAt   DateTime          @default(now())
+  
+  user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  account     Account           @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([accountId])
+  @@index([type])
+  @@index([createdAt])
+  @@map("transactions")
+}
+
+enum TransactionType {
+  DEPOSIT        
+  WITHDRAWAL      
+  TRANSFER_IN    
+  TRANSFER_OUT   
+  ORDER_BUY      
+  ORDER_SELL    
+  GIFT_SEND       
+  GIFT_RECEIVE    
+  COINBOX_SAVE    
+  COINBOX_EMPTY  
+  COINBOX_INTEREST 
+}
+
+enum RecurringOrderStatus {
+  ACTIVE    
+  PAUSED   
+  COMPLETED 
+  CANCELLED 
+}
+
+enum RecurringOrderFrequency {
+  DAILY   
+  WEEKLY 
+  MONTHLY 
+}
+
+// 정기 주문 테이블
+model RecurringOrder {
+  id          String                  @id @default(cuid())
+  userId      String                
+  asset       String               
+  orderType   String                  @default("BUY") 
+  quantity    Float                  
+  frequency   RecurringOrderFrequency 
+  startDate   DateTime                
+  endDate     DateTime              
+  status      RecurringOrderStatus    @default(ACTIVE)
+  lastExecuted DateTime?           
+  totalExecutions Int                 @default(0) 
+  createdAt   DateTime                @default(now())
+  updatedAt   DateTime                @updatedAt
+  
+  user        User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([status])
+  @@index([startDate, endDate])
+  @@map("recurring_orders")
+}
+
+// FCM 토큰 테이블
+model FCMToken {
+  id        String   @id @default(cuid())
+  userId    String   @unique 
+  token     String   
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@map("fcm_tokens")
+}
+
+// 미가입 사용자 선물 대기 테이블
+model PendingGift {
+  id              String      @id @default(cuid())
+  senderId        String     
+  receiverPhone   String     
+  receiverName    String?     
+  asset           String      
+  quantity        Float      
+  messageCard     String?    
+  message         String?     
+  status          PendingGiftStatus @default(PENDING) 
+  smsStatus       SMSStatus   @default(PENDING)
+  smsSentAt       DateTime? 
+  claimedAt       DateTime?  
+  claimedBy       String?     
+  expiresAt       DateTime    
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  
+  sender          User        @relation("PendingGiftSender", fields: [senderId], references: [id], onDelete: Cascade)
+  claimer         User?       @relation("PendingGiftClaimer", fields: [claimedBy], references: [id], onDelete: SetNull)
+  
+  @@index([senderId])
+  @@index([receiverPhone])
+  @@index([status])
+  @@index([expiresAt])
+  @@index([createdAt])
+  @@map("pending_gifts")
+}
+
+enum PendingGiftStatus {
+  PENDING   
+  CLAIMED  
+  EXPIRED  
+  CANCELLED 
+}
+
+enum SMSStatus {
+  PENDING   
+  SENT     
+  FAILED    
+}
+
+// 상품 모델
+model Product {
+  id          String   @id @default(cuid())
+  name        String   
+  category    String   
+  price       Float    
+  image       String   
+  description String   
+  material    String   
+  weight      Float    
+  goldContent Float   
+  processingFee Float  
+  isActive    Boolean  @default(true) 
+  isNew       Boolean  @default(false) 
+  isPopular   Boolean  @default(false) 
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  exchanges   ProductExchange[]
+  reviews     ProductReview[] 
+  
+  @@map("products")
+}
+
+// 상품 교환 모델
+model ProductExchange {
+  id          String   @id @default(cuid())
+  userId      String   
+  productId   String   
+  quantity    Int      
+  goldAmount  Float    
+  processingFee Float 
+  totalCost   Float    
+  status      ProductExchangeStatus @default(PENDING) 
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([productId])
+  @@index([status])
+  @@index([createdAt])
+  @@map("product_exchanges")
+}
+
+// 상품 리뷰 모델
+model ProductReview {
+  id        String   @id @default(cuid())
+  userId    String  
+  productId String  
+  rating    Int      
+  content   String?  
+  images    String?  
+  isVisible Boolean  @default(true) 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([productId])
+  @@index([rating])
+  @@index([createdAt])
+  @@map("product_reviews")
+}
+
+enum ProductExchangeStatus {
+  PENDING   
+  PROCESSING
+  COMPLETED 
+  CANCELLED  
+}

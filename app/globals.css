@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Hana2-Regular";
+  src: url("/fonts/Hana2-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Hana2-Medium";
+  src: url("/fonts/Hana2-Medium.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Hana2-Bold";
+  src: url("/fonts/Hana2-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Hana2-Light";
+  src: url("/fonts/Hana2-Light.otf") format("opentype");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Hana2-Heavy";
+  src: url("/fonts/Hana2-Heavy.otf") format("opentype");
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Hana2-CM";
+  src: url("/fonts/Hana2-CM.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+* {
+  font-family: "Hana2-Regular", sans-serif;
+}
+
+body {
+  background-color: #f8fffe;
+}

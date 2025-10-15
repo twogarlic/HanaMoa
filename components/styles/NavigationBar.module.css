@@ -1,0 +1,1062 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 50;
+  padding-bottom: 8px;
+}
+
+.headerWhite {
+  background: white;
+}
+
+.headerGradient {
+  background: linear-gradient(to right, #03856E, #005044);
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+@media (min-width: 640px) {
+  .container {
+    padding: 0 24px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding: 0 32px;
+  }
+}
+
+.navContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  object-fit: contain;
+  cursor: pointer;
+  width: auto;
+  height: 30px;
+}
+
+.nav {
+  display: none;
+  gap: 32px;
+}
+
+@media (min-width: 768px) {
+  .nav {
+    display: flex;
+  }
+}
+
+@media (min-width: 1024px) {
+  .nav {
+    gap: 48px;
+  }
+}
+
+.navLink {
+  font-size: 16px;
+  font-weight: 500;
+  transition: color 0.2s;
+  font-family: "Hana2-Medium", sans-serif;
+}
+
+@media (min-width: 1024px) {
+  .navLink {
+    font-size: 18px;
+  }
+}
+
+.navLinkWhite {
+  color: black;
+}
+
+.navLinkWhite:hover {
+  color: #6B7280;
+}
+
+.navLinkDark {
+  color: white;
+}
+
+.navLinkDark:hover {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.actionsContainer {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.actionButton {
+  position: relative;
+  padding: 4px;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.actionButtonWhite {
+  background-color: transparent;
+}
+
+.actionButtonWhite:hover {
+  background-color: #F3F4F6;
+}
+
+.actionButtonDark {
+  background-color: transparent;
+}
+
+.actionButtonDark:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.actionIcon {
+  width: 20px;
+  height: 20px;
+}
+
+.actionIconWhite {
+  color: black;
+}
+
+.actionIconDark {
+  color: white;
+}
+
+.notificationBadge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 16px;
+  height: 16px;
+  background-color: #EF4444;
+  color: white;
+  font-size: 12px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notificationModal {
+  position: fixed;
+  top: 80px;
+  right: 64px;
+  z-index: 50;
+}
+
+.notificationContent {
+  background: white;
+  border-radius: 15px;
+  padding: 16px;
+  width: 320px;
+  max-height: 400px;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.10);
+  position: relative;
+}
+
+.notificationScroll {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.loadingContainer {
+  text-align: center;
+  padding: 32px 0;
+}
+
+.loadingSpinner {
+  width: 32px;
+  height: 32px;
+  border: 2px solid #03856E;
+  border-top: 2px solid transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 16px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loadingText {
+  font-size: 14px;
+  color: #666666;
+  font-family: "Hana2-Regular", sans-serif;
+}
+
+.loginPrompt {
+  text-align: center;
+  padding: 32px 0;
+}
+
+.loginPromptText {
+  font-size: 14px;
+  color: #666666;
+  font-family: "Hana2-Regular", sans-serif;
+}
+
+.loginButton {
+  color: #03856E;
+  text-decoration: underline;
+  transition: color 0.2s;
+  cursor: pointer;
+  font-family: "Hana2-Medium", sans-serif;
+}
+
+.loginButton:hover {
+  color: #027A5E;
+}
+
+.notificationsDisabled {
+  text-align: center;
+  padding: 32px 0;
+}
+
+.notificationsDisabledIcon {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 12px;
+  border-radius: 50%;
+  background-color: #F5FBFA;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notificationsDisabledIcon svg {
+  width: 24px;
+  height: 24px;
+  color: #03856E;
+}
+
+.notificationsDisabledTitle {
+  font-size: 14px;
+  color: #666666;
+  margin-bottom: 8px;
+  font-family: "Hana2-Medium", sans-serif;
+}
+
+.notificationsDisabledSubtitle {
+  font-size: 12px;
+  color: #999;
+  font-family: "Hana2-Regular", sans-serif;
+}
+
+.settingsButton {
+  margin-top: 16px;
+  padding: 8px 16px;
+  background-color: #03856E;
+  color: white;
+  border-radius: 8px;
+  font-size: 13px;
+  transition: background-color 0.2s;
+  font-family: "Hana2-Medium", sans-serif;
+}
+
+.settingsButton:hover {
+  background-color: #027A5E;
+}
+
+.noNotifications {
+  text-align: center;
+  padding: 32px 0;
+}
+
+.noNotificationsText {
+  font-size: 14px;
+  color: #666666;
+  font-family: "Hana2-Regular", sans-serif;
+}
+
+.notificationsList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.notificationItem {
+  background-color: #F8F9FA;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.notificationHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.notificationAvatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notificationAvatar img {
+  object-fit: contain;
+}
+
+.notificationAvatarFallback {
+  width: 24px;
+  height: 24px;
+  background-color: #03856E;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notificationAvatarFallback span {
+  color: white;
+  font-size: 14px;
+  font-family: "Hana2-Medium", sans-serif;
+}
+
+.notificationContent {
+  flex: 1;
+}
+
+.notificationTitle {
+  font-size: 11px;
+  color: #333333;
+  font-family: "Hana2-Medium", sans-serif;
+}
+
+.notificationSubtitle {
+  font-size: 11px;
+  color: #666666;
+  font-family: "Hana2-Regular", sans-serif;
+}
+
+.notificationTime {
+  font-size: 10px;
+  color: #999999;
+  font-family: "Hana2-Regular", sans-serif;
+}
+
+.notificationActions {
+  display: flex;
+  gap: 4px;
+}
+
+.notificationActionButton {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.notificationActionButton:hover {
+  background-color: #F3F4F6;
+}
+
+.notificationActionButtonAccept:hover {
+  background-color: #DCFCE7;
+}
+
+.notificationActionButtonReject:hover {
+  background-color: #FEE2E2;
+}
+
+.notificationMessage {
+  margin-bottom: 8px;
+  padding: 8px;
+  background-color: white;
+  border-radius: 6px;
+}
+
+.notificationMessageText {
+  font-size: 12px;
+  color: #2D3541;
+  font-family: "Hana2-Regular", sans-serif;
+}
+
+.notificationGiftItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  cursor: pointer;
+}
+
+.notificationGiftIcon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notificationGiftIcon img {
+  object-fit: contain;
+}
+
+.notificationGiftContent {
+  flex: 1;
+}
+
+.notificationGiftTitle {
+  font-size: 11px;
+  color: #333333;
+  font-family: "Hana2-Medium", sans-serif;
+}
+
+.notificationGiftSubtitle {
+  font-size: 11px;
+  color: #666666;
+  font-family: "Hana2-Regular", sans-serif;
+}
+
+.notificationGiftTime {
+  font-size: 10px;
+  color: #999999;
+  font-family: "Hana2-Regular", sans-serif;
+}
+
+.notificationGiftActions {
+  display: flex;
+  gap: 4px;
+}
+
+.notificationGiftActionButton {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.notificationGiftActionButtonAccept:hover {
+  background-color: #DCFCE7;
+}
+
+.notificationGiftActionButtonReject:hover {
+  background-color: #FEE2E2;
+}
+
+.notificationSystemItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.notificationSystemItemClickable {
+  cursor: pointer;
+}
+
+.notificationSystemItemClickable:hover {
+  background-color: #F9FAFB;
+}
+
+.notificationSystemIcon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notificationSystemIconLarge {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #F2F5F6;
+}
+
+.notificationSystemIconLarge img {
+  object-fit: cover;
+  transform: scale(2);
+  object-position: center center;
+}
+
+.notificationSystemIconFallback {
+  width: 24px;
+  height: 24px;
+  background-color: #03856E;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notificationSystemIconFallback span {
+  color: white;
+  font-size: 12px;
+  font-family: "Hana2-Medium", sans-serif;
+}
+
+.notificationSystemContent {
+  flex: 1;
+}
+
+.notificationSystemTitle {
+  font-size: 11px;
+  color: #333333;
+  font-family: "Hana2-Medium", sans-serif;
+}
+
+.notificationSystemMessage {
+  font-size: 11px;
+  color: #666666;
+  font-family: "Hana2-Regular", sans-serif;
+}
+
+.notificationSystemTime {
+  font-size: 10px;
+  color: #999999;
+  font-family: "Hana2-Regular", sans-serif;
+}
+
+.notificationReadButton {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.notificationReadButton:hover {
+  background-color: #E8E9EB;
+}
+
+.notificationReadDot {
+  width: 8px;
+  height: 8px;
+  background-color: #03856E;
+  border-radius: 50%;
+}
+
+.mobileMenuOverlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 50;
+  display: flex;
+}
+
+.mobileMenu {
+  background: white;
+  width: 320px;
+  height: 100%;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  transform: translateX(0);
+  transition: transform 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+}
+
+.mobileMenuHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  border-bottom: 1px solid #F3F4F6;
+}
+
+.mobileMenuLogo {
+  display: flex;
+  align-items: center;
+}
+
+.mobileMenuLogo img {
+  object-fit: contain;
+}
+
+.mobileMenuCloseButton {
+  padding: 8px;
+  transition: background-color 0.2s;
+  border-radius: 50%;
+}
+
+.mobileMenuCloseButton:hover {
+  background-color: #F3F4F6;
+}
+
+.mobileMenuCloseIcon {
+  width: 20px;
+  height: 20px;
+  color: #6B7280;
+}
+
+.mobileMenuContent {
+  flex: 1;
+  overflow-y: auto;
+  max-height: calc(100vh - 80px);
+}
+
+.mobileMenuScroll {
+  padding: 16px;
+  padding-bottom: 32px;
+}
+
+.mobileMenuSection {
+  margin-bottom: 24px;
+}
+
+.mobileMenuSectionTitle {
+  font-size: 12px;
+  color: #666666;
+  font-weight: 500;
+  margin-bottom: 12px;
+  padding: 0 12px;
+  font-family: "Hana2-Medium", sans-serif;
+}
+
+.mobileMenuItem {
+  width: 100%;
+  text-align: left;
+  padding: 12px;
+  transition: background-color 0.2s;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.mobileMenuItem:hover {
+  background-color: #F9FAFB;
+}
+
+.mobileMenuItemGroup {
+  display: flex;
+  align-items: center;
+}
+
+.mobileMenuItemTitle {
+  font-size: 14px;
+  color: #333333;
+  font-family: "Hana2-Medium", sans-serif;
+}
+
+.mobileMenuItemTitle:hover {
+  color: #03856E;
+}
+
+.mobileMenuItemSubtitle {
+  font-size: 12px;
+  color: #666666;
+  font-family: "Hana2-Regular", sans-serif;
+}
+
+.mobileMenuDivider {
+  border-top: 1px solid #F3F4F6;
+  padding-top: 16px;
+}
+
+.mobileMenuLogoutButton {
+  width: 100%;
+  text-align: left;
+  padding: 12px;
+  transition: background-color 0.2s;
+  border-radius: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #DC2626;
+}
+
+.mobileMenuLogoutButton:hover {
+  background-color: #FEF2F2;
+}
+
+.mobileMenuLoginButton {
+  width: 100%;
+  text-align: left;
+  padding: 12px;
+  transition: background-color 0.2s;
+  border-radius: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #03856E;
+}
+
+.mobileMenuLoginButton:hover {
+  background-color: #F0FDF4;
+}
+
+.mobileMenuButtonText {
+  font-size: 14px;
+  font-family: "Hana2-Medium", sans-serif;
+}
+
+.mobileMenuOverlayClick {
+  flex: 1;
+}
+
+.searchModalOverlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 50;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 80px;
+}
+
+.searchModal {
+  background: white;
+  border-radius: 15px;
+  width: 500px;
+  max-height: 600px;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.15);
+  position: relative;
+}
+
+.searchModalHeader {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  border-bottom: 1px solid #F3F4F6;
+}
+
+.searchInputContainer {
+  flex: 1;
+  position: relative;
+}
+
+.searchInputIcon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  color: #9CA3AF;
+}
+
+.searchInput {
+  width: 100%;
+  padding-left: 40px;
+  padding-right: 16px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  font-family: "Hana2-Regular", sans-serif;
+}
+
+.searchInput:focus {
+  outline: none;
+  ring: 2px;
+  ring-color: #03856E;
+  border-color: transparent;
+}
+
+.searchModalCloseButton {
+  margin-left: 12px;
+  padding: 4px;
+  transition: background-color 0.2s;
+  border-radius: 50%;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.searchModalCloseButton:hover {
+  background-color: #F3F4F6;
+}
+
+.searchModalCloseIcon {
+  width: 20px;
+  height: 20px;
+  color: #6B7280;
+}
+
+.searchModalContent {
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 8px;
+}
+
+.searchNoResults {
+  text-align: center;
+  padding: 32px 0;
+}
+
+.searchNoResultsText {
+  font-size: 14px;
+  color: #666666;
+  font-family: "Hana2-Regular", sans-serif;
+}
+
+.searchResults {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.searchResultItem {
+  width: 100%;
+  text-align: left;
+  padding: 12px;
+  transition: background-color 0.2s;
+  border-radius: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.searchResultItem:hover {
+  background-color: #F9FAFB;
+}
+
+.searchResultContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.searchResultTitle {
+  font-size: 14px;
+  color: #333333;
+  font-family: "Hana2-Regular", sans-serif;
+}
+
+.searchResultTitle:hover {
+  color: #03856E;
+}
+
+.searchResultArrow {
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.searchResultItem:hover .searchResultArrow {
+  opacity: 1;
+}
+
+.searchResultArrowIcon {
+  width: 16px;
+  height: 16px;
+  color: #03856E;
+}
+
+.searchModalFooter {
+  padding: 16px;
+  border-top: 1px solid #F3F4F6;
+  background-color: #F9FAFB;
+}
+
+.searchModalTip {
+  font-size: 12px;
+  color: #666666;
+  font-family: "Hana2-Regular", sans-serif;
+}
+
+.dropdown {
+  position: fixed;
+  left: 0;
+  top: 71px;
+  width: 100%;
+  z-index: 60;
+  transition: opacity 0.2s;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: saturate(180%) blur(8px);
+  -webkit-backdrop-filter: saturate(180%) blur(8px);
+}
+
+.dropdownVisible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.dropdownHidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.dropdownContent {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 16px;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+@media (min-width: 640px) {
+  .dropdownContent {
+    padding: 0 24px;
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .dropdownContent {
+    padding: 0 32px;
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
+}
+
+.dropdownGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.dropdownTitle {
+  margin-bottom: 16px;
+  font-family: "Hana2-Bold", sans-serif;
+  font-size: 22px;
+  color: #000000;
+}
+
+.dropdownSubtitle {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-family: "Hana2-Medium", sans-serif;
+  font-size: 14px;
+  color: #6B7684;
+}
+
+.dropdownMenu {
+  margin-left: -192px;
+}
+
+.dropdownMenuRight {
+  margin-left: 48px;
+}
+
+.dropdownMenuFarRight {
+  margin-left: 112px;
+}
+
+.dropdownMenuList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-family: "Hana2-CM", sans-serif;
+  color: #6B7684;
+}
+
+.dropdownMenuItem {
+  transition: text-decoration 0.2s;
+}
+
+.dropdownMenuItem:hover {
+  text-decoration: underline;
+}
+
+.dropdownMenuItemButton {
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: text-decoration 0.2s;
+  font-family: "Hana2-CM", sans-serif;
+  color: #6B7684;
+}
+
+.dropdownMenuItemButton:hover {
+  text-decoration: underline;
+}
+
+.dropdownSpacer {
+  height: 24px;
+}
+
+.resultModalOverlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 70;
+}
+
+.resultModal {
+  background: white;
+  border-radius: 20px;
+  padding: 32px;
+  width: 400px;
+  margin: 0 16px;
+  position: relative;
+}
+
+.resultModalContent {
+  text-align: center;
+}
+
+.resultModalIcon {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.resultModalIcon img {
+  object-fit: contain;
+}
+
+.resultModalMessage {
+  margin-bottom: 24px;
+}
+
+.resultModalMessageText {
+  font-size: 16px;
+  font-family: "Hana2-Medium", sans-serif;
+  color: #2D3541;
+}
+
+.resultModalButton {
+  width: 100%;
+  padding: 12px 16px;
+  background-color: #03856E;
+  color: white;
+  border-radius: 10px;
+  font-size: 16px;
+  transition: background-color 0.2s;
+  font-family: "Hana2-Medium", sans-serif;
+  border: none;
+  cursor: pointer;
+}
+
+.resultModalButton:hover {
+  background-color: #026B5A;
+}
