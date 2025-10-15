@@ -40,16 +40,16 @@ Spark Analytics Service 구축
 
 ### 6. 스크린 샷
 
-| <img width="50%" src="./이미지/video01.gif"/> | <img width="50%" src="./이미지/video02.gif"/> |
+| <img width="100%" src="./이미지/video01.gif"/> | <img width="100%" src="./이미지/video02.gif"/> |
 |:-------------------------:|:-------------------------:|
 |         `로그인창`         |        `로그인하기`         |
-| <img width="50%" src="./이미지/video03.gif"/> | <img width="50%" src="./이미지/video04.gif"/> |
+| <img width="100%" src="./이미지/video03.gif"/> | <img width="100%" src="./이미지/video04.gif"/> |
 |         `홈화면`         |        `네비게이션 바`         |
-| <img width="50%" src="./이미지/video05.gif"/> | <img width="50%" src="./이미지/video06.gif"/> |
+| <img width="100%" src="./이미지/video05.gif"/> | <img width="100%" src="./이미지/video06.gif"/> |
 |         `투자소개`         |        `투자하기`         |
-| <img width="50%" src="./이미지/video07.gif"/> | <img width="50%" src="./이미지/video08.gif"/> |
+| <img width="100%" src="./이미지/video07.gif"/> | <img width="100%" src="./이미지/video08.gif"/> |
 |         `저금통`         |        `목표`         |
-| <img width="50%" src="./이미지/video09.gif"/> | <img width="50%" src="./이미지/video10.gif"/> |
+| <img width="100%" src="./이미지/video09.gif"/> | <img width="100%" src="./이미지/video10.gif"/> |
 |         `선물하기`         |        `교환`         |
-| <img width="50%" src="./이미지/video11.gif"/> | <img width="50%" src="./이미지/video12.gif"/> |
+| <img width="100%" src="./이미지/video11.gif"/> | <img width="100%" src="./이미지/video12.gif"/> |
 |         `마이페이지`         |        `출석체크`         |
