@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.hanamoa.viewmodel.InvestViewModel" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/btn_container"
+        android:background="#FFFFFF">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        <!-- 상단 헤더 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="20dp"
+            android:paddingTop="16dp"
+            android:background="@android:color/white">
+
+            <View
+                android:id="@+id/iv_back"
+                android:layout_width="30dp"
+                android:layout_height="30dp" />
+
+            <!-- 제목 -->
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="투자"
+                android:textSize="18sp"
+                android:textColor="#333333"
+                android:fontFamily="@font/hana2_medium"
+                android:gravity="center" />
+
+            <!-- 빈 공간 -->
+            <View
+                android:layout_width="30dp"
+                android:layout_height="30dp" />
+
+        </LinearLayout>
+
+        <!-- 시세 정보 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@android:color/white"
+            android:layout_marginTop="8dp"
+            android:paddingHorizontal="20dp">
+
+            <!-- 헤더와 드롭다운 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="실시간"
+                        android:textSize="15sp"
+                        android:textColor="#333333"
+                        android:fontFamily="@font/hana2_medium" />
+
+                    <View
+                        android:id="@+id/iv_live_indicator"
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/bg_live_indicator" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
+
+                <!-- 자산 선택 드롭다운 -->
+                <Spinner
+                    android:id="@+id/spinner_asset"
+                    android:layout_width="80dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/bg_spinner"
+                    android:popupBackground="@drawable/bg_spinner_dropdown"
+                    android:dropDownSelector="@drawable/bg_spinner_dropdown_item" />
+
+            </LinearLayout>
+
+            <!-- 선택된 자산 정보 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="78dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingVertical="16dp">
+
+                <ImageView
+                    android:id="@+id/iv_selected_asset"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_market_gold"
+                    android:layout_marginEnd="16dp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_selected_asset_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="골드"
+                        android:textSize="16sp"
+                        android:textColor="#333333"
+                        android:fontFamily="@font/hana2_bold"
+                        android:layout_marginBottom="4dp" />
+
+                    <TextView
+                        android:id="@+id/tv_selected_asset_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0원"
+                        android:textSize="18sp"
+                        android:textColor="#2D3541"
+                        android:fontFamily="@font/hana2_medium" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_selected_asset_change"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="+850원(1.3%)"
+                    android:textSize="14sp"
+                    android:textColor="#ED1551"
+                    android:fontFamily="@font/hana2_medium"
+                    android:gravity="end" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- 차트 섹션 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@android:color/white"
+            android:layout_marginTop="8dp"
+            android:paddingHorizontal="20dp">
+            <!-- 차트 기간 선택 탭 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:id="@+id/tab_round"
+                    android:layout_width="0dp"
+                    android:layout_height="36dp"
+                    android:layout_weight="1"
+                    android:text="회차별"
+                    android:textSize="12sp"
+                    android:textColor="#666666"
+                    android:fontFamily="@font/hana2_medium"
+                    android:background="@drawable/bg_chart_tab_selected"
+                    android:gravity="center"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_marginEnd="2dp" />
+
+                <TextView
+                    android:id="@+id/tab_day"
+                    android:layout_width="0dp"
+                    android:layout_height="36dp"
+                    android:layout_weight="1"
+                    android:text="일"
+                    android:textSize="12sp"
+                    android:textColor="#666666"
+                    android:fontFamily="@font/hana2_medium"
+                    android:background="@drawable/bg_chart_tab_unselected"
+                    android:gravity="center"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_marginHorizontal="2dp" />
+
+                <TextView
+                    android:id="@+id/tab_week"
+                    android:layout_width="0dp"
+                    android:layout_height="36dp"
+                    android:layout_weight="1"
+                    android:text="주"
+                    android:textSize="12sp"
+                    android:textColor="#666666"
+                    android:fontFamily="@font/hana2_medium"
+                    android:background="@drawable/bg_chart_tab_unselected"
+                    android:gravity="center"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_marginHorizontal="2dp" />
+
+                <TextView
+                    android:id="@+id/tab_month"
+                    android:layout_width="0dp"
+                    android:layout_height="36dp"
+                    android:layout_weight="1"
+                    android:text="월"
+                    android:textSize="12sp"
+                    android:textColor="#666666"
+                    android:fontFamily="@font/hana2_medium"
+                    android:background="@drawable/bg_chart_tab_unselected"
+                    android:gravity="center"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_marginHorizontal="2dp" />
+
+                <TextView
+                    android:id="@+id/tab_year"
+                    android:layout_width="0dp"
+                    android:layout_height="36dp"
+                    android:layout_weight="1"
+                    android:text="년"
+                    android:textSize="12sp"
+                    android:textColor="#666666"
+                    android:fontFamily="@font/hana2_medium"
+                    android:background="@drawable/bg_chart_tab_unselected"
+                    android:gravity="center"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_marginStart="2dp" />
+
+            </LinearLayout>
+
+            <!-- 차트 -->
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/chart_price"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@drawable/bg_chart" />
+
+        </LinearLayout>
+
+        <!-- 일별 시세표 섹션 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@android:color/white"
+            android:layout_marginTop="8dp"
+            android:padding="20dp">
+
+            <!-- 일별 시세표 테이블 -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_daily_prices"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false" />
+
+        </LinearLayout>
+
+
+        <!-- 주문 내역 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#FFFFFF"
+            android:paddingHorizontal="20dp"
+            android:paddingBottom="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="주문 내역"
+                android:textSize="15sp"
+                android:textColor="#333333"
+                android:fontFamily="@font/hana2_medium"
+                android:layout_marginBottom="6dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_orders"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:nestedScrollingEnabled="false" />
+
+        </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!-- 하단 고정 버튼들 -->
+    <LinearLayout
+        android:id="@+id/btn_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:background="@android:color/transparent"
+        android:paddingBottom="10dp"
+        android:paddingHorizontal="20dp">
+
+        <TextView
+            android:id="@+id/btn_buy"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:text="구매"
+            android:textSize="16sp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/bg_buy_button"
+            android:fontFamily="@font/hana2_medium"
+            android:layout_marginEnd="8dp"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <TextView
+            android:id="@+id/btn_sell"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:text="판매"
+            android:textSize="16sp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/bg_sell_button"
+            android:fontFamily="@font/hana2_medium"
+            android:layout_marginStart="8dp"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true" />
+
+    </LinearLayout>
+
+    </RelativeLayout>
+</layout>

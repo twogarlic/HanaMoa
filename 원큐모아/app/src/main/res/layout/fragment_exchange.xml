@@ -1,0 +1,707 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    <!-- 상단 헤더 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="16dp"
+        android:background="@android:color/white">
+
+        <View
+            android:id="@+id/iv_back"
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
+
+        <!-- 제목 -->
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="교환"
+            android:textSize="17sp"
+            android:textColor="#333333"
+            android:fontFamily="@font/hana2_medium"
+            android:gravity="center" />
+
+        <!-- 빈 공간 -->
+        <View
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
+
+    </LinearLayout>
+
+        <!-- 진행 바 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:paddingVertical="20dp"
+            android:paddingHorizontal="20dp">
+
+            <!-- 진행 바 1 -->
+            <View
+                android:id="@+id/progress_bar_1"
+                android:layout_width="0dp"
+                android:layout_height="4dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="4dp"
+                android:background="@drawable/bg_progress_bar_active" />
+
+            <!-- 진행 바 2 -->
+            <View
+                android:id="@+id/progress_bar_2"
+                android:layout_width="0dp"
+                android:layout_height="4dp"
+                android:layout_weight="1"
+                android:layout_marginHorizontal="4dp"
+                android:background="@drawable/bg_progress_bar_inactive" />
+
+            <!-- 진행 바 3 -->
+            <View
+                android:id="@+id/progress_bar_3"
+                android:layout_width="0dp"
+                android:layout_height="4dp"
+                android:layout_weight="1"
+                android:layout_marginHorizontal="4dp"
+                android:background="@drawable/bg_progress_bar_inactive" />
+
+            <!-- 진행 바 4 -->
+            <View
+                android:id="@+id/progress_bar_4"
+                android:layout_width="0dp"
+                android:layout_height="4dp"
+                android:layout_weight="1"
+                android:layout_marginStart="4dp"
+                android:background="@drawable/bg_progress_bar_inactive" />
+
+        </LinearLayout>
+
+        <!-- 1단계: 자산 선택 -->
+        <LinearLayout
+            android:id="@+id/layout_step1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="20dp"
+            android:paddingBottom="40dp">
+
+            <!-- 자산 유형 선택 제목 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="수령하실 자산 유형을 선택해주세요."
+                android:textSize="18sp"
+                android:textColor="#333333"
+                android:fontFamily="@font/hana2_medium"
+                android:layout_marginBottom="20dp" />
+
+            <!-- 자산 선택 카드 -->
+            <LinearLayout
+                android:id="@+id/layout_asset_selector"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@drawable/bg_friend_selector"
+                android:paddingVertical="16dp"
+                android:layout_marginBottom="1dp"
+                android:clickable="true"
+                android:focusable="true">
+
+                <!-- 자산 이미지 -->
+                <ImageView
+                    android:id="@+id/iv_selected_asset"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_find_gold"
+                    android:scaleType="centerCrop"
+                    android:layout_marginEnd="12dp" />
+
+                <!-- 자산 정보 -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+        android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_selected_asset_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="자산을 선택해주세요"
+                        android:textSize="15sp"
+                        android:textColor="#777777"
+                        android:fontFamily="@font/hana2_medium" />
+
+                </LinearLayout>
+
+                <!-- 드롭다운 화살표 -->
+                <ImageView
+                    android:id="@+id/iv_asset_dropdown_arrow"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:src="@drawable/ic_dropdown_arrow"
+                    android:rotation="0" />
+
+            </LinearLayout>
+
+            <!-- 자산 목록 (드롭다운) -->
+            <LinearLayout
+                android:id="@+id/layout_assets_dropdown"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_friends_dropdown"
+                android:layout_marginBottom="24dp"
+                android:visibility="gone">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_assets"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxHeight="200dp"
+                    android:scrollbars="vertical" />
+
+            </LinearLayout>
+
+            <!-- 보유량 표시 -->
+            <LinearLayout
+                android:id="@+id/layout_holding_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_holding_info"
+                android:padding="16dp"
+                android:layout_marginBottom="24dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="보유량"
+                    android:textSize="14sp"
+                    android:textColor="#666666"
+                    android:fontFamily="@font/hana2_medium"
+                    android:layout_marginBottom="4dp" />
+
+                <TextView
+                    android:id="@+id/tv_holding_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0.00"
+                    android:textSize="18sp"
+                    android:textColor="#333333"
+                    android:fontFamily="@font/hana2_bold" />
+
+            </LinearLayout>
+
+            <!-- 단위 선택 제목 -->
+            <TextView
+                android:id="@+id/tv_unit_selection_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="수령하실 단위를 선택해주세요."
+                android:textSize="18sp"
+                android:textColor="#333333"
+                android:fontFamily="@font/hana2_medium"
+                android:layout_marginBottom="20dp"
+                android:visibility="gone" />
+
+            <!-- 단위 선택 그리드 (골드, 실버용) -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_units"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:visibility="gone" />
+
+            <!-- 수량 입력 섹션 (외환용) -->
+            <LinearLayout
+                android:id="@+id/layout_quantity_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="24dp"
+                android:visibility="gone">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_currency_quantity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal"
+                        android:imeOptions="actionDone"
+                        android:hint="수량을 입력하세요" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <!-- 다음 단계 버튼 -->
+            <Button
+                android:id="@+id/btn_next_step"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:text="다음 단계"
+                android:textSize="16sp"
+                android:textColor="#FFFFFF"
+                android:fontFamily="@font/hana2_medium"
+                android:background="@drawable/bg_primary_button"
+                android:enabled="false"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+        <!-- 2단계: 지점 선택 -->
+        <LinearLayout
+            android:id="@+id/layout_step2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="20dp"
+            android:paddingBottom="40dp"
+            android:visibility="gone">
+
+            <!-- 지점 선택 제목 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="수령하실 지점을 선택해주세요."
+                android:textSize="18sp"
+                android:textColor="#333333"
+                android:fontFamily="@font/hana2_medium"
+                android:layout_marginBottom="20dp" />
+
+            <!-- 지도 컨테이너 -->
+            <FrameLayout
+                android:id="@+id/map_container"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/bg_map_container"
+                android:visibility="visible">
+
+                <!-- 지도 로딩 상태 -->
+                <LinearLayout
+                    android:id="@+id/layout_map_loading"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+                    android:background="#F8F9FA">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="지도를 불러오는 중..."
+                        android:textSize="16sp"
+                        android:textColor="#666666"
+                        android:fontFamily="@font/hana2_medium" />
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <!-- 선택된 지점 정보 -->
+            <LinearLayout
+                android:id="@+id/layout_selected_branch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_holding_info"
+                android:padding="16dp"
+                android:layout_marginBottom="24dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/tv_selected_branch_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="하나은행 강남지점"
+                    android:textSize="16sp"
+                    android:textColor="#333333"
+                    android:fontFamily="@font/hana2_bold"
+                    android:layout_marginBottom="4dp" />
+
+                <TextView
+                    android:id="@+id/tv_selected_branch_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="서울특별시 강남구 테헤란로 123"
+                    android:textSize="14sp"
+                    android:textColor="#666666"
+                    android:fontFamily="@font/hana2_regular" />
+
+            </LinearLayout>
+
+            <!-- 다음 단계 버튼 (2단계) -->
+            <Button
+                android:id="@+id/btn_next_step2"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:text="다음 단계"
+                android:textSize="16sp"
+                android:textColor="#FFFFFF"
+                android:fontFamily="@font/hana2_medium"
+                android:background="@drawable/bg_primary_button"
+                android:enabled="false"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+        <!-- 3단계: 날짜/시간 선택 -->
+        <LinearLayout
+            android:id="@+id/layout_step3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="20dp"
+            android:paddingBottom="40dp"
+            android:visibility="gone">
+
+            <!-- 날짜/시간 선택 제목 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="수령 날짜와 시간을 선택해주세요."
+                android:textSize="18sp"
+                android:textColor="#333333"
+                android:fontFamily="@font/hana2_medium"
+                android:layout_marginBottom="20dp" />
+
+            <!-- 날짜 선택 섹션 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="24dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="날짜 선택"
+                    android:textSize="16sp"
+                    android:textColor="#333333"
+                    android:fontFamily="@font/hana2_medium"
+                    android:layout_marginBottom="12dp" />
+
+                <LinearLayout
+                    android:id="@+id/layout_date_selector"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/bg_friend_selector"
+                    android:paddingVertical="16dp"
+                    android:paddingHorizontal="16dp"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <TextView
+                        android:id="@+id/tv_selected_date"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="날짜를 선택해주세요"
+                        android:textSize="15sp"
+                        android:textColor="#666666"
+                        android:fontFamily="@font/hana2_medium" />
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/ic_calendar"
+                        android:layout_marginStart="8dp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- 시간 선택 섹션 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="24dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="시간 선택"
+                    android:textSize="16sp"
+                    android:textColor="#333333"
+                    android:fontFamily="@font/hana2_medium"
+                    android:layout_marginBottom="12dp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_time_slots"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxHeight="200dp"
+                    android:scrollbars="vertical" />
+
+            </LinearLayout>
+
+            <!-- 선택된 정보 표시 -->
+            <LinearLayout
+                android:id="@+id/layout_selected_datetime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_holding_info"
+                android:padding="16dp"
+                android:layout_marginBottom="24dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="선택된 수령 정보"
+                    android:textSize="14sp"
+                    android:textColor="#666666"
+                    android:fontFamily="@font/hana2_medium"
+                    android:layout_marginBottom="8dp" />
+
+        <TextView
+                    android:id="@+id/tv_selected_datetime"
+            android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2024년 1월 1일 (월) 09:00"
+                    android:textSize="16sp"
+                    android:textColor="#333333"
+                    android:fontFamily="@font/hana2_bold" />
+
+            </LinearLayout>
+
+            <!-- 다음 단계 버튼 (3단계) -->
+            <Button
+                android:id="@+id/btn_next_step3"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:text="다음 단계"
+                android:textSize="16sp"
+                android:textColor="#FFFFFF"
+                android:fontFamily="@font/hana2_medium"
+                android:background="@drawable/bg_primary_button"
+                android:enabled="false"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+        <!-- 4단계: 최종 확인 및 신청 -->
+        <LinearLayout
+            android:id="@+id/layout_step4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="20dp"
+            android:paddingBottom="40dp"
+            android:visibility="gone">
+
+            <!-- 최종 확인 제목 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="정보를 확인해주세요."
+                android:textSize="18sp"
+                android:textColor="#333333"
+                android:fontFamily="@font/hana2_medium"
+                android:layout_marginBottom="20dp" />
+
+            <!-- 선택 정보 요약 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_holding_info"
+                android:padding="20dp"
+                android:layout_marginBottom="24dp">
+
+                <!-- 1단계: 자산 정보 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1. 교환 자산"
+                        android:textSize="14sp"
+                        android:textColor="#666666"
+                        android:fontFamily="@font/hana2_medium"
+                        android:layout_marginBottom="8dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <ImageView
+                            android:id="@+id/iv_summary_asset"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_market_gold"
+                            android:scaleType="centerCrop"
+                            android:layout_marginEnd="12dp" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tv_summary_asset_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="GOLD"
+                                android:textSize="16sp"
+                                android:textColor="#333333"
+                                android:fontFamily="@font/hana2_bold" />
+
+                            <TextView
+                                android:id="@+id/tv_summary_asset_unit"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="1g"
+                                android:textSize="14sp"
+                                android:textColor="#666666"
+                                android:fontFamily="@font/hana2_medium" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- 2단계: 지점 정보 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2. 수령 지점"
+                        android:textSize="14sp"
+                        android:textColor="#666666"
+                        android:fontFamily="@font/hana2_medium"
+                        android:layout_marginBottom="8dp" />
+
+                    <TextView
+                        android:id="@+id/tv_summary_branch_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="하나은행 강남지점"
+                        android:textSize="16sp"
+                        android:textColor="#333333"
+                        android:fontFamily="@font/hana2_bold"
+                        android:layout_marginBottom="4dp" />
+
+                    <TextView
+                        android:id="@+id/tv_summary_branch_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="서울특별시 강남구 테헤란로 123"
+                        android:textSize="14sp"
+                        android:textColor="#666666"
+                        android:fontFamily="@font/hana2_regular" />
+
+                </LinearLayout>
+
+                <!-- 3단계: 날짜/시간 정보 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="3. 수령 일시"
+                        android:textSize="14sp"
+                        android:textColor="#666666"
+                        android:fontFamily="@font/hana2_medium"
+                        android:layout_marginBottom="8dp" />
+
+                    <TextView
+                        android:id="@+id/tv_summary_datetime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2024년 1월 1일 (월) 09:00"
+                        android:textSize="16sp"
+            android:textColor="#333333"
+            android:fontFamily="@font/hana2_bold" />
+
+    </LinearLayout>
+
+</LinearLayout>
+
+            <!-- 신청 확인 메시지 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_holding_info"
+                android:padding="16dp"
+                android:layout_marginBottom="24dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="신청하시겠습니까?"
+                    android:textSize="16sp"
+                    android:textColor="#333333"
+                    android:fontFamily="@font/hana2_medium"
+                    android:layout_marginBottom="8dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="위 정보로 교환 신청이 진행됩니다.\n신청 후에는 변경이 어려우니 다시 한번 확인해주세요."
+                    android:textSize="14sp"
+                    android:textColor="#666666"
+                    android:fontFamily="@font/hana2_regular"
+                    android:lineSpacingExtra="4dp" />
+
+            </LinearLayout>
+
+            <!-- 신청 버튼 -->
+            <Button
+                android:id="@+id/btn_confirm_exchange"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:text="교환 신청하기"
+                android:textSize="16sp"
+                android:textColor="#FFFFFF"
+                android:fontFamily="@font/hana2_medium"
+                android:background="@drawable/bg_primary_button" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

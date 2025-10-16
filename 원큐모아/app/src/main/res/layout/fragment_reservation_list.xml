@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFFFFF">
+
+    <!-- 상단 헤더 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="16dp"
+        android:background="@android:color/white">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="4dp"
+            android:src="@drawable/ic_left_chevron"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <!-- 제목 -->
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="예약조회"
+            android:textSize="18sp"
+            android:textColor="#333333"
+            android:fontFamily="@font/hana2_medium"
+            android:gravity="center" />
+
+        <!-- 빈 공간 -->
+        <View
+            android:layout_width="24dp"
+            android:layout_height="24dp" />
+
+    </LinearLayout>
+
+    <!-- 예약 목록 -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_reservations"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="20dp"
+        android:clipToPadding="false" />
+
+    <!-- 예약이 없을 때 표시할 메시지 -->
+    <LinearLayout
+        android:id="@+id/layout_empty"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="40dp"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/ic_calendar"
+            android:alpha="0.3"
+            android:layout_marginBottom="20dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="예약 내역이 없습니다"
+            android:textSize="16sp"
+            android:textColor="#666666"
+            android:fontFamily="@font/hana2_medium"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="교환 신청을 통해 예약을 생성해보세요"
+            android:textSize="14sp"
+            android:textColor="#999999"
+            android:fontFamily="@font/hana2_regular"
+            android:gravity="center" />
+
+    </LinearLayout>
+
+    <!-- 로딩 인디케이터 -->
+    <LinearLayout
+        android:id="@+id/layout_loading"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="예약 목록을 불러오는 중..."
+            android:textSize="16sp"
+            android:textColor="#666666"
+            android:fontFamily="@font/hana2_medium" />
+
+    </LinearLayout>
+
+</LinearLayout>

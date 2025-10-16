@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg_dialog"
+    android:padding="24dp">
+
+    <!-- 제목 -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="예약 취소"
+        android:textSize="18sp"
+        android:textColor="#333333"
+        android:fontFamily="@font/hana2_bold"
+        android:layout_gravity="center"
+        android:layout_marginBottom="16dp" />
+
+    <!-- 취소 사유 입력 -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="취소 사유를 입력해주세요"
+        android:textSize="14sp"
+        android:textColor="#666666"
+        android:fontFamily="@font/hana2_medium"
+        android:layout_marginBottom="8dp" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_cancel_reason"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:lines="3"
+            android:maxLines="3"
+            android:hint="예: 일정 변경으로 인한 취소" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- 버튼 영역 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end">
+
+        <!-- 취소 버튼 -->
+        <TextView
+            android:id="@+id/btn_dialog_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="취소"
+            android:textSize="16sp"
+            android:textColor="#666666"
+            android:fontFamily="@font/hana2_medium"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="12dp"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginEnd="16dp" />
+
+        <!-- 확인 버튼 -->
+        <TextView
+            android:id="@+id/btn_dialog_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="확인"
+            android:textSize="16sp"
+            android:textColor="#FF4444"
+            android:fontFamily="@font/hana2_bold"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="12dp"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true" />
+
+    </LinearLayout>
+
+</LinearLayout>

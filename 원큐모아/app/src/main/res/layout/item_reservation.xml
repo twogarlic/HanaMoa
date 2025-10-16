@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg_holding_info2"
+    android:padding="20dp"
+    android:layout_marginBottom="16dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground">
+
+    <!-- 예약 번호와 상태 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="12dp">
+
+        <TextView
+            android:id="@+id/tv_reservation_number"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="SR20250115001"
+            android:textSize="16sp"
+            android:textColor="#333333"
+            android:fontFamily="@font/hana2_bold" />
+
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="대기중"
+            android:textSize="12sp"
+            android:textColor="#FFFFFF"
+            android:fontFamily="@font/hana2_medium"
+            android:background="@drawable/bg_status_pending"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp" />
+
+    </LinearLayout>
+
+    <!-- 자산 정보 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="12dp">
+
+        <ImageView
+            android:id="@+id/iv_asset"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_market_gold"
+            android:scaleType="centerCrop"
+            android:layout_marginEnd="12dp" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_asset_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="GOLD 1g"
+                android:textSize="16sp"
+                android:textColor="#333333"
+                android:fontFamily="@font/hana2_bold" />
+
+            <TextView
+                android:id="@+id/tv_asset_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="수량: 1개"
+                android:textSize="14sp"
+                android:textColor="#666666"
+                android:fontFamily="@font/hana2_medium" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- 지점 정보 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="12dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="수령 지점"
+            android:textSize="12sp"
+            android:textColor="#999999"
+            android:fontFamily="@font/hana2_medium"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:id="@+id/tv_branch_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="하나은행 강남지점"
+            android:textSize="14sp"
+            android:textColor="#333333"
+            android:fontFamily="@font/hana2_bold"
+            android:layout_marginBottom="2dp" />
+
+        <TextView
+            android:id="@+id/tv_branch_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="서울특별시 강남구 테헤란로 123"
+            android:textSize="12sp"
+            android:textColor="#666666"
+            android:fontFamily="@font/hana2_regular" />
+
+    </LinearLayout>
+
+    <!-- 예약 일시 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="예약 일시"
+            android:textSize="12sp"
+            android:textColor="#999999"
+            android:fontFamily="@font/hana2_medium"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:id="@+id/tv_reservation_datetime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2024년 1월 19일 (금) 10:00"
+            android:textSize="14sp"
+            android:textColor="#333333"
+            android:fontFamily="@font/hana2_bold" />
+
+    </LinearLayout>
+
+    <!-- 취소 버튼 -->
+    <Button
+        android:id="@+id/btn_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="예약 취소"
+        android:textSize="14sp"
+        android:textColor="#FFFFFF"
+        android:fontFamily="@font/hana2_medium"
+        android:background="@drawable/bg_confirm_dialog_button"
+        android:clickable="true"
+        android:focusable="true" />
+
+</LinearLayout>

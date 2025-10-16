@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="12dp"
+    android:background="#F8F9FA">
+
+    <!-- 날짜 헤더 -->
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="날짜"
+        android:textSize="12sp"
+        android:textAlignment="center"
+        android:textColor="#666666"
+        android:fontFamily="@font/hana2_medium" />
+
+    <!-- 종가 헤더 -->
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="종가"
+        android:textSize="12sp"
+        android:textAlignment="center"
+        android:textColor="#666666"
+        android:fontFamily="@font/hana2_medium"
+        android:gravity="center" />
+
+    <!-- 변동값 헤더 -->
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="변동값"
+        android:textSize="12sp"
+        android:textColor="#666666"
+        android:textAlignment="center"
+        android:fontFamily="@font/hana2_medium"
+        android:gravity="center" />
+
+    <!-- 변동률 헤더 -->
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="변동률"
+        android:textSize="12sp"
+        android:textColor="#666666"
+        android:textAlignment="center"
+        android:fontFamily="@font/hana2_medium"
+        android:gravity="end" />
+
+</LinearLayout>

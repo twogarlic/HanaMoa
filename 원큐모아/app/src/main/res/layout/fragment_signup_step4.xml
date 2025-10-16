@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/white">
+
+    <!-- 상단 헤더 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="16dp"
+        android:gravity="center_vertical"
+        android:background="@android:color/white">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_left_chevron"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="4dp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="회원가입"
+            android:textSize="17sp"
+            android:textColor="#333333"
+            android:fontFamily="@font/hana2_medium"
+            android:gravity="center" />
+
+        <View
+            android:layout_width="24dp"
+            android:layout_height="24dp" />
+
+    </LinearLayout>
+
+    <!-- 진행바 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="16dp"
+        android:background="@android:color/white">
+
+        <!-- 1단계 -->
+        <View
+            android:layout_width="0dp"
+            android:layout_height="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_progress_selected"
+            android:layout_marginEnd="4dp" />
+
+        <!-- 2단계 -->
+        <View
+            android:layout_width="0dp"
+            android:layout_height="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_progress_selected"
+            android:layout_marginEnd="4dp" />
+
+        <!-- 3단계 -->
+        <View
+            android:layout_width="0dp"
+            android:layout_height="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_progress_selected"
+            android:layout_marginEnd="4dp" />
+
+        <!-- 4단계 -->
+        <View
+            android:layout_width="0dp"
+            android:layout_height="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_progress_selected" />
+
+    </LinearLayout>
+
+    <!-- 제목 -->
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="계좌 비밀번호를 설정해주세요"
+        android:textSize="16sp"
+        android:textColor="#333333"
+        android:fontFamily="@font/hana2_medium"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="32dp" />
+
+    <!-- 입력 폼 -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingHorizontal="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- 계좌 정보 표시 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/bg_friend_search"
+                android:padding="16dp"
+                android:layout_marginBottom="24dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_small_logo"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="12dp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_account_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="하나은행 입출금통장"
+                        android:textSize="16sp"
+                        android:textColor="#333333"
+                        android:fontFamily="@font/hana2_medium" />
+
+                    <TextView
+                        android:id="@+id/tv_account_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="123-456-789012"
+                        android:textSize="14sp"
+                        android:textColor="#666666"
+                        android:fontFamily="@font/hana2_regular"
+                        android:layout_marginTop="4dp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- 계좌 비밀번호 입력 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="계좌 비밀번호"
+                android:textSize="16sp"
+                android:textColor="#333333"
+                android:fontFamily="@font/hana2_medium"
+                android:layout_marginBottom="8dp" />
+
+            <EditText
+                android:id="@+id/et_account_password"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/bg_friend_search"
+                android:paddingHorizontal="16dp"
+                android:hint="계좌 비밀번호 4자리"
+                android:textSize="16sp"
+                android:textColor="#333333"
+                android:textColorHint="#999999"
+                android:fontFamily="@font/hana2_regular"
+                android:inputType="numberPassword"
+                android:maxLength="4"
+                android:maxLines="1" />
+
+            <!-- 계좌 비밀번호 상태 표시 -->
+            <TextView
+                android:id="@+id/tv_account_password_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="12sp"
+                android:textColor="#00B2A6"
+                android:fontFamily="@font/hana2_regular"
+                android:layout_marginTop="4dp" />
+
+            <!-- 계좌 비밀번호 확인 입력 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="계좌 비밀번호 확인"
+                android:textSize="16sp"
+                android:textColor="#333333"
+                android:fontFamily="@font/hana2_medium"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="8dp" />
+
+            <EditText
+                android:id="@+id/et_account_password_confirm"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/bg_friend_search"
+                android:paddingHorizontal="16dp"
+                android:hint="계좌 비밀번호를 다시 입력하세요"
+                android:textSize="16sp"
+                android:textColor="#333333"
+                android:textColorHint="#999999"
+                android:fontFamily="@font/hana2_regular"
+                android:inputType="numberPassword"
+                android:maxLength="4"
+                android:maxLines="1" />
+
+            <!-- 계좌 비밀번호 확인 상태 표시 -->
+            <TextView
+                android:id="@+id/tv_account_password_confirm_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="12sp"
+                android:textColor="#00B2A6"
+                android:fontFamily="@font/hana2_regular"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="32dp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!-- 완료 버튼 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="16dp"
+        android:layout_marginBottom="40dp"
+        android:background="@android:color/white">
+
+        <TextView
+            android:id="@+id/btn_complete"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="계좌 생성하기"
+            android:textSize="18sp"
+            android:textColor="#FFFFFF"
+            android:fontFamily="@font/hana2_medium"
+            android:background="@drawable/bg_button_disabled"
+            android:gravity="center"
+            android:clickable="true"
+            android:enabled="false"
+            android:focusable="true" />
+
+    </LinearLayout>
+
+</LinearLayout>

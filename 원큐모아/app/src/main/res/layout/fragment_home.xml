@@ -1,0 +1,554 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.hanamoa.viewmodel.HomeViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#FFFFFF">
+
+    <!-- 상단 헤더 (고정) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingTop="16dp"
+        android:layout_marginHorizontal="20dp">
+
+        <!-- 왼쪽: 프로필 아이콘 -->
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="36dp"
+            android:src="@drawable/ic_1q_moa"
+            android:contentDescription="프로필"
+            android:layout_marginEnd="12dp" />
+
+        <!-- 공간 채우기 -->
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <!-- 오른쪽: 알림 아이콘 (배지 포함) -->
+        <RelativeLayout
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="12dp"
+            android:padding="4dp">
+
+            <ImageView
+                android:id="@+id/iv_alarm"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_1q_alarm"
+                android:contentDescription="알림" />
+
+            <!-- 알림 배지 -->
+            <TextView
+                android:id="@+id/tv_notification_badge"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="0dp"
+                android:background="@drawable/bg_notification_badge"
+                android:textColor="@android:color/white"
+                android:textSize="10sp"
+                android:fontFamily="@font/hana2_bold"
+                android:gravity="center"
+                android:visibility="gone"
+                android:minWidth="18dp"
+                android:minHeight="18dp" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <!-- 스크롤 가능한 콘텐츠 -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+    <!-- 두 번째 섹션 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="20dp"
+        android:background="@drawable/bg_second_section"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="16dp">
+
+        <!-- 왼쪽: 골드 아이콘 -->
+        <ImageView
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:src="@drawable/ic_find_gold"
+            android:contentDescription="골드"
+            android:layout_marginEnd="4dp" />
+
+        <!-- 가운데: 텍스트 -->
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="오늘부터, 가볍게 시작해보세요."
+            android:textColor="#333333"
+            android:textSize="16sp"
+            android:fontFamily="@font/hana2_medium"
+            android:gravity="center_vertical" />
+
+    </LinearLayout>
+
+    <!-- 세 번째 섹션: 계좌 정보 -->
+            <!-- 계좌 정보 섹션에 ID 추가 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp"
+                android:background="@drawable/bg_account_info"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="16dp">
+
+                <!-- 계좌 이름 -->
+                <TextView
+                    android:id="@+id/tv_account_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="계좌이름"
+                    android:textColor="#333333"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/hana2_medium"/>
+
+                <!-- 계좌 번호와 복사 버튼 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="8dp">
+
+                    <TextView
+                        android:id="@+id/tv_account_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="282-910639-70107"
+                        android:textColor="#333333"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/hana2_regular" />
+
+                    <TextView
+                        android:id="@+id/tv_copy_account"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="복사"
+                        android:textColor="#666666"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/hana2_regular"
+                        android:layout_marginStart="8dp"
+                        android:padding="4dp"
+                        android:clickable="true"
+                        android:focusable="true" />
+
+                </LinearLayout>
+
+                <!-- 잔액과 숨김 버튼 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="12dp">
+
+                    <TextView
+                        android:id="@+id/tv_balance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0원"
+                        android:textColor="#333333"
+                        android:textSize="18sp"
+                        android:fontFamily="@font/hana2_medium"
+                        android:layout_marginEnd="12dp" />
+
+                    <TextView
+                        android:id="@+id/tv_hide_balance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="숨김"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/hana2_regular"
+                        android:background="@drawable/bg_hide_button"
+                        android:textColor="@android:color/white"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="6dp"
+                        android:clickable="true"
+                        android:focusable="true" />
+
+                </LinearLayout>
+
+                <!-- 보내기 버튼 -->
+                <TextView
+                    android:id="@+id/tv_send_button"
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"
+                    android:text="보내기"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/hana2_medium"
+                    android:background="@drawable/bg_send_button"
+                    android:textColor="@android:color/white"
+                    android:paddingVertical="6dp"
+                    android:gravity="center"
+                    android:clickable="true"
+                    android:focusable="true" />
+
+            </LinearLayout>
+
+    <!-- 카드 스크롤 섹션 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="24dp">
+
+        <!-- 가로 스크롤 카드들 -->
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none"
+            android:overScrollMode="never">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingEnd="20dp">
+
+                <!-- 첫 번째 카드 -->
+                <LinearLayout
+                    android:id="@+id/card_invest"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:orientation="vertical"
+                    android:padding="20dp"
+                    android:background="@drawable/bg_card1"
+                    android:layout_marginEnd="12dp"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <ImageView
+                        android:layout_width="52dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/ic_start"
+                        android:contentDescription="투자"
+                        android:layout_marginBottom="12dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="손쉽게\n투자하기"
+                        android:textColor="#333333"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/hana2_medium"
+                        android:lineSpacingExtra="4dp"
+                        android:layout_marginBottom="16dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="자세히보기"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/hana2_regular"
+                            android:layout_marginEnd="4dp" />
+
+                        <ImageView
+                            android:layout_width="12dp"
+                            android:layout_height="12dp"
+                            android:src="@drawable/ic_right_chevron"
+                            android:contentDescription="더보기" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- 두 번째 카드 -->
+                <LinearLayout
+                    android:id="@+id/card_gift"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:orientation="vertical"
+                    android:padding="20dp"
+                    android:background="@drawable/bg_card2"
+                    android:layout_marginEnd="12dp"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/ic_cake"
+                        android:contentDescription="마음"
+                        android:layout_marginBottom="12dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="친구에게\n마음을 전해요"
+                        android:textColor="#333333"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/hana2_medium"
+                        android:lineSpacingExtra="4dp"
+                        android:layout_marginBottom="16dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="자세히보기"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/hana2_regular"
+                            android:layout_marginEnd="4dp" />
+
+                        <ImageView
+                            android:layout_width="12dp"
+                            android:layout_height="12dp"
+                            android:src="@drawable/ic_right_chevron"
+                            android:contentDescription="더보기" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- 세 번째 카드 -->
+                <LinearLayout
+                    android:id="@+id/card_exchange"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:orientation="vertical"
+                    android:padding="20dp"
+                    android:background="@drawable/bg_card3"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/ic_gold_bar"
+                        android:contentDescription="골드바"
+                        android:layout_marginBottom="12dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="골드바\n교환하기"
+                        android:textColor="#333333"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/hana2_medium"
+                        android:lineSpacingExtra="4dp"
+                        android:layout_marginBottom="16dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="자세히보기"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/hana2_regular"
+                            android:layout_marginEnd="4dp" />
+
+                        <ImageView
+                            android:layout_width="12dp"
+                            android:layout_height="12dp"
+                            android:src="@drawable/ic_right_chevron"
+                            android:contentDescription="더보기" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </HorizontalScrollView>
+
+    </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_hana_money"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <!-- 보내기 버튼 -->
+                <TextView
+                    android:layout_width="60dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/bg_hana_money_card"
+                    android:fontFamily="@font/hana2_medium"
+                    android:gravity="center"
+                    android:text="하나머니"
+                    android:textColor="#009591"
+                    android:textSize="12sp" />
+
+                <!-- 텍스트와 이미지가 있는 가로 레이아웃 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <!-- 텍스트 부분 -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:fontFamily="@font/hana2_medium"
+                            android:text="행운상자 열면"
+                            android:textColor="#888888"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/hana2_bold"
+                            android:text="최대 5만 하나머니!"
+                            android:textColor="#393939"
+                            android:textSize="17sp" />
+
+                    </LinearLayout>
+
+                    <!-- 골드바 이미지 -->
+                    <ImageView
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_marginStart="16dp"
+                        android:contentDescription="골드바"
+                        android:src="@drawable/ic_gift_blue" />
+
+                </LinearLayout>
+
+                <!-- 하나모아, 하나은행, 하나카드 카드들 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:orientation="horizontal">
+
+                    <!-- 하나모아 카드 -->
+                    <LinearLayout
+                        android:layout_width="70dp"
+                        android:layout_height="40dp"
+                        android:layout_marginEnd="6dp"
+                        android:background="@drawable/bg_service_card"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/hana2_medium"
+                            android:gravity="center"
+                            android:text="하나모아"
+                            android:textColor="#666666"
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
+
+                    <!-- 하나은행 카드 -->
+                    <LinearLayout
+                        android:layout_width="70dp"
+                        android:layout_height="40dp"
+                        android:layout_marginHorizontal="3dp"
+                        android:background="@drawable/bg_service_card"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/hana2_medium"
+                            android:gravity="center"
+                            android:text="하나은행"
+                            android:textColor="#666666"
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
+
+                    <!-- 하나카드 카드 -->
+                    <LinearLayout
+                        android:layout_width="70dp"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="6dp"
+                        android:background="@drawable/bg_service_card"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/hana2_medium"
+                            android:gravity="center"
+                            android:text="하나카드"
+                            android:textColor="#666666"
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    </LinearLayout>
+</layout>

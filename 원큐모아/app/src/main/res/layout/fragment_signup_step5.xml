@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/white">
+
+    <!-- 상단 헤더 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="16dp"
+        android:gravity="center_vertical"
+        android:background="@android:color/white">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_left_chevron"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="4dp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="회원가입"
+            android:textSize="17sp"
+            android:textColor="#333333"
+            android:fontFamily="@font/hana2_medium"
+            android:gravity="center" />
+
+        <View
+            android:layout_width="24dp"
+            android:layout_height="24dp" />
+
+    </LinearLayout>
+
+    <!-- 진행바 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="16dp"
+        android:background="@android:color/white">
+
+        <!-- 1단계 -->
+        <View
+            android:layout_width="0dp"
+            android:layout_height="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_progress_selected"
+            android:layout_marginEnd="4dp" />
+
+        <!-- 2단계 -->
+        <View
+            android:layout_width="0dp"
+            android:layout_height="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_progress_selected"
+            android:layout_marginEnd="4dp" />
+
+        <!-- 3단계 -->
+        <View
+            android:layout_width="0dp"
+            android:layout_height="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_progress_selected"
+            android:layout_marginEnd="4dp" />
+
+        <!-- 4단계 -->
+        <View
+            android:layout_width="0dp"
+            android:layout_height="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_progress_selected" />
+
+    </LinearLayout>
+
+    <!-- 메인 콘텐츠 -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="40dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <!-- 제목 -->
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="하나머니를 확인 중입니다..."
+                android:textSize="18sp"
+                android:textColor="#333333"
+                android:fontFamily="@font/hana2_medium"
+                android:layout_marginBottom="32dp"
+                android:gravity="center" />
+
+            <!-- 로딩 스피너 -->
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginBottom="24dp"
+                android:indeterminateTint="#00B2A6" />
+
+            <!-- 하나머니 정보 카드 -->
+            <LinearLayout
+                android:id="@+id/hana_point_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/bg_friend_search"
+                android:padding="20dp"
+                android:layout_marginBottom="16dp"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_hanamoney"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="16dp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="하나머니"
+                            android:textSize="16sp"
+                            android:textColor="#333333"
+                            android:fontFamily="@font/hana2_medium" />
+
+                        <TextView
+                            android:id="@+id/tv_new_badge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="신규"
+                            android:textSize="12sp"
+                            android:textColor="#FFFFFF"
+                            android:fontFamily="@font/hana2_medium"
+                            android:background="@drawable/bg_confirm_dialog_button"
+                            android:paddingHorizontal="8dp"
+                            android:paddingVertical="4dp"
+                            android:layout_marginStart="8dp"
+                            android:visibility="gone" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_balance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0원"
+                        android:textSize="14sp"
+                        android:textColor="#666666"
+                        android:fontFamily="@font/hana2_regular"
+                        android:layout_marginTop="4dp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- 메시지 -->
+            <TextView
+                android:id="@+id/tv_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="14sp"
+                android:textColor="#666666"
+                android:fontFamily="@font/hana2_regular"
+                android:gravity="center"
+                android:layout_marginBottom="32dp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!-- 다음 단계 버튼 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="16dp"
+        android:layout_marginBottom="40dp"
+        android:background="@android:color/white">
+
+        <TextView
+            android:id="@+id/btn_next"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="다음"
+            android:textSize="18sp"
+            android:textColor="#FFFFFF"
+            android:fontFamily="@font/hana2_medium"
+            android:background="@drawable/bg_button_disabled"
+            android:gravity="center"
+            android:clickable="true"
+            android:enabled="false"
+            android:focusable="true" />
+
+    </LinearLayout>
+
+</LinearLayout>

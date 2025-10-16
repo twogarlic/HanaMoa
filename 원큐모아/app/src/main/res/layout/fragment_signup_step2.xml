@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/white">
+
+    <!-- 상단 헤더 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="16dp"
+        android:gravity="center_vertical"
+        android:background="@android:color/white">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_left_chevron"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="4dp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="회원가입"
+            android:textSize="17sp"
+            android:textColor="#333333"
+            android:fontFamily="@font/hana2_medium"
+            android:gravity="center" />
+
+        <View
+            android:layout_width="24dp"
+            android:layout_height="24dp" />
+
+    </LinearLayout>
+
+    <!-- 진행바 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="16dp"
+        android:background="@android:color/white">
+
+        <!-- 1단계 -->
+        <View
+            android:layout_width="0dp"
+            android:layout_height="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_progress_selected"
+            android:layout_marginEnd="4dp" />
+
+        <!-- 2단계 -->
+        <View
+            android:layout_width="0dp"
+            android:layout_height="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_progress_selected"
+            android:layout_marginEnd="4dp" />
+
+        <!-- 3단계 -->
+        <View
+            android:layout_width="0dp"
+            android:layout_height="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_progress_unselected"
+            android:layout_marginEnd="4dp" />
+
+        <!-- 4단계 -->
+        <View
+            android:layout_width="0dp"
+            android:layout_height="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_progress_unselected" />
+
+    </LinearLayout>
+
+    <!-- 제목 -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="개인정보 입력"
+        android:textSize="16sp"
+        android:textColor="#333333"
+        android:fontFamily="@font/hana2_medium"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="32dp" />
+
+    <!-- 입력 폼 -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingHorizontal="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- 이름 입력 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="이름"
+                android:textSize="16sp"
+                android:textColor="#333333"
+                android:fontFamily="@font/hana2_medium"
+                android:layout_marginBottom="8dp" />
+
+            <EditText
+                android:id="@+id/et_name"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/bg_friend_search"
+                android:paddingHorizontal="16dp"
+                android:hint="이름을 입력하세요"
+                android:textSize="16sp"
+                android:textColor="#333333"
+                android:textColorHint="#999999"
+                android:fontFamily="@font/hana2_regular"
+                android:inputType="textPersonName"
+                android:maxLines="1" />
+
+            <!-- 주민번호 입력 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="주민번호"
+                android:textSize="16sp"
+                android:textColor="#333333"
+                android:fontFamily="@font/hana2_medium"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="8dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <EditText
+                    android:id="@+id/et_ssn_front"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_friend_search"
+                    android:paddingHorizontal="16dp"
+                    android:hint="생년월일"
+                    android:textSize="16sp"
+                    android:textColor="#333333"
+                    android:textColorHint="#999999"
+                    android:fontFamily="@font/hana2_regular"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:layout_marginEnd="8dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-"
+                    android:textSize="16sp"
+                    android:textColor="#333333"
+                    android:fontFamily="@font/hana2_medium"
+                    android:layout_marginHorizontal="8dp" />
+
+                <EditText
+                    android:id="@+id/et_ssn_back"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_friend_search"
+                    android:paddingHorizontal="16dp"
+                    android:hint="뒷자리"
+                    android:textSize="16sp"
+                    android:textColor="#333333"
+                    android:textColorHint="#999999"
+                    android:fontFamily="@font/hana2_regular"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:layout_marginStart="8dp" />
+
+            </LinearLayout>
+
+            <!-- 전화번호 입력 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="전화번호"
+                android:textSize="16sp"
+                android:textColor="#333333"
+                android:fontFamily="@font/hana2_medium"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="8dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <EditText
+                    android:id="@+id/et_phone"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_friend_search"
+                    android:paddingHorizontal="16dp"
+                    android:hint="010-1234-5678"
+                    android:textSize="16sp"
+                    android:textColor="#333333"
+                    android:textColorHint="#999999"
+                    android:fontFamily="@font/hana2_regular"
+                    android:inputType="phone"
+                    android:maxLines="1"
+                    android:layout_marginEnd="8dp" />
+
+                <TextView
+                    android:id="@+id/btn_send_verification"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:text="인증번호 발송"
+                    android:textSize="14sp"
+                    android:textColor="#000000"
+                    android:fontFamily="@font/hana2_medium"
+                    android:background="@drawable/bg_button_disabled"
+                    android:paddingHorizontal="16dp"
+                    android:gravity="center"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:enabled="false" />
+
+            </LinearLayout>
+
+            <!-- 인증번호 입력 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="인증번호"
+                android:textSize="16sp"
+                android:textColor="#333333"
+                android:fontFamily="@font/hana2_medium"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="8dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <EditText
+                    android:id="@+id/et_verification_code"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_friend_search"
+                    android:paddingHorizontal="16dp"
+                    android:hint="인증번호 6자리"
+                    android:textSize="16sp"
+                    android:textColor="#333333"
+                    android:textColorHint="#999999"
+                    android:fontFamily="@font/hana2_regular"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:layout_marginEnd="8dp" />
+
+                <TextView
+                    android:id="@+id/btn_verify_code"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:text="인증확인"
+                    android:textSize="14sp"
+                    android:textColor="#000000"
+                    android:fontFamily="@font/hana2_medium"
+                    android:background="@drawable/bg_button_disabled"
+                    android:paddingHorizontal="16dp"
+                    android:gravity="center"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:enabled="false" />
+
+            </LinearLayout>
+
+            <!-- 인증 상태 표시 -->
+            <TextView
+                android:id="@+id/tv_verification_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="12sp"
+                android:textColor="#00B2A6"
+                android:fontFamily="@font/hana2_regular"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="32dp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!-- 다음 단계 버튼 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="16dp"
+        android:layout_marginBottom="40dp"
+        android:background="@android:color/white">
+
+        <TextView
+            android:id="@+id/btn_next"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="다음"
+            android:textSize="18sp"
+            android:textColor="#FFFFFF"
+            android:fontFamily="@font/hana2_medium"
+            android:background="@drawable/bg_button_disabled"
+            android:gravity="center"
+            android:clickable="true"
+            android:enabled="false"
+            android:focusable="true" />
+
+    </LinearLayout>
+
+</LinearLayout>

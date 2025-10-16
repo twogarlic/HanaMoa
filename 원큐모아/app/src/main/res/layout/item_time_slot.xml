@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:background="?android:attr/selectableItemBackground"
+    android:paddingVertical="12dp"
+    android:paddingHorizontal="16dp"
+    android:clickable="true"
+    android:focusable="true">
+
+    <TextView
+        android:id="@+id/tv_time_slot"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="09:00"
+        android:textSize="15sp"
+        android:textColor="#333333"
+        android:fontFamily="@font/hana2_medium" />
+
+    <View
+        android:id="@+id/iv_selected"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:background="@drawable/ic_check_circle"
+        android:visibility="gone" />
+
+</LinearLayout>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="12dp"
+    android:background="?android:attr/selectableItemBackground">
+
+    <!-- 날짜 -->
+    <TextView
+        android:id="@+id/tv_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textAlignment="center"
+        android:text="09월 22일"
+        android:textSize="14sp"
+        android:textColor="#444444"
+        android:fontFamily="@font/hana2_medium" />
+
+    <!-- 종가 -->
+    <TextView
+        android:id="@+id/tv_close"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="1,234.56"
+        android:textSize="14sp"
+        android:textColor="#666666"
+        android:fontFamily="@font/hana2_medium"
+        android:gravity="center" />
+
+    <!-- 변동값 -->
+    <TextView
+        android:id="@+id/tv_diff"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="+8.50"
+        android:textSize="14sp"
+        android:textColor="#ED1551"
+        android:fontFamily="@font/hana2_medium"
+        android:gravity="center" />
+
+    <!-- 변동률 -->
+    <TextView
+        android:id="@+id/tv_ratio"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="+1.01%"
+        android:textSize="14sp"
+        android:textColor="#ED1551"
+        android:textAlignment="center"
+        android:fontFamily="@font/hana2_medium" />
+
+</LinearLayout>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg_order_item"
+    android:padding="16dp"
+    android:layout_marginBottom="8dp"
+    android:clickable="true"
+    android:focusable="true">
+
+    <!-- 상단: 자산명과 주문타입 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="8dp">
+
+        <TextView
+            android:id="@+id/tv_order_asset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="골드"
+            android:textSize="16sp"
+            android:textColor="#333333"
+            android:fontFamily="@font/hana2_bold" />
+
+        <TextView
+            android:id="@+id/tv_order_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="구매"
+            android:textSize="12sp"
+            android:textColor="#EF4567"
+            android:fontFamily="@font/hana2_regular"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/bg_order_type"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/tv_order_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="대기"
+            android:textSize="12sp"
+            android:textColor="#FF9800"
+            android:fontFamily="@font/hana2_medium"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp" />
+
+        <TextView
+            android:id="@+id/btn_cancel_order"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="취소"
+            android:textSize="12sp"
+            android:textColor="#FFFFFF"
+            android:fontFamily="@font/hana2_medium"
+            android:background="@drawable/bg_cancel_button"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="6dp"
+            android:layout_marginStart="8dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+    <!-- 하단: 수량, 가격, 시간 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="수량"
+                android:textSize="12sp"
+                android:textColor="#666666"
+                android:fontFamily="@font/hana2_regular" />
+
+            <TextView
+                android:id="@+id/tv_order_quantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1.0g"
+                android:textSize="14sp"
+                android:textColor="#333333"
+                android:fontFamily="@font/hana2_medium" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="가격"
+                android:textSize="12sp"
+                android:textColor="#666666"
+                android:fontFamily="@font/hana2_regular" />
+
+            <TextView
+                android:id="@+id/tv_order_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0원"
+                android:textSize="14sp"
+                android:textColor="#333333"
+                android:fontFamily="@font/hana2_medium" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="시간"
+                android:textSize="12sp"
+                android:textColor="#666666"
+                android:fontFamily="@font/hana2_regular" />
+
+            <TextView
+                android:id="@+id/tv_order_created_at"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="09/22 16:30"
+                android:textSize="14sp"
+                android:textColor="#333333"
+                android:fontFamily="@font/hana2_medium" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

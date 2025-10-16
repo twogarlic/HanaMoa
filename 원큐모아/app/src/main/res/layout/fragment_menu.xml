@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFFFFF">
+
+    <!-- 상단 헤더 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="16dp"
+        android:background="@android:color/white">
+
+        <View
+            android:id="@+id/iv_back"
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
+
+        <!-- 제목 -->
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="메뉴"
+            android:textSize="18sp"
+            android:textColor="#333333"
+            android:fontFamily="@font/hana2_medium"
+            android:gravity="center" />
+
+        <!-- 빈 공간 -->
+        <View
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
+
+    </LinearLayout>
+
+    <!-- 프로필 영역 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="24dp">
+
+        <ImageView
+            android:id="@+id/iv_profile"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/ic_person"
+            android:scaleType="centerCrop"
+            android:background="@drawable/bg_profile_circle"
+            android:layout_marginEnd="16dp" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="사용자"
+                android:textSize="18sp"
+                android:textColor="#333333"
+                android:fontFamily="@font/hana2_bold"
+                android:layout_marginBottom="4dp" />
+
+            <TextView
+                android:id="@+id/tv_user_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="user123"
+                android:textSize="14sp"
+                android:textColor="#666666"
+                android:fontFamily="@font/hana2_medium" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- 메인 콘텐츠 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp">
+
+        <!-- 예약조회 텍스트뷰 -->
+        <TextView
+            android:id="@+id/tv_reservation_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="예약관리"
+            android:textSize="15sp"
+            android:textColor="#555555"
+            android:fontFamily="@font/hana2_regular"
+            android:padding="12dp"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <!-- 로그아웃 텍스트뷰 -->
+        <TextView
+            android:id="@+id/tv_friend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="친구관리"
+            android:textSize="15sp"
+            android:textColor="#555555"
+            android:fontFamily="@font/hana2_regular"
+            android:padding="12dp"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <!-- 로그아웃 텍스트뷰 -->
+        <TextView
+            android:id="@+id/tv_logout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="로그아웃"
+            android:textSize="15sp"
+            android:textColor="#555555"
+            android:fontFamily="@font/hana2_regular"
+            android:padding="12dp"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true" />
+
+    </LinearLayout>
+
+</LinearLayout>

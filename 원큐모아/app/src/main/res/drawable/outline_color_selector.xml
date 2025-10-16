@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 비활성화 상태 (선택 안됨, 입력 전) -->
+    <item android:color="#C7CED4" android:state_focused="false" android:state_enabled="true" />
+
+    <!-- 포커스 상태 (선택됨) -->
+    <item android:color="#00B2A6" android:state_focused="true" />
+
+    <!-- 비활성화 상태 -->
+    <item android:color="#BDBDBD" android:state_enabled="false" />
+
+    <!-- 기본값 -->
+    <item android:color="#C7CED4" />
+</selector>

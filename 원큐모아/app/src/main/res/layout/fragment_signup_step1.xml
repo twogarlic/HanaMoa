@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFFFFF">
+
+    <!-- 상단 헤더 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="16dp"
+        android:background="@android:color/white">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="20dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_left_chevron"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="5dp" />
+
+        <!-- 제목 -->
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="회원가입"
+            android:textSize="17sp"
+            android:textColor="#333333"
+            android:fontFamily="@font/hana2_medium"
+            android:gravity="center" />
+
+        <!-- 빈 공간 -->
+        <View
+            android:layout_width="20dp"
+            android:layout_height="20dp" />
+
+    </LinearLayout>
+
+    <!-- 진행바 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="16dp">
+
+        <!-- 1단계 -->
+        <View
+            android:layout_width="0dp"
+            android:layout_height="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_progress_selected"
+            android:layout_marginEnd="4dp" />
+
+        <!-- 2단계 -->
+        <View
+            android:layout_width="0dp"
+            android:layout_height="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_progress_unselected"
+            android:layout_marginEnd="4dp" />
+
+        <!-- 3단계 -->
+        <View
+            android:layout_width="0dp"
+            android:layout_height="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_progress_unselected"
+            android:layout_marginEnd="4dp" />
+
+        <!-- 4단계 -->
+        <View
+            android:layout_width="0dp"
+            android:layout_height="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_progress_unselected" />
+
+    </LinearLayout>
+
+    <!-- 메인 콘텐츠 -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- 단계 제목 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="기본 정보를 입력해주세요"
+                android:textSize="16sp"
+                android:textColor="#333333"
+                android:fontFamily="@font/hana2_medium"
+                android:layout_marginBottom="32dp" />
+
+            <!-- 아이디 입력 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="아이디"
+                android:textSize="16sp"
+                android:textColor="#333333"
+                android:fontFamily="@font/hana2_medium"
+                android:layout_marginBottom="8dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <EditText
+                    android:id="@+id/et_user_id"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_friend_search"
+                    android:paddingHorizontal="16dp"
+                    android:hint="아이디를 입력하세요"
+                    android:textSize="16sp"
+                    android:textColor="#333333"
+                    android:textColorHint="#999999"
+                    android:fontFamily="@font/hana2_regular"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:layout_marginEnd="8dp" />
+
+                <TextView
+                    android:id="@+id/btn_check_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:text="중복확인"
+                    android:textSize="14sp"
+                    android:textColor="#FFFFFF"
+                    android:fontFamily="@font/hana2_medium"
+                    android:background="@drawable/bg_button_disabled"
+                    android:paddingHorizontal="16dp"
+                    android:gravity="center"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:enabled="false" />
+
+            </LinearLayout>
+
+            <!-- 아이디 상태 표시 -->
+            <TextView
+                android:id="@+id/tv_id_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="12sp"
+                android:textColor="#00B2A6"
+                android:fontFamily="@font/hana2_regular"
+                android:layout_marginTop="4dp" />
+
+            <!-- 비밀번호 입력 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="비밀번호"
+                android:textSize="16sp"
+                android:textColor="#333333"
+                android:fontFamily="@font/hana2_medium"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="8dp" />
+
+            <EditText
+                android:id="@+id/et_password"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/bg_friend_search"
+                android:paddingHorizontal="16dp"
+                android:hint="비밀번호를 입력하세요"
+                android:textSize="16sp"
+                android:textColor="#333333"
+                android:textColorHint="#999999"
+                android:fontFamily="@font/hana2_regular"
+                android:inputType="textPassword"
+                android:maxLines="1" />
+
+            <!-- 비밀번호 상태 표시 -->
+            <TextView
+                android:id="@+id/tv_password_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="12sp"
+                android:textColor="#00B2A6"
+                android:fontFamily="@font/hana2_regular"
+                android:layout_marginTop="4dp"/>
+
+            <!-- 비밀번호 확인 입력 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="비밀번호 확인"
+                android:textSize="16sp"
+                android:textColor="#333333"
+                android:layout_marginTop="14dp"
+                android:fontFamily="@font/hana2_medium"
+                android:layout_marginBottom="8dp" />
+
+            <EditText
+                android:id="@+id/et_password_confirm"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/bg_friend_search"
+                android:paddingHorizontal="16dp"
+                android:hint="비밀번호를 다시 입력하세요"
+                android:textSize="16sp"
+                android:textColor="#333333"
+                android:textColorHint="#999999"
+                android:fontFamily="@font/hana2_regular"
+                android:inputType="textPassword"
+                android:maxLines="1" />
+
+            <TextView
+                android:id="@+id/tv_password_confirm_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="#00B2A6"
+                android:textSize="12sp"
+                android:fontFamily="@font/hana2_regular"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="32dp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!-- 다음 단계 버튼 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="16dp"
+        android:layout_marginBottom="40dp"
+        android:background="@android:color/white">
+
+        <TextView
+            android:id="@+id/btn_next"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@drawable/bg_button_disabled"
+            android:clickable="true"
+            android:enabled="false"
+            android:focusable="true"
+            android:fontFamily="@font/hana2_medium"
+            android:gravity="center"
+            android:text="다음"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+</LinearLayout>

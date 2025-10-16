@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F2F5F6">
+
+    <!-- GIF 이미지 (중앙 정렬) -->
+    <ImageView
+        android:id="@+id/iv_logo"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        android:contentDescription="스플래시 로고"
+        android:scaleType="centerCrop"
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/ic_splash" />
+
+    <ImageView
+        android:id="@+id/iv_bottom_logo"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="120dp"
+        android:src="@drawable/ic_1q_moa"
+        android:contentDescription="1QMOA 로고" />
+
+</FrameLayout>

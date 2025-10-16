@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="16dp"
+    android:background="#FFFFFF"
+    android:layout_marginBottom="8dp"
+    android:clickable="true"
+    android:focusable="true">
+
+    <!-- 왼쪽: 알림 아이콘 -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginEnd="16dp">
+
+        <!-- 알림 타입별 아이콘 -->
+        <ImageView
+            android:id="@+id/iv_notification_icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_notification_default"
+            android:background="@drawable/bg_notification_icon"
+            android:padding="8dp" />
+
+        <!-- 읽지 않은 알림 표시 점 -->
+        <View
+            android:id="@+id/v_unread_dot"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:background="@drawable/bg_unread_dot"
+            android:layout_marginTop="-6dp"
+            android:layout_marginStart="28dp" />
+
+    </LinearLayout>
+
+    <!-- 가운데: 알림 내용 -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <!-- 알림 제목 -->
+        <TextView
+            android:id="@+id/tv_notification_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="친구 요청이 왔습니다"
+            android:textSize="16sp"
+            android:textColor="#333333"
+            android:fontFamily="@font/hana2_medium"
+            android:layout_marginBottom="4dp"
+            android:maxLines="1"
+            android:ellipsize="end" />
+
+        <!-- 알림 메시지 -->
+        <TextView
+            android:id="@+id/tv_notification_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="김하나님이 친구 요청을 보냈습니다"
+            android:textSize="14sp"
+            android:textColor="#666666"
+            android:fontFamily="@font/hana2_regular"
+            android:layout_marginBottom="8dp"
+            android:maxLines="2"
+            android:ellipsize="end" />
+
+        <!-- 알림 시간 -->
+        <TextView
+            android:id="@+id/tv_notification_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12/25 14:30"
+            android:textSize="12sp"
+            android:textColor="#999999"
+            android:fontFamily="@font/hana2_regular" />
+
+    </LinearLayout>
+</LinearLayout>

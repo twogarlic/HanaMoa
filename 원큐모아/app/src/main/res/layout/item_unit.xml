@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="12dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:background="?android:attr/selectableItemBackground">
+
+    <TextView
+        android:id="@+id/tv_unit_value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="1g"
+        android:textSize="16sp"
+        android:textColor="#333333"
+        android:fontFamily="@font/hana2_medium"
+        android:gravity="center"
+        android:paddingVertical="12dp"
+        android:background="@drawable/bg_unit_selector" />
+
+</LinearLayout>

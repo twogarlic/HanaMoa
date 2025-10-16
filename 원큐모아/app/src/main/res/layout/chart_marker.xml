@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg_chart_marker"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/tv_marker_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="123,456원"
+        android:textSize="12sp"
+        android:textColor="@android:color/white"
+        android:fontFamily="@font/hana2_medium"
+        android:gravity="center" />
+
+</LinearLayout>

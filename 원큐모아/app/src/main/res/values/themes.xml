@@ -1,0 +1,31 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.HANAMOA" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <item name="colorPrimary">#00B2A6</item>
+        <item name="colorPrimaryVariant">#026B5A</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorSecondary">#03856E</item>
+        <item name="colorOnSecondary">#FFFFFF</item>
+    </style>
+
+    <style name="Theme.HANAMOA" parent="Base.Theme.HANAMOA" />
+    
+    <!-- NoActionBar 테마 -->
+    <style name="Theme.HANAMOA.NoActionBar" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">#00B2A6</item>
+        <item name="colorPrimaryVariant">#026B5A</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorSecondary">#03856E</item>
+        <item name="colorOnSecondary">#FFFFFF</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.HANAMOA.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenAnimatedIcon">@drawable/logo_transparent</item>
+        <item name="windowSplashScreenAnimationDuration">0</item>
+        <item name="windowSplashScreenBackground">#FFFFFF</item>
+        <item name="postSplashScreenTheme">@style/Theme.HANAMOA</item>
+    </style>
+</resources>

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFFFFF">
+
+    <!-- 상단 헤더 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="16dp"
+        android:background="@android:color/white">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_left_chevron"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="5dp" />
+
+        <!-- 제목 -->
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="친구관리"
+            android:textSize="18sp"
+            android:textColor="#333333"
+            android:fontFamily="@font/hana2_medium"
+            android:gravity="center" />
+
+        <!-- 빈 공간 -->
+        <View
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
+
+    </LinearLayout>
+
+    <!-- 탭 영역 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="16dp">
+
+        <!-- 친구 조회 탭 -->
+        <TextView
+            android:id="@+id/tv_friends"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="친구 조회"
+            android:textSize="16sp"
+            android:textColor="#FFFFFF"
+            android:fontFamily="@font/hana2_medium"
+            android:gravity="center"
+            android:paddingVertical="12dp"
+            android:background="@drawable/bg_tab_selected"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <!-- 신청 조회 탭 -->
+        <TextView
+            android:id="@+id/tv_requests"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="신청 조회"
+            android:textSize="16sp"
+            android:textColor="@color/text_secondary"
+            android:fontFamily="@font/hana2_medium"
+            android:gravity="center"
+            android:paddingVertical="12dp"
+            android:background="@drawable/bg_tab_unselected"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginStart="8dp" />
+
+    </LinearLayout>
+
+    <!-- 친구 목록 -->
+    <FrameLayout
+        android:id="@+id/layout_friends"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="16dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_friends"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <!-- 빈 상태 메시지 -->
+        <LinearLayout
+            android:id="@+id/layout_empty_friends"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="친구가 없습니다"
+                android:textSize="16sp"
+                android:textColor="#666666"
+                android:fontFamily="@font/hana2_medium"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="친구를 추가해보세요"
+                android:textSize="14sp"
+                android:textColor="#999999"
+                android:fontFamily="@font/hana2_regular" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <!-- 신청 목록 -->
+    <FrameLayout
+        android:id="@+id/layout_requests"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="16dp"
+        android:visibility="gone">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_requests"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <!-- 빈 상태 메시지 -->
+        <LinearLayout
+            android:id="@+id/layout_empty_requests"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="친구 신청이 없습니다"
+                android:textSize="16sp"
+                android:textColor="#666666"
+                android:fontFamily="@font/hana2_medium"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="친구를 추가해보세요"
+                android:textSize="14sp"
+                android:textColor="#999999"
+                android:fontFamily="@font/hana2_regular" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</LinearLayout>

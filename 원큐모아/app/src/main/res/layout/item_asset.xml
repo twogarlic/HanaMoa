@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:padding="16dp"
+    android:background="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true">
+
+    <!-- 자산 이미지 -->
+    <ImageView
+        android:id="@+id/iv_asset_image"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_market_gold"
+        android:scaleType="centerCrop"
+        android:layout_marginEnd="12dp" />
+
+    <!-- 자산 정보 -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_asset_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="GOLD"
+            android:textSize="15sp"
+            android:textColor="#333333"
+            android:fontFamily="@font/hana2_medium" />
+
+    </LinearLayout>
+
+    <!-- 선택 표시 -->
+    <View
+        android:id="@+id/iv_selected"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:background="@drawable/bg_selected_friend"
+        android:visibility="gone" />
+
+</LinearLayout>
