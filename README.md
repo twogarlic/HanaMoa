@@ -35,11 +35,11 @@ Spark Analytics Service 구축
     ![Example Image](./이미지/img05.png)
 
 Firebase Cloud Messaging을 활용한 실시간 푸시 알림
-    ![Example Image](./이미지/img06.png)
+    ![Example Image](./이미지/img08.png)
 
 ### 5. 시스템 아키텍처
 
-![Example Image](./이미지/img07.png)
+![Example Image](./이미지/img09.png)
 
 ### 6. 스크린 샷
 
