@@ -58,7 +58,7 @@ Firebase Cloud Messaging을 활용한 실시간 푸시 알림
 |         `마이페이지`         |        `출석체크`         |
 | <img width="100%" src="./이미지/video13.gif"/> | <img width="100%" src="./이미지/video14.gif"/> |
 |         `투자성향분석`         |        `분석`         |
-| <img width="100%" src="./이미지/video15.gif"/> | <img width="100%" src="./이미지/video16.gif"/> |
+| <img width="100%" src="./이미지/video15.gif"/> | <img width="100%" src="./이미지/video17.gif"/> |
 |         `하이챗봇`         |        `상품교환`         |
 
 ### 7. 개발자 프로필  
