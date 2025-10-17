@@ -53,11 +53,13 @@ Firebase Cloud Messaging을 활용한 실시간 푸시 알림
 | <img width="100%" src="./이미지/video07.gif"/> | <img width="100%" src="./이미지/video08.gif"/> |
 |         `저금통`         |        `목표`         |
 | <img width="100%" src="./이미지/video09.gif"/> | <img width="100%" src="./이미지/video10.gif"/> |
-|         `선물하기`         |        `교환`         |
+|         `선물하기`         |        `실물교환`         |
 | <img width="100%" src="./이미지/video11.gif"/> | <img width="100%" src="./이미지/video12.gif"/> |
 |         `마이페이지`         |        `출석체크`         |
 | <img width="100%" src="./이미지/video13.gif"/> | <img width="100%" src="./이미지/video14.gif"/> |
 |         `투자성향분석`         |        `분석`         |
+| <img width="100%" src="./이미지/video15.gif"/> | <img width="100%" src="./이미지/video16.gif"/> |
+|         `하이챗봇`         |        `상품교환`         |
 
 ### 7. 개발자 프로필  
 |구분|내용|비고|
