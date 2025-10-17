@@ -615,7 +615,7 @@ export default function ServicePage() {
         },
         body: JSON.stringify({
           branchId: branchId,
-          date: `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}` // YYYY-MM-DD 형식 (로컬 시간 기준)
+          date: `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}` 
         })
       })
 

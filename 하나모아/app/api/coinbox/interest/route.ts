@@ -56,9 +56,9 @@ export async function POST(request: NextRequest) {
           await tx.transaction.create({
             data: {
               userId: coinbox.userId,
-              accountId: coinbox.user.accounts[0]?.id || '', // 첫 번째 계좌 사용
+              accountId: coinbox.user.accounts[0]?.id || '', 
               type: 'COINBOX_INTEREST',
-              amount: interestAmount, // 양수 (입금)
+              amount: interestAmount, 
               balance: updatedCoinbox.balance,
               description: '저금통 이자 지급',
               referenceId: coinbox.id

@@ -10,7 +10,6 @@ datasource db {
   url      = env("PRICE_DATABASE_URL")
 }
 
-// 실시간 가격 정보
 model RealTimePrice {
   id           String   @id @default(cuid())
   asset        String   @unique
@@ -27,7 +26,6 @@ model RealTimePrice {
   @@map("real_time_prices")
 }
 
-// 일별 가격 정보
 model DailyPrice {
   id        String   @id @default(cuid())
   asset     String
@@ -42,7 +40,6 @@ model DailyPrice {
   @@map("daily_prices")
 }
 
-// 차트용 가격 정보
 model ChartPrice {
   id          String   @id @default(cuid())
   asset       String
@@ -56,22 +53,92 @@ model ChartPrice {
   @@map("chart_prices")
 }
 
-// 금 가격 예측 결과
 model GoldPrediction {
   id                String   @id @default(cuid())
   asset             String   @default("gold")
-  predictionDate    String   // 예측 날짜 (YYYY-MM-DD)
-  direction         String   // 상승/하락
-  confidence        Float    // 신뢰도 (0.0 ~ 1.0)
-  probability       Float    // 예측 확률 (0.0 ~ 1.0)
-  nextDayPrediction Int      // 다음날 예측 (1: 상승, 0: 하락)
-  basedOnDays       Int      // 분석 기간 (일수)
+  predictionDate    String   
+  direction         String  
+  confidence        Float   
+  probability       Float    
+  nextDayPrediction Int      
+  basedOnDays       Int      
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
 
   @@unique([asset, predictionDate])
   @@index([predictionDate])
   @@map("gold_predictions")
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  name        String   
+  category    String  
+  price       Float   
+  image       String   
+  description String   
+  material    String  
+  weight      Float    
+  goldContent Float    
+  processingFee Float  
+  isActive    Boolean  @default(true) 
+  isNew       Boolean  @default(false) 
+  isPopular   Boolean  @default(false) 
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  exchanges   ProductExchange[]
+  reviews     ProductReview[] 
+  
+  @@map("products")
+}
+
+model ProductExchange {
+  id          String   @id @default(cuid())
+  userId      String  
+  productId   String   
+  quantity    Int     
+  goldAmount  Float    
+  processingFee Float  
+  totalCost   Float    
+  status      ProductExchangeStatus @default(PENDING) 
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([productId])
+  @@index([status])
+  @@index([createdAt])
+  @@map("product_exchanges")
+}
+
+model ProductReview {
+  id        String   @id @default(cuid())
+  userId    String   
+  productId String  
+  rating    Int     
+  content   String? 
+  images    String?  
+  isVisible Boolean  @default(true) 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([productId])
+  @@index([rating])
+  @@index([createdAt])
+  @@map("product_reviews")
+}
+
+enum ProductExchangeStatus {
+  PENDING  
+  PROCESSING 
+  COMPLETED 
+  CANCELLED 
 }
 
 

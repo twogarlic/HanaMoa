@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = env("DATABASE_URL_RAILWAY")
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -24,9 +24,9 @@ model User {
   isPublicProfile Boolean @default(false) 
   isPostsPublic Boolean @default(false) 
   notificationsEnabled Boolean @default(true) 
-  loginFailCount Int?    @default(0) 
+  loginFailCount Int?    @default(0)
   isLocked     Boolean?  @default(false)
-  lockedUntil  DateTime?
+  lockedUntil  DateTime? 
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
   accounts     Account[]
@@ -40,20 +40,19 @@ model User {
   recurringOrders RecurringOrder[]
   coinbox      Coinbox? 
   friends      Friend[] @relation("UserFriends") 
-  sentGifts    Gift[] @relation("GiftSender") 
+  sentGifts    Gift[] @relation("GiftSender")
   receivedGifts Gift[] @relation("GiftReceiver") 
   sentFriendRequests    FriendRequest[] @relation("FriendRequestSender") 
   receivedFriendRequests FriendRequest[] @relation("FriendRequestReceiver") 
   notifications         Notification[] 
-  goals                 Goal[]
+  goals                 Goal[] 
   serviceRequests       ServiceRequest[] 
-  fcmToken             FCMToken?
+  fcmToken             FCMToken? 
   transactions         Transaction[] 
   pollVotes            PollVote[] 
-  sentPendingGifts     PendingGift[] @relation("PendingGiftSender") 
+  sentPendingGifts     PendingGift[] @relation("PendingGiftSender")
   claimedPendingGifts  PendingGift[] @relation("PendingGiftClaimer") 
-  productExchanges    ProductExchange[] 
-  productReviews      ProductReview[]
+  investmentAnalysis  InvestmentAnalysis? 
 
   @@map("users")
 }
@@ -136,12 +135,12 @@ model Holding {
 // 커뮤니티 게시글 테이블
 model Post {
   id          String    @id @default(cuid())
-  userId      String   
+  userId      String    
   asset       String    @default("gold") 
-  content     String   
+  content     String    
   imageUrl    String?   @db.Text 
-  pollId      String?  
-  likes       Int       @default(0) 
+  pollId      String?   
+  likes       Int       @default(0)
   comments    Int       @default(0) 
   isDeleted   Boolean   @default(false) 
   createdAt   DateTime  @default(now())
@@ -160,11 +159,10 @@ model Post {
   @@map("posts")
 }
 
-// 커뮤니티 댓글 테이블
 model Comment {
   id          String    @id @default(cuid())
-  postId      String    
-  userId      String  
+  postId      String   
+  userId      String   
   content     String    
   isDeleted   Boolean   @default(false) 
   createdAt   DateTime  @default(now())
@@ -180,42 +178,39 @@ model Comment {
   @@map("comments")
 }
 
-// 게시글 좋아요 테이블
 model PostLike {
   id        String   @id @default(cuid())
-  postId    String   
+  postId    String  
   userId    String   
   createdAt DateTime @default(now())
   
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   
-  @@unique([postId, userId]) 
+  @@unique([postId, userId])
   @@index([postId])
   @@index([userId])
   @@map("post_likes")
 }
 
-// 사용자 팔로우 테이블
 model UserFollow {
   id          String   @id @default(cuid())
-  followerId  String   
-  followingId String   
+  followerId  String   // 팔로우하는 사용자 ID
+  followingId String   // 팔로우받는 사용자 ID
   createdAt   DateTime @default(now())
   
   follower    User     @relation("UserFollower", fields: [followerId], references: [id], onDelete: Cascade)
   following   User     @relation("UserFollowing", fields: [followingId], references: [id], onDelete: Cascade)
   
-  @@unique([followerId, followingId])
+  @@unique([followerId, followingId]) 
   @@index([followerId])
   @@index([followingId])
   @@map("user_follows")
 }
 
-// 투표 테이블
 model Poll {
   id          String       @id @default(cuid())
-  title       String      
+  title       String       
   description String?      
   isMultiple  Boolean      @default(false) 
   endDate     DateTime?   
@@ -223,7 +218,6 @@ model Poll {
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
   
-  // 관계
   posts       Post[]       
   options     PollOption[]
   votes       PollVote[]  
@@ -233,15 +227,13 @@ model Poll {
   @@map("polls")
 }
 
-// 투표 선택지 테이블
 model PollOption {
   id        String     @id @default(cuid())
-  pollId    String    
+  pollId    String     
   text      String     
   order     Int        
   createdAt DateTime   @default(now())
   
-  // 관계
   poll      Poll       @relation(fields: [pollId], references: [id], onDelete: Cascade)
   votes     PollVote[] 
   
@@ -250,15 +242,13 @@ model PollOption {
   @@map("poll_options")
 }
 
-// 투표 기록 테이블
 model PollVote {
   id        String     @id @default(cuid())
   pollId    String     
   optionId  String    
-  userId    String     
+  userId    String    
   createdAt DateTime   @default(now())
   
-  // 관계
   poll      Poll       @relation(fields: [pollId], references: [id], onDelete: Cascade)
   option    PollOption @relation(fields: [optionId], references: [id], onDelete: Cascade)
   user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -269,13 +259,12 @@ model PollVote {
   @@map("poll_votes")
 }
 
-// 저금통 테이블
 model Coinbox {
   id              String   @id @default(cuid())
-  userId          String   @unique
+  userId          String   @unique 
   accountNumber   String   @unique
   accountName     String   @default("하나모아 저금통")
-  balance         Float    @default(0) 
+  balance         Float    @default(0)
   maxLimit        Float    @default(100000) 
   isActive        Boolean  @default(true) 
   interestRate    Float    @default(4.00) 
@@ -289,32 +278,30 @@ model Coinbox {
   @@map("coinboxes")
 }
 
-// 친구 테이블
 model Friend {
   id          String   @id @default(cuid())
   userId      String   
-  friendId    String  
-  friendName  String   
-  friendPhone String   
+  friendId    String   
+  friendName  String  
+  friendPhone String  
   isAccepted  Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   
   user        User     @relation("UserFriends", fields: [userId], references: [id], onDelete: Cascade)
   
-  @@unique([userId, friendId]) 
+  @@unique([userId, friendId])
   @@index([userId])
   @@index([friendId])
   @@map("friends")
 }
 
-// 친구 신청 테이블
 model FriendRequest {
   id          String      @id @default(cuid())
-  senderId    String     
+  senderId    String      
   receiverId  String     
-  status      RequestStatus @default(PENDING) 
-  message     String?  
+  status      RequestStatus @default(PENDING)
+  message     String?     
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
   
@@ -328,18 +315,17 @@ model FriendRequest {
   @@map("friend_requests")
 }
 
-// 선물 테이블
 model Gift {
   id              String      @id @default(cuid())
-  senderId        String     
+  senderId        String      
   receiverId      String     
-  asset           String     
-  quantity        Float      
-  messageCard     String?    
+  asset           String      
+  quantity        Float       
+  messageCard     String?     
   message         String?    
-  status          GiftStatus  @default(PENDING)
-  sentAt          DateTime? 
-  receivedAt      DateTime?  
+  status          GiftStatus  @default(PENDING) 
+  sentAt          DateTime?   
+  receivedAt      DateTime?   
   createdAt       DateTime    @default(now())
   updatedAt       DateTime    @updatedAt
   
@@ -362,11 +348,11 @@ enum OrderStatus {
 }
 
 enum GiftStatus {
-  PENDING  
-  SENT     
-  RECEIVED
-  DECLINED  
-  EXPIRED  
+  PENDING   
+  SENT      
+  RECEIVED  
+  DECLINED 
+  EXPIRED   
 }
 
 enum RequestStatus {
@@ -375,13 +361,12 @@ enum RequestStatus {
   DECLINED  
 }
 
-// 알림 테이블
 model Notification {
   id          String           @id @default(cuid())
   userId      String           
   type        NotificationType 
-  title       String          
-  message     String          
+  title       String           
+  message     String           
   data        Json?            
   isRead      Boolean          @default(false) 
   createdAt   DateTime         @default(now())
@@ -395,22 +380,21 @@ model Notification {
   @@map("notifications")
 }
 
-// 목표 테이블
 model Goal {
   id            String      @id @default(cuid())
   userId        String     
   title         String      
-  targetAmount  Float     
+  targetAmount  Float      
   currentAmount Float       @default(0) 
-  startDate     DateTime   
+  startDate     DateTime    
   targetDate    DateTime    
   asset         String      
-  description   String?     
-  color         String      @default("#03856E")
+  description   String?    
+  color         String      @default("#03856E") 
   status        GoalStatus  @default(ACTIVE)
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
-
+  
   user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   
   @@index([userId])
@@ -421,42 +405,41 @@ model Goal {
 }
 
 enum GoalStatus {
-  ACTIVE   
-  COMPLETED 
+  ACTIVE    
+  COMPLETED
   FAILED    
   PAUSED    
   CANCELLED 
 }
 
 enum NotificationType {
-  ORDER_EXECUTED   
-  FRIEND_REQUEST    
-  GIFT_RECEIVED    
+  ORDER_EXECUTED    
+  FRIEND_REQUEST   
+  GIFT_RECEIVED     
   GOAL_ACHIEVED    
-  SYSTEM           
-  NEW_POST      
+  SYSTEM          
+  NEW_POST        
   RECURRING_ORDER_FAILED 
 }
 
-// 수령 신청 테이블 
 model ServiceRequest {
   id              String            @id @default(cuid())
   reservationNumber String          @unique
   userId          String           
-  branchId        String          
-  branchName      String           
-  branchAddress   String            
-  branchPhone     String           
-  assetType       String            
-  assetUnit       String          
-  assetAmount     Float             
-  requestDate     DateTime         
+  branchId        String           
+  branchName      String            
+  branchAddress   String           
+  branchPhone     String          
+  assetType       String           
+  assetUnit       String           
+  assetAmount     Float            
+  requestDate     DateTime        
   reservationDate DateTime          
-  reservationTime String           
+  reservationTime String            
   status          ServiceRequestStatus @default(PENDING) 
-  completedAt     DateTime?        
-  cancelledAt     DateTime?       
-  cancelReason    String?          
+  completedAt     DateTime?       
+  cancelledAt     DateTime?        
+  cancelReason    String?         
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
   
@@ -471,22 +454,21 @@ model ServiceRequest {
 }
 
 enum ServiceRequestStatus {
-  PENDING    
-  APPROVED    
+  PENDING     
+  APPROVED   
   REJECTED   
-  COMPLETED  
+  COMPLETED   
   CANCELLED  
 }
 
-// 거래 내역 테이블
 model Transaction {
   id          String            @id @default(cuid())
-  userId      String            
-  accountId   String           
+  userId      String           
+  accountId   String            
   type        TransactionType  
   amount      Float             
   balance     Float            
-  description String?         
+  description String?           
   referenceId String?         
   createdAt   DateTime          @default(now())
   
@@ -503,19 +485,19 @@ model Transaction {
 enum TransactionType {
   DEPOSIT        
   WITHDRAWAL      
-  TRANSFER_IN    
+  TRANSFER_IN     
   TRANSFER_OUT   
-  ORDER_BUY      
-  ORDER_SELL    
-  GIFT_SEND       
-  GIFT_RECEIVE    
-  COINBOX_SAVE    
+  ORDER_BUY       
+  ORDER_SELL     
+  GIFT_SEND      
+  GIFT_RECEIVE  
+  COINBOX_SAVE   
   COINBOX_EMPTY  
   COINBOX_INTEREST 
 }
 
 enum RecurringOrderStatus {
-  ACTIVE    
+  ACTIVE  
   PAUSED   
   COMPLETED 
   CANCELLED 
@@ -523,22 +505,21 @@ enum RecurringOrderStatus {
 
 enum RecurringOrderFrequency {
   DAILY   
-  WEEKLY 
-  MONTHLY 
+  WEEKLY  
+  MONTHLY  
 }
 
-// 정기 주문 테이블
 model RecurringOrder {
   id          String                  @id @default(cuid())
-  userId      String                
-  asset       String               
+  userId      String                  
+  asset       String                 
   orderType   String                  @default("BUY") 
   quantity    Float                  
   frequency   RecurringOrderFrequency 
   startDate   DateTime                
   endDate     DateTime              
-  status      RecurringOrderStatus    @default(ACTIVE)
-  lastExecuted DateTime?           
+  status      RecurringOrderStatus    @default(ACTIVE) 
+  lastExecuted DateTime?             
   totalExecutions Int                 @default(0) 
   createdAt   DateTime                @default(now())
   updatedAt   DateTime                @updatedAt
@@ -551,10 +532,9 @@ model RecurringOrder {
   @@map("recurring_orders")
 }
 
-// FCM 토큰 테이블
 model FCMToken {
   id        String   @id @default(cuid())
-  userId    String   @unique 
+  userId    String   @unique
   token     String   
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -565,7 +545,6 @@ model FCMToken {
   @@map("fcm_tokens")
 }
 
-// 미가입 사용자 선물 대기 테이블
 model PendingGift {
   id              String      @id @default(cuid())
   senderId        String     
@@ -577,8 +556,8 @@ model PendingGift {
   message         String?     
   status          PendingGiftStatus @default(PENDING) 
   smsStatus       SMSStatus   @default(PENDING)
-  smsSentAt       DateTime? 
-  claimedAt       DateTime?  
+  smsSentAt       DateTime?   
+  claimedAt       DateTime?   
   claimedBy       String?     
   expiresAt       DateTime    
   createdAt       DateTime    @default(now())
@@ -597,89 +576,30 @@ model PendingGift {
 
 enum PendingGiftStatus {
   PENDING   
-  CLAIMED  
-  EXPIRED  
+  CLAIMED   
+  EXPIRED   
   CANCELLED 
 }
 
 enum SMSStatus {
   PENDING   
-  SENT     
+  SENT      
   FAILED    
 }
 
-// 상품 모델
-model Product {
-  id          String   @id @default(cuid())
-  name        String   
-  category    String   
-  price       Float    
-  image       String   
-  description String   
-  material    String   
-  weight      Float    
-  goldContent Float   
-  processingFee Float  
-  isActive    Boolean  @default(true) 
-  isNew       Boolean  @default(false) 
-  isPopular   Boolean  @default(false) 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+model InvestmentAnalysis {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  investmentType  String   
+  analysisData    Json     
+  score           Float   
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
   
-  exchanges   ProductExchange[]
-  reviews     ProductReview[] 
-  
-  @@map("products")
-}
-
-// 상품 교환 모델
-model ProductExchange {
-  id          String   @id @default(cuid())
-  userId      String   
-  productId   String   
-  quantity    Int      
-  goldAmount  Float    
-  processingFee Float 
-  totalCost   Float    
-  status      ProductExchangeStatus @default(PENDING) 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   
   @@index([userId])
-  @@index([productId])
-  @@index([status])
+  @@index([investmentType])
   @@index([createdAt])
-  @@map("product_exchanges")
-}
-
-// 상품 리뷰 모델
-model ProductReview {
-  id        String   @id @default(cuid())
-  userId    String  
-  productId String  
-  rating    Int      
-  content   String?  
-  images    String?  
-  isVisible Boolean  @default(true) 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
-  
-  @@index([userId])
-  @@index([productId])
-  @@index([rating])
-  @@index([createdAt])
-  @@map("product_reviews")
-}
-
-enum ProductExchangeStatus {
-  PENDING   
-  PROCESSING
-  COMPLETED 
-  CANCELLED  
+  @@map("investment_analysis")
 }

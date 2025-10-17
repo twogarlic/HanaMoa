@@ -2,11 +2,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/database'
 import { prismaPoint } from '@/lib/database-point'
 
-/**
- * 자산 수령 신청 수수료 결제 API
- * POST /api/service/pay-fee
- * Body: { userId, paymentMethod: 'account' | 'point', fee, serviceRequestId }
- */
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()

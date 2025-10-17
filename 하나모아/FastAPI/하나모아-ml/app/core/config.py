@@ -8,7 +8,6 @@ except ImportError:
 class Settings(BaseSettings):
     # 데이터베이스 설정
     price_database_url: Optional[str] = None
-    database_url_railway: Optional[str] = None
     database_url: Optional[str] = None
     
     # 모델 설정

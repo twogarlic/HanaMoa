@@ -136,7 +136,6 @@ async function trainModelLegacy() {
       env: {
         ...process.env,
         PRICE_DATABASE_URL: process.env.PRICE_DATABASE_URL,
-        DATABASE_URL_RAILWAY: process.env.DATABASE_URL_RAILWAY,
         DATABASE_URL: process.env.DATABASE_URL
       }
     })

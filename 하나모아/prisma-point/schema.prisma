@@ -10,7 +10,6 @@ datasource db {
   url      = env("HANA_POINT_DATABASE_URL")
 }
 
-// 하나머니 포인트 계정
 model HanaPoint {
   id              String              @id @default(cuid())
   userId          String?             @unique 
@@ -29,7 +28,6 @@ model HanaPoint {
   @@map("hana_points")
 }
 
-// 하나머니 포인트 사용 내역
 model HanaPointHistory {
   id              String      @id @default(cuid())
   pointId         String     
@@ -57,7 +55,6 @@ enum PointType {
   REFUND  
 }
 
-// 출석체크 테이블
 model Attendance {
   id        String   @id @default(cuid())
   userId    String   

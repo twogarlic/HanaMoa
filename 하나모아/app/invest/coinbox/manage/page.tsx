@@ -21,7 +21,6 @@ export default function CoinboxManagePage() {
   const [selectedAccountId, setSelectedAccountId] = useState<string>('')
   const [interestInfo, setInterestInfo] = useState<any>(null)
 
-  // 친구 관련 상태 (NavigationBar용)
   const [friendRequests, setFriendRequests] = useState<any[]>([])
   const [giftRequests, setGiftRequests] = useState<any[]>([])
   const [notifications, setNotifications] = useState<any[]>([])

@@ -25,7 +25,6 @@ export default function PrivacyPage() {
     document.documentElement.style.scrollBehavior = "smooth";
   }, []);
 
-  // 알림 데이터 가져오기
   const fetchAllNotifications = async () => {
     try {
       if (!userInfo) return;
