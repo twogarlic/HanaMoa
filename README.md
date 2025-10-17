@@ -62,16 +62,16 @@ Firebase Cloud Messaging을 활용한 실시간 푸시 알림
 |:--:|:--:|:--:|
 **이름**|임하늘||
 **연락처**|이메일|neury0126@gmail.com|
-**전공**|컴퓨터공학|2020.03 ~ 2025.08|
+**전공**|건국대학교 컴퓨터공학부|2020.03 ~ 2025.08|
 **Skill set**|Language|Java, Python, Typescript, HTML, CSS, C, Kotlin
 ||Framework&Tool|React Native, Next.js, Spring Boot, JSP, FastAPI, Jetpack Compose|
 ||Database|Oracle, MySQL, Redis|
 ||ETC|Git, AWS, Docker, Firebase, Scikit-Learn, Pandas, Figma|
-|**수상**|2024 제 4회 소방 안전 빅데이터 활용 및 분석 대회 (우수상)|소방청, 한국 보험 협회(2024.11.11)|
+|**수상**|2024 제 4회 소방 안전 빅데이터 활용 및 분석 대회 (우수상)|소방청, 한국 보험 협회, 소방안전 빅데이터 플랫폼(2024.11.11)|
 ||34기 SOPT 모바일/웹 어플리케이션 해커톤 APPJAM (우수상)|대학교 연합 동아리 SOPT(2024.07.27)|
-||4기 쿠잇 프로젝트 데모데이(수상)|건국대학교 교내 동아리 KUIT(2025.02.21)|
+||4기 쿠잇 프로젝트 데모데이 (수상)|건국대학교 교내 동아리 KUIT(2025.02.21)|
 |**교육**|하나금융티아이 채용연계형 교육|2025.03 ~ 2025.10|
 |**활동**|2023 건국대학교 컴퓨터공학부 IT 학술 동아리 비빔밥|2022.08~2023.07|
 ||대학생 연합 IT 벤처 창업 동아리 34기 Android 파트 YB|2024.03~2024.07|
 ||건국대학교 컴퓨터공학부 개발 동아리 4기 KUIT|2024.08~2025.02|
-||[최적의 일정을 자동으로 추천하는 서비스 앱 ScheTook 출시](https://play.google.com/store/apps/details?id=com.sopt.noostak)|2025.02~2025.05|
+||[최적의 일정을 자동으로 추천하는 서비스 앱, ScheTook 출시](https://play.google.com/store/apps/details?id=com.sopt.noostak)|2025.02~2025.05|
