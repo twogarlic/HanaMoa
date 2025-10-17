@@ -24,9 +24,6 @@ const HEADERS = {
   "Sec-Fetch-Site": "same-origin"
 }
 
-/**
- * 문자열을 float로 변환
- */
 function toFloat(value: any): number {
   if (typeof value === 'number') return value
   if (typeof value === 'string') {
@@ -35,9 +32,6 @@ function toFloat(value: any): number {
   return 0
 }
 
-/**
- * 네이버 금융 API에서 회차 차트 데이터 가져오기
- */
 async function fetchChartRoundData(asset: ChartAssetType): Promise<any> {
   try {
     if (!ASSET_URLS[asset]) {
@@ -105,9 +99,6 @@ async function fetchChartRoundData(asset: ChartAssetType): Promise<any> {
   }
 }
 
-/**
- * 회차 차트 데이터 업데이트
- */
 async function updateChartRoundData(asset: ChartAssetType): Promise<void> {
   
   try {

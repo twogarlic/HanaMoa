@@ -1,135 +1,32 @@
-import { NextRequest, NextResponse } from 'next/server'
-import prisma from '../../../../../../lib/database'
+import { NextRequest } from 'next/server'
+import { withAuth } from '@/lib/api/middleware/auth'
+import { validateBody } from '@/lib/api/middleware/validation'
+import { likePostSchema } from '@/lib/api/validators/community.schema'
+import { communityService } from '@/lib/services/community.service'
+import { ApiResponse } from '@/lib/api/utils/response'
 
 export async function POST(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  try {
-    const { id: postId } = await params
-    const body = await request.json()
-    const { userId } = body
+  return withAuth(request, async (request, authenticatedUserId) => {
+    return validateBody(request, likePostSchema, async (request, data) => {
+      try {
+        const { id } = await params
 
-    if (!userId) {
-      return NextResponse.json(
-        { success: false, error: '사용자 ID가 필요합니다.' },
-        { status: 400 }
-      )
-    }
-
-    const result = await prisma.$transaction(async (tx) => {
-      const post = await tx.post.findUnique({
-        where: { id: postId },
-        select: { id: true, likes: true }
-      })
-
-      if (!post) {
-        throw new Error('게시글을 찾을 수 없습니다.')
-      }
-
-      const existingLike = await tx.postLike.findUnique({
-        where: {
-          postId_userId: {
-            postId,
-            userId
-          }
+        if (data.userId !== authenticatedUserId) {
+          return ApiResponse.forbidden('권한이 없습니다')
         }
-      })
 
-      if (existingLike) {
-        await tx.postLike.delete({
-          where: {
-            postId_userId: {
-              postId,
-              userId
-            }
-          }
-        })
+        const result = await communityService.likePost(id, data.userId)
 
-        await tx.post.update({
-          where: { id: postId },
-          data: {
-            likes: {
-              decrement: 1
-            }
-          }
-        })
-
-        return {
-          isLiked: false,
-          likesCount: post.likes - 1
+        return ApiResponse.success(result, result.message)
+      } catch (error: any) {
+        if (error.statusCode) {
+          return ApiResponse.error(error.message, error.statusCode)
         }
-      } else {
-        await tx.postLike.create({
-          data: {
-            postId,
-            userId
-          }
-        })
-
-        await tx.post.update({
-          where: { id: postId },
-          data: {
-            likes: {
-              increment: 1
-            }
-          }
-        })
-
-        return {
-          isLiked: true,
-          likesCount: post.likes + 1
-        }
+        return ApiResponse.serverError('좋아요 처리 중 오류가 발생했습니다')
       }
     })
-
-    return NextResponse.json({
-      success: true,
-      data: result
-    })
-  } catch (error) {
-    return NextResponse.json(
-      { success: false, error: '좋아요 처리에 실패했습니다.' },
-      { status: 500 }
-    )
-  }
-}
-
-export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
-  try {
-    const { id: postId } = await params
-    const { searchParams } = new URL(request.url)
-    const userId = searchParams.get('userId')
-
-    if (!userId) {
-      return NextResponse.json(
-        { success: false, error: '사용자 ID가 필요합니다.' },
-        { status: 400 }
-      )
-    }
-
-    const like = await prisma.postLike.findUnique({
-      where: {
-        postId_userId: {
-          postId,
-          userId
-        }
-      }
-    })
-
-    return NextResponse.json({
-      success: true,
-      data: {
-        isLiked: !!like
-      }
-    })
-  } catch (error) {
-    return NextResponse.json(
-      { success: false, error: '좋아요 상태를 확인할 수 없습니다.' },
-      { status: 500 }
-    )
-  }
+  })
 }

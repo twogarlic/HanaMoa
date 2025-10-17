@@ -1,46 +1,27 @@
-import { NextRequest, NextResponse } from 'next/server'
-import prisma from '../../../../lib/database'
+import { NextRequest } from 'next/server'
+import { validateBody } from '@/lib/api/middleware/validation'
+import { z } from 'zod'
+import { userRepository } from '@/lib/repositories/user.repository'
+import { ApiResponse } from '@/lib/api/utils/response'
+
+const unlockAccountSchema = z.object({
+  userId: z.string().min(1, '사용자 ID가 필요합니다')
+})
 
 export async function POST(request: NextRequest) {
-  try {
-    const { userId } = await request.json()
+  return validateBody(request, unlockAccountSchema, async (request, data) => {
+    try {
+      const user = await userRepository.findByUserId(data.userId)
 
-    if (!userId) {
-      return NextResponse.json({
-        success: false,
-        message: '사용자 ID가 필요합니다.'
-      }, { status: 400 })
-    }
-
-    const user = await prisma.user.findUnique({
-      where: { userId: userId }
-    })
-
-    if (!user) {
-      return NextResponse.json({
-        success: false,
-        message: '존재하지 않는 계정입니다.'
-      }, { status: 404 })
-    }
-
-    await prisma.user.update({
-      where: { userId: userId },
-      data: {
-        loginFailCount: 0,
-        isLocked: false,
-        lockedUntil: null
+      if (!user) {
+        return ApiResponse.notFound('존재하지 않는 계정입니다')
       }
-    })
 
-    return NextResponse.json({
-      success: true,
-      message: '계정 잠금이 해제되었습니다.'
-    })
+      await userRepository.unlockAccount(data.userId)
 
-  } catch (error) {
-    return NextResponse.json({
-      success: false,
-      message: '서버 오류가 발생했습니다.'
-    }, { status: 500 })
+      return ApiResponse.success({}, '계정 잠금이 해제되었습니다')
+    } catch (error) {
+      return ApiResponse.serverError('계정 잠금 해제 중 오류가 발생했습니다')
     }
+  })
 }

@@ -1,46 +1,33 @@
-import { NextRequest, NextResponse } from 'next/server'
-import prisma from '../../../../lib/database'
+import { NextRequest } from 'next/server'
+import { withAuth } from '@/lib/api/middleware/auth'
+import { validateBody } from '@/lib/api/middleware/validation'
+import { cancelRecurringOrderSchema } from '@/lib/api/validators/recurring-order.schema'
+import { recurringOrderService } from '@/lib/services/recurring-order.service'
+import { ApiResponse } from '@/lib/api/utils/response'
 
 export async function POST(request: NextRequest) {
-  try {
-    const body = await request.json()
-    const { orderId, userId } = body
+  return withAuth(request, async (request, authenticatedUserId) => {
+    return validateBody(request, cancelRecurringOrderSchema, async (request, data) => {
+      try {
+        if (data.userId !== authenticatedUserId) {
+          return ApiResponse.forbidden('권한이 없습니다')
+        }
 
-    if (!orderId || !userId) {
-      return NextResponse.json(
-        { error: '주문 ID와 사용자 ID가 필요합니다.' },
-        { status: 400 }
-      )
-    }
+        const order = await recurringOrderService.cancelRecurringOrder(
+          data.orderId,
+          data.userId
+        )
 
-    const recurringOrder = await prisma.recurringOrder.findFirst({
-      where: { 
-        id: orderId,
-        userId: userId
+        return ApiResponse.success(
+          { order },
+          '정기 주문이 취소되었습니다'
+        )
+      } catch (error: any) {
+        if (error.statusCode) {
+          return ApiResponse.error(error.message, error.statusCode)
+        }
+        return ApiResponse.serverError('정기 주문 취소 중 오류가 발생했습니다')
       }
     })
-
-    if (!recurringOrder) {
-      return NextResponse.json(
-        { error: '정기주문을 찾을 수 없습니다.' },
-        { status: 404 }
-      )
-    }
-
-    await prisma.recurringOrder.update({
-      where: { id: orderId },
-      data: { status: 'CANCELLED' }
-    })
-
-    return NextResponse.json({
-      success: true,
-      message: '정기주문이 성공적으로 취소되었습니다.'
-    })
-
-  } catch (error) {
-    return NextResponse.json(
-      { error: '정기주문 취소에 실패했습니다.' },
-      { status: 500 }
-    )
-    }
+  })
 }

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getAdvancedRAGService } from '@/lib/rag/advancedRAG'
+import { ApiResponse } from '@/lib/api/utils/response'
 
 const advancedRAGService = getAdvancedRAGService()
 
@@ -13,7 +14,7 @@ export async function POST(request: NextRequest) {
     }
 
     const blockedKeywords = [
-      'fuck','shit','drop table','씨발','ㅅㅂ','욕설','select * from','sql injection','delete from'
+      'fuck','shit','drop table','욕설','select * from','sql injection','delete from'
     ]
     const lowerMessage = (message || '').toLowerCase()
     const containsBlocked = blockedKeywords.some(k => lowerMessage.includes(k))
@@ -46,7 +47,7 @@ export async function POST(request: NextRequest) {
 
     if (USE_ADVANCED_RAG) {
       return await advancedRAGService.generateAdvancedResponseStream(message, trimmedHistory)
-    } 
+    }
   } catch (error) {
     return NextResponse.json(
       { error: '서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.' },

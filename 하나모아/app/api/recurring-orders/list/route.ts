@@ -1,36 +1,30 @@
-import { NextRequest, NextResponse } from 'next/server'
-import prisma from '../../../../lib/database'
+import { NextRequest } from 'next/server'
+import { withAuth } from '@/lib/api/middleware/auth'
+import { validateQuery } from '@/lib/api/middleware/validation'
+import { getRecurringOrdersQuerySchema } from '@/lib/api/validators/recurring-order.schema'
+import { recurringOrderService } from '@/lib/services/recurring-order.service'
+import { ApiResponse } from '@/lib/api/utils/response'
 
-export async function POST(request: NextRequest) {
-  try {
-    const body = await request.json()
-    const { userId } = body
+export async function GET(request: NextRequest) {
+  return withAuth(request, async (request, authenticatedUserId) => {
+    return validateQuery(request, getRecurringOrdersQuerySchema, async (request, query) => {
+      try {
+        if (query.userId !== authenticatedUserId) {
+          return ApiResponse.forbidden('권한이 없습니다')
+        }
 
-    if (!userId) {
-      return NextResponse.json(
-        { error: '사용자 ID가 필요합니다.' },
-        { status: 400 }
-      )
-    }
+        const orders = await recurringOrderService.getRecurringOrders(
+          query.userId,
+          query.status
+        )
 
-    const recurringOrders = await prisma.recurringOrder.findMany({
-      where: { 
-        userId: userId 
-      },
-      orderBy: {
-        createdAt: 'desc'
+        return ApiResponse.success({ data: orders })
+      } catch (error: any) {
+        if (error.statusCode) {
+          return ApiResponse.error(error.message, error.statusCode)
+        }
+        return ApiResponse.serverError('정기 주문 목록 조회 중 오류가 발생했습니다')
       }
     })
-
-    return NextResponse.json({
-      success: true,
-      orders: recurringOrders
-    })
-
-  } catch (error) {
-    return NextResponse.json(
-      { error: '정기주문 목록 조회에 실패했습니다.' },
-      { status: 500 }
-    )
-    }
+  })
 }

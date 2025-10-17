@@ -1,59 +1,51 @@
-import { NextRequest, NextResponse } from 'next/server'
-import prisma from '../../../../lib/database'
+import { NextRequest } from 'next/server'
+import { withAuth } from '@/lib/api/middleware/auth'
+import { userRepository } from '@/lib/repositories/user.repository'
+import { ApiResponse } from '@/lib/api/utils/response'
+import { z } from 'zod'
+
+const updateProfileSchema = z.object({
+  userId: z.string().min(1, '사용자 ID가 필요합니다'),
+  name: z.string().optional(),
+  phone: z.string().optional(),
+  profileImage: z.string().optional(),
+  isPublicProfile: z.boolean().optional(),
+  isPostsPublic: z.boolean().optional(),
+  notificationsEnabled: z.boolean().optional()
+})
 
 export async function POST(request: NextRequest) {
-  try {
-    
-    const body = await request.json()
-    
-    const { userId, profileImage, isPublicProfile, isPostsPublic, notificationsEnabled } = body
+  return withAuth(request, async (request, authenticatedUserId) => {
+    try {
+      const body = await request.json()
+      const validated = updateProfileSchema.safeParse(body)
 
-    if (!userId || !profileImage) {
-      return NextResponse.json({
-        success: false,
-        error: '사용자 ID와 프로필 이미지가 필요합니다.'
-      }, { status: 400 })
-    }
-
-
-    const updatedUser = await prisma.user.update({
-      where: {
-        id: userId
-      },
-      data: {
-        profileImage: profileImage,
-        isPublicProfile: isPublicProfile,
-        isPostsPublic: isPostsPublic,
-        notificationsEnabled: notificationsEnabled !== undefined ? notificationsEnabled : true
-      },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        profileImage: true,
-        isPublicProfile: true,
-        isPostsPublic: true,
-        notificationsEnabled: true,
-        accounts: {
-          select: {
-            id: true,
-            balance: true
-          }
-        }
+      if (!validated.success) {
+        return ApiResponse.badRequest(validated.error.errors[0].message)
       }
-    })
 
+      const data = validated.data
 
-    return NextResponse.json({
-      success: true,
-      user: updatedUser
-    })
+      if (data.userId !== authenticatedUserId) {
+        return ApiResponse.forbidden('권한이 없습니다')
+      }
 
-  } catch (error) {
-    return NextResponse.json({
-      success: false,
-      error: '프로필 업데이트 중 오류가 발생했습니다.',
-      details: error instanceof Error ? error.message : '알 수 없는 오류'
-    }, { status: 500 })
+      const updateData: any = {}
+      if (data.name !== undefined) updateData.name = data.name
+      if (data.phone !== undefined) updateData.phone = data.phone
+      if (data.profileImage !== undefined) updateData.profileImage = data.profileImage
+      if (data.isPublicProfile !== undefined) updateData.isPublicProfile = data.isPublicProfile
+      if (data.isPostsPublic !== undefined) updateData.isPostsPublic = data.isPostsPublic
+      if (data.notificationsEnabled !== undefined) updateData.notificationsEnabled = data.notificationsEnabled
+
+      const updatedUser = await userRepository.update(data.userId, updateData)
+
+      return ApiResponse.success(
+        { user: updatedUser },
+        '프로필이 업데이트되었습니다'
+      )
+    } catch (error) {
+      return ApiResponse.serverError('프로필 업데이트 중 오류가 발생했습니다')
     }
+  })
 }

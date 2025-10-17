@@ -1,93 +1,31 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { prismaPoint } from '@/lib/database-point'
+import { NextRequest } from 'next/server'
+import { withAuth } from '@/lib/api/middleware/auth'
+import { validateQuery } from '@/lib/api/middleware/validation'
+import { getPointHistoryQuerySchema } from '@/lib/api/validators/point.schema'
+import { pointService } from '@/lib/services/point.service'
+import { ApiResponse } from '@/lib/api/utils/response'
 
-/**
- * 하나머니(포인트) 히스토리 조회 API
- * GET /api/points/history?userId=xxx&limit=20&offset=0
- */
 export async function GET(request: NextRequest) {
-  try {
-    const { searchParams } = new URL(request.url)
-    const userId = searchParams.get('userId')
-    const limit = parseInt(searchParams.get('limit') || '20')
-    const offset = parseInt(searchParams.get('offset') || '0')
-    const type = searchParams.get('type') 
-    
-    if (!userId) {
-      return NextResponse.json(
-        { success: false, error: 'userId가 필요합니다.' },
-        { status: 400 }
-      )
-    }
-    
-    const point = await prismaPoint.hanaPoint.findUnique({
-      where: { userId }
-    })
-    
-    if (!point) {
-      return NextResponse.json({
-        success: true,
-        data: {
-          balance: 0,
-          histories: [],
-          total: 0
+  return withAuth(request, async (request, authenticatedUserId) => {
+    return validateQuery(request, getPointHistoryQuerySchema, async (request, query) => {
+      try {
+        if (query.userId !== authenticatedUserId) {
+          return ApiResponse.forbidden('권한이 없습니다')
         }
-      })
-    }
-    
-    const whereCondition: any = {
-      pointId: point.id
-    }
-    
-    if (type) {
-      whereCondition.type = type
-    }
-    
-    const [histories, total] = await Promise.all([
-      prismaPoint.hanaPointHistory.findMany({
-        where: whereCondition,
-        orderBy: { createdAt: 'desc' },
-        take: limit,
-        skip: offset,
-        select: {
-          id: true,
-          type: true,
-          amount: true,
-          balance: true,
-          description: true,
-          sourceSystem: true,
-          sourceId: true,
-          expiresAt: true,
-          createdAt: true
+
+        const result = await pointService.getHistory(
+          query.userId,
+          query.page,
+          query.limit
+        )
+
+        return ApiResponse.success(result)
+      } catch (error: any) {
+        if (error.statusCode) {
+          return ApiResponse.error(error.message, error.statusCode)
         }
-      }),
-      prismaPoint.hanaPointHistory.count({
-        where: whereCondition
-      })
-    ])
-    
-    return NextResponse.json({
-      success: true,
-      data: {
-        balance: point.balance,
-        totalEarned: point.totalEarned,
-        totalUsed: point.totalUsed,
-        histories,
-        pagination: {
-          total,
-          limit,
-          offset,
-          hasMore: offset + limit < total
-        }
+        return ApiResponse.serverError('포인트 내역 조회 중 오류가 발생했습니다')
       }
     })
-    
-  } catch (error) {
-    return NextResponse.json(
-      { success: false, error: '히스토리 조회 중 오류가 발생했습니다.' },
-      { status: 500 }
-    )
-  } finally {
-    await prismaPoint.$disconnect()
-  }
+  })
 }

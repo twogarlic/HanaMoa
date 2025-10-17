@@ -1,43 +1,30 @@
-import { NextRequest, NextResponse } from 'next/server'
-import prisma from '../../../../lib/database'
+import { NextRequest } from 'next/server'
+import { withAuth } from '@/lib/api/middleware/auth'
+import { validateBody } from '@/lib/api/middleware/validation'
+import { toggleCoinboxSchema } from '@/lib/api/validators/coinbox.schema'
+import { coinboxService } from '@/lib/services/coinbox.service'
+import { ApiResponse } from '@/lib/api/utils/response'
 
 export async function POST(request: NextRequest) {
-  try {
-    const body = await request.json()
-    const { userId, isActive } = body
+  return withAuth(request, async (request, authenticatedUserId) => {
+    return validateBody(request, toggleCoinboxSchema, async (request, data) => {
+      try {
+        if (data.userId !== authenticatedUserId) {
+          return ApiResponse.forbidden('권한이 없습니다')
+        }
 
-    if (!userId || typeof isActive !== 'boolean') {
-      return NextResponse.json(
-        { success: false, error: '사용자 ID와 활성화 상태가 필요합니다.' },
-        { status: 400 }
-      )
-    }
+        const coinbox = await coinboxService.toggleCoinbox(data.coinboxId, data.userId)
 
-    const coinbox = await prisma.coinbox.findUnique({
-      where: { userId }
+        return ApiResponse.success(
+          { data: coinbox },
+          '저금통 상태가 변경되었습니다'
+        )
+      } catch (error: any) {
+        if (error.statusCode) {
+          return ApiResponse.error(error.message, error.statusCode)
+        }
+        return ApiResponse.serverError('저금통 상태 변경 중 오류가 발생했습니다')
+      }
     })
-
-    if (!coinbox) {
-      return NextResponse.json(
-        { success: false, error: '저금통이 개설되지 않았습니다.' },
-        { status: 404 }
-      )
-    }
-
-    const updatedCoinbox = await prisma.coinbox.update({
-      where: { userId },
-      data: { isActive }
-    })
-
-
-    return NextResponse.json({
-      success: true,
-      data: updatedCoinbox
-    })
-  } catch (error) {
-    return NextResponse.json(
-      { success: false, error: '저금통 규칙 상태 변경에 실패했습니다.' },
-      { status: 500 }
-    )
-  }
+  })
 }

@@ -1,48 +1,27 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { prismaPoint } from '@/lib/database-point'
+import { NextRequest } from 'next/server'
+import { withAuth } from '@/lib/api/middleware/auth'
+import { validateQuery } from '@/lib/api/middleware/validation'
+import { getPointBalanceQuerySchema } from '@/lib/api/validators/point.schema'
+import { pointService } from '@/lib/services/point.service'
+import { ApiResponse } from '@/lib/api/utils/response'
 
-/**
- * 하나머니(포인트) 잔액 조회 API
- * GET /api/points/balance?userId=xxx
- */
 export async function GET(request: NextRequest) {
-  try {
-    const { searchParams } = new URL(request.url)
-    const userId = searchParams.get('userId')
-    
-    if (!userId) {
-      return NextResponse.json(
-        { success: false, error: 'userId가 필요합니다.' },
-        { status: 400 }
-      )
-    }
-    
-    const point = await prismaPoint.hanaPoint.findUnique({
-      where: { userId }
+  return withAuth(request, async (request, authenticatedUserId) => {
+    return validateQuery(request, getPointBalanceQuerySchema, async (request, query) => {
+      try {
+        if (query.userId !== authenticatedUserId) {
+          return ApiResponse.forbidden('권한이 없습니다')
+        }
+
+        const result = await pointService.getBalance(query.userId)
+
+        return ApiResponse.success(result)
+      } catch (error: any) {
+        if (error.statusCode) {
+          return ApiResponse.error(error.message, error.statusCode)
+        }
+        return ApiResponse.serverError('포인트 잔액 조회 중 오류가 발생했습니다')
+      }
     })
-    
-    if (!point) {
-      return NextResponse.json({
-        success: false,
-        error: '하나머니 계정이 없습니다.'
-      })
-    }
-    
-    return NextResponse.json({
-      success: true,
-      balance: point.balance,
-      totalEarned: point.totalEarned,
-      totalUsed: point.totalUsed,
-      createdAt: point.createdAt,
-      updatedAt: point.updatedAt
-    })
-    
-  } catch (error) {
-    return NextResponse.json(
-      { success: false, error: '포인트 조회 중 오류가 발생했습니다.' },
-      { status: 500 }
-    )
-  } finally {
-    await prismaPoint.$disconnect()
-  }
+  })
 }

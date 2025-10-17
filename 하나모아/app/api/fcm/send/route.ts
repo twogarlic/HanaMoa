@@ -1,5 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { sendPushNotification, sendPushNotificationToMultiple } from '../../../../lib/fcm'
+import { NextRequest } from 'next/server'
+import { sendPushNotification, sendPushNotificationToMultiple } from '@/lib/fcm'
+import { ApiResponse } from '@/lib/api/utils/response'
 
 export async function POST(request: NextRequest) {
   try {
@@ -7,10 +8,7 @@ export async function POST(request: NextRequest) {
     const { userIds, title, body: messageBody, data } = body
 
     if (!userIds || !title || !messageBody) {
-      return NextResponse.json({
-        success: false,
-        error: '필수 필드가 누락되었습니다.'
-      }, { status: 400 })
+      return ApiResponse.badRequest('필수 필드가 누락되었습니다')
     }
 
     let result
@@ -21,21 +19,14 @@ export async function POST(request: NextRequest) {
     }
 
     if (result.success) {
-      return NextResponse.json({
-        success: true,
-        message: '푸시 알림이 전송되었습니다.',
-        data: result.response
-      })
+      return ApiResponse.success(
+        { response: result.response },
+        '푸시 알림이 전송되었습니다'
+      )
     } else {
-      return NextResponse.json({
-        success: false,
-        error: result.error
-      }, { status: 500 })
+      return ApiResponse.serverError(result.error || '푸시 알림 전송에 실패했습니다')
     }
   } catch (error) {
-    return NextResponse.json({
-      success: false,
-      error: '푸시 알림 전송에 실패했습니다.'
-    }, { status: 500 })
+    return ApiResponse.serverError('푸시 알림 전송에 실패했습니다')
   }
 }

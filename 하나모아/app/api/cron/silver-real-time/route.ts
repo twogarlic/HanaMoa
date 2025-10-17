@@ -10,9 +10,6 @@ const HEADERS = {
   "Origin": "https://www.exgold.co.kr",
 }
 
-/**
- * 문자열을 float로 변환
- */
 function toFloat(value: any): number {
   if (typeof value === 'number') return value
   if (typeof value === 'string') {
@@ -21,9 +18,6 @@ function toFloat(value: any): number {
   return 0
 }
 
-/**
- * 은 실시간 시세 데이터 업데이트
- */
 async function updateSilverRealTimeData(): Promise<void> {
   const maxRetries = 3
   let lastError: Error | null = null

@@ -1,103 +1,37 @@
-import { NextRequest, NextResponse } from 'next/server'
-import prisma from '../../../lib/database'
+import { NextRequest } from 'next/server'
+import { withAuth } from '@/lib/api/middleware/auth'
+import { accountRepository } from '@/lib/repositories/account.repository'
+import { ApiResponse } from '@/lib/api/utils/response'
+import { z } from 'zod'
+
+const getAccountsQuerySchema = z.object({
+  userId: z.string().min(1, '사용자 ID가 필요합니다')
+})
 
 export async function GET(request: NextRequest) {
-  try {
-    const { searchParams } = new URL(request.url)
-    const userId = searchParams.get('userId')
-    
-    if (!userId) {
-      return NextResponse.json({
-        success: false,
-        error: '사용자 ID가 필요합니다.'
-      }, { status: 400 })
-    }
-    
-    const accounts = await prisma.account.findMany({
-      where: { userId },
-      select: {
-        id: true,
-        accountNumber: true,
-        accountName: true,
-        balance: true,
-        createdAt: true,
-        updatedAt: true
+  return withAuth(request, async (request, authenticatedUserId) => {
+    try {
+      const { searchParams } = new URL(request.url)
+      const queryObject = Object.fromEntries(searchParams.entries())
+      
+      const validated = getAccountsQuerySchema.safeParse(queryObject)
+      
+      if (!validated.success) {
+        return ApiResponse.badRequest(validated.error.errors[0].message)
       }
-    })
-    
-    return NextResponse.json({
-      success: true,
-      accounts
-    })
-    
-  } catch (error) {
-    return NextResponse.json({
-      success: false,
-      error: '계좌 조회 중 오류가 발생했습니다.'
-    }, { status: 500 })
-    }
-}
 
-export async function POST(request: NextRequest) {
-  try {
-    const body = await request.json()
-    const { name, ssn } = body
-    
-    if (!name || !ssn) {
-      return NextResponse.json({
-        success: false,
-        error: '이름과 주민등록번호가 필요합니다.'
-      }, { status: 400 })
-    }
-    
-    const existingUser = await prisma.user.findFirst({
-      where: { ssn },
-      include: {
-        accounts: {
-          select: {
-            id: true,
-            accountNumber: true,
-            accountName: true,
-            balance: true,
-            createdAt: true,
-            updatedAt: true
-          }
-        }
+      if (validated.data.userId !== authenticatedUserId) {
+        return ApiResponse.forbidden('권한이 없습니다')
       }
-    })
-    
-    if (existingUser && existingUser.accounts.length > 0) {
-      return NextResponse.json({
-        success: true,
-        accounts: existingUser.accounts.map(account => ({
-          ...account,
-          isNew: false
-        }))
-      })
-    } else {
-      const bankCode = '282' // 계좌 시작 코드
-      const randomNumber1 = Math.floor(Math.random() * 1000000).toString().padStart(6, '0')
-      const randomNumber2 = Math.floor(Math.random() * 1000000).toString().padStart(6, '0')
-      const newAccountNumber = `${bankCode}-${randomNumber1}-${randomNumber2}`
-      
-      const newAccount = {
-        id: 'temp-new-account',
-        accountNumber: newAccountNumber,
-        accountName: `${name}의 하나모아 계좌`,
-        balance: 0,
-        isNew: true
+
+      const accounts = await accountRepository.findByUserId(validated.data.userId)
+
+      return ApiResponse.success({ data: accounts })
+    } catch (error: any) {
+      if (error.statusCode) {
+        return ApiResponse.error(error.message, error.statusCode)
       }
-      
-      return NextResponse.json({
-        success: true,
-        accounts: [newAccount]
-      })
+      return ApiResponse.serverError('계좌 조회 중 오류가 발생했습니다')
     }
-    
-  } catch (error) {
-    return NextResponse.json({
-      success: false,
-      error: '계좌 조회 중 오류가 발생했습니다.'
-    }, { status: 500 })
-    }
+  })
 }

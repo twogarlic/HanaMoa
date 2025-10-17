@@ -1,141 +1,48 @@
-import { NextRequest, NextResponse } from 'next/server'
-import prisma from '@/lib/database'
+import { NextRequest } from 'next/server'
+import { withAuth } from '@/lib/api/middleware/auth'
+import { validateQuery, validateBody } from '@/lib/api/middleware/validation'
+import { getNotificationsQuerySchema, markAsReadSchema } from '@/lib/api/validators/notification.schema'
+import { notificationService } from '@/lib/services/notification.service'
+import { ApiResponse } from '@/lib/api/utils/response'
 
 export async function GET(request: NextRequest) {
-  try {
-    const { searchParams } = new URL(request.url)
-    const userId = searchParams.get('userId')
-    const type = searchParams.get('type') 
-    const limit = parseInt(searchParams.get('limit') || '20')
-    const offset = parseInt(searchParams.get('offset') || '0')
+  return withAuth(request, async (request, authenticatedUserId) => {
+    return validateQuery(request, getNotificationsQuerySchema, async (request, query) => {
+      try {
+        if (query.userId !== authenticatedUserId) {
+          return ApiResponse.forbidden('권한이 없습니다')
+        }
 
-    if (!userId) {
-      return NextResponse.json({ 
-        success: false, 
-        error: '사용자 ID가 필요합니다.' 
-      }, { status: 400 })
-    }
+        const notifications = await notificationService.getNotifications(query.userId)
 
-    const threeDaysAgo = new Date()
-    threeDaysAgo.setDate(threeDaysAgo.getDate() - 3)
-
-    await prisma.notification.deleteMany({
-      where: {
-        userId: userId,
-        OR: [
-          { isRead: true },
-          { createdAt: { lt: threeDaysAgo } }
-        ]
+        return ApiResponse.success({ data: notifications })
+      } catch (error: any) {
+        if (error.statusCode) {
+          return ApiResponse.error(error.message, error.statusCode)
+        }
+        return ApiResponse.serverError('알림 조회 중 오류가 발생했습니다')
       }
     })
-
-    const where: any = {
-      userId: userId
-    }
-
-    if (type) {
-      where.type = type
-    }
-
-    const notifications = await prisma.notification.findMany({
-      where,
-      orderBy: {
-        createdAt: 'desc'
-      },
-      take: limit,
-      skip: offset
-    })
-
-    const unreadCount = await prisma.notification.count({
-      where: {
-        userId: userId,
-        isRead: false
-      }
-    })
-
-    return NextResponse.json({
-      success: true,
-      data: notifications,
-      unreadCount: unreadCount,
-      total: notifications.length
-    })
-
-  } catch (error) {
-    return NextResponse.json({
-      success: false,
-      error: '알림 조회 중 오류가 발생했습니다.'
-    }, { status: 500 })
-  }
+  })
 }
 
 export async function PATCH(request: NextRequest) {
-  try {
-    const body = await request.json()
-    const { notificationId, userId } = body
+  return withAuth(request, async (request, authenticatedUserId) => {
+    return validateBody(request, markAsReadSchema, async (request, data) => {
+      try {
+        if (data.userId !== authenticatedUserId) {
+          return ApiResponse.forbidden('권한이 없습니다')
+        }
 
-    if (!notificationId || !userId) {
-      return NextResponse.json({ 
-        success: false, 
-        error: '알림 ID와 사용자 ID가 필요합니다.' 
-      }, { status: 400 })
-    }
+        await notificationService.markAsRead(data.notificationId, data.userId)
 
-    const notification = await prisma.notification.update({
-      where: {
-        id: notificationId,
-        userId: userId 
-      },
-      data: {
-        isRead: true
+        return ApiResponse.success({}, '알림을 읽음 처리했습니다')
+      } catch (error: any) {
+        if (error.statusCode) {
+          return ApiResponse.error(error.message, error.statusCode)
+        }
+        return ApiResponse.serverError('알림 처리 중 오류가 발생했습니다')
       }
     })
-
-    return NextResponse.json({
-      success: true,
-      data: notification
-    })
-
-  } catch (error) {
-    return NextResponse.json({
-      success: false,
-      error: '알림 읽음 처리 중 오류가 발생했습니다.'
-    }, { status: 500 })
-  }
+  })
 }
-
-export async function PUT(request: NextRequest) {
-  try {
-    const body = await request.json()
-    const { userId } = body
-
-    if (!userId) {
-      return NextResponse.json({ 
-        success: false, 
-        error: '사용자 ID가 필요합니다.' 
-      }, { status: 400 })
-    }
-
-    const result = await prisma.notification.updateMany({
-      where: {
-        userId: userId,
-        isRead: false
-      },
-      data: {
-        isRead: true
-      }
-    })
-
-    return NextResponse.json({
-      success: true,
-      message: `${result.count}개의 알림을 읽음 처리했습니다.`
-    })
-
-  } catch (error) {
-    return NextResponse.json({
-      success: false,
-      error: '알림 읽음 처리 중 오류가 발생했습니다.'
-    }, { status: 500 })
-  }
-}
-
-

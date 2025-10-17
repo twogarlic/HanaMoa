@@ -1,84 +1,60 @@
-import { NextRequest, NextResponse } from 'next/server'
-import prisma from '../../../../lib/database'
+import { NextRequest } from 'next/server'
+import { withAuth } from '@/lib/api/middleware/auth'
+import { validateQuery } from '@/lib/api/middleware/validation'
+import { searchFriendQuerySchema } from '@/lib/api/validators/friend.schema'
+import { userRepository } from '@/lib/repositories/user.repository'
+import { friendRepository } from '@/lib/repositories/friend.repository'
+import { ApiResponse } from '@/lib/api/utils/response'
 
 export async function GET(request: NextRequest) {
-  try {
-    const { searchParams } = new URL(request.url)
-    const phone = searchParams.get('phone')
-    const userId = searchParams.get('userId')
-
-    if (!phone || !userId) {
-      return NextResponse.json({ 
-        success: false, 
-        error: '전화번호와 사용자 ID가 필요합니다.' 
-      }, { status: 400 })
-    }
-
-    const formatPhoneForSearch = (phoneNumber: string) => {
-      const numbers = phoneNumber.replace(/[^0-9]/g, '')
-      if (numbers.length === 11) {
-        return `${numbers.slice(0, 3)}-${numbers.slice(3, 7)}-${numbers.slice(7)}`
-      }
-      return phoneNumber
-    }
-
-    const formattedPhone = formatPhoneForSearch(phone)
-
-    const user = await prisma.user.findUnique({
-      where: { phone: formattedPhone },
-      select: {
-        id: true,
-        name: true,
-        phone: true,
-        profileImage: true
-      }
-    })
-
-    if (!user) {
-      return NextResponse.json({ 
-        success: false, 
-        error: '해당 전화번호로 가입된 사용자를 찾을 수 없습니다.' 
-      }, { status: 404 })
-    }
-
-    if (user.id === userId) {
-      return NextResponse.json({ 
-        success: false, 
-        error: '자기 자신을 친구로 추가할 수 없습니다.' 
-      }, { status: 400 })
-    }
-
-    const existingFriend = await prisma.friend.findUnique({
-      where: {
-        userId_friendId: {
-          userId: userId,
-          friendId: user.id
+  return withAuth(request, async (request, authenticatedUserId) => {
+    return validateQuery(request, searchFriendQuerySchema, async (request, query) => {
+      try {
+        if (query.userId !== authenticatedUserId) {
+          return ApiResponse.forbidden('권한이 없습니다')
         }
-      }
-    })
 
-    const existingRequest = await prisma.friendRequest.findUnique({
-      where: {
-        senderId_receiverId: {
-          senderId: userId,
-          receiverId: user.id
+        const formatPhoneForSearch = (phoneNumber: string) => {
+          const numbers = phoneNumber.replace(/[^0-9]/g, '')
+          if (numbers.length === 11) {
+            return `${numbers.slice(0, 3)}-${numbers.slice(3, 7)}-${numbers.slice(7)}`
+          }
+          return phoneNumber
         }
-      }
-    })
 
-    return NextResponse.json({
-      success: true,
-      data: {
-        user: user,
-        isAlreadyFriend: !!existingFriend,
-        hasPendingRequest: !!existingRequest,
-        requestStatus: existingRequest?.status || null
+        const formattedPhone = formatPhoneForSearch(query.phone)
+
+        const user = await userRepository.findByPhone(formattedPhone)
+
+        if (!user) {
+          return ApiResponse.notFound('해당 전화번호로 가입된 사용자를 찾을 수 없습니다')
+        }
+
+        if (user.id === query.userId) {
+          return ApiResponse.badRequest('자기 자신을 친구로 추가할 수 없습니다')
+        }
+
+        const existingFriend = await friendRepository.findByUserIdAndFriendId(query.userId, user.id)
+
+        const existingRequest = await friendRepository.findRequestById(user.id)
+
+        return ApiResponse.success({
+          user: {
+            id: user.id,
+            name: user.name,
+            phone: user.phone,
+            profileImage: user.profileImage
+          },
+          isAlreadyFriend: !!existingFriend,
+          hasPendingRequest: !!existingRequest,
+          requestStatus: existingRequest?.status || null
+        })
+      } catch (error: any) {
+        if (error.statusCode) {
+          return ApiResponse.error(error.message, error.statusCode)
+        }
+        return ApiResponse.serverError('친구 검색에 실패했습니다')
       }
     })
-  } catch (error) {
-    return NextResponse.json(
-      { success: false, error: '친구 검색에 실패했습니다.' },
-      { status: 500 }
-    )
-    }
+  })
 }

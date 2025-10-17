@@ -1,25 +1,25 @@
-import { NextResponse } from 'next/server'
-import prismaPrice from '../../../../lib/database-price'
+import { NextRequest } from 'next/server'
+import { ApiResponse } from '@/lib/api/utils/response'
+import prismaPrice from '@/lib/database-price'
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
     const page = searchParams.get('page')
-    
+
     if (page) {
       const pageNum = parseInt(page)
       const pageSize = 10
       const skip = (pageNum - 1) * pageSize
-      
+
       const dailyPrices = await prismaPrice.dailyPrice.findMany({
         where: { asset: 'gold' },
         orderBy: { date: 'desc' },
         skip,
         take: pageSize
       })
-      
-      return NextResponse.json({ 
-        success: true, 
+
+      return ApiResponse.success({
         data: dailyPrices.map(price => ({
           date: price.date,
           close: price.close,
@@ -31,14 +31,12 @@ export async function GET(request: Request) {
       const realTimePrice = await prismaPrice.realTimePrice.findUnique({
         where: { asset: 'gold' }
       })
-      
+
       if (!realTimePrice) {
-        return NextResponse.json({
-          error: '금 가격 정보를 찾을 수 없습니다.'
-        }, { status: 404 })
+        return ApiResponse.notFound('금 가격 정보를 찾을 수 없습니다')
       }
-      
-      return NextResponse.json({
+
+      return ApiResponse.success({
         type: 'gold',
         round: realTimePrice.round,
         time: realTimePrice.time,
@@ -50,9 +48,6 @@ export async function GET(request: Request) {
       })
     }
   } catch (error) {
-    return NextResponse.json(
-      { error: '금 가격 정보를 가져오는데 실패했습니다.' },
-      { status: 500 }
-    )
+    return ApiResponse.serverError('금 가격 정보를 가져오는데 실패했습니다')
   }
 }

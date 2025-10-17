@@ -1,65 +1,31 @@
-import { NextRequest, NextResponse } from 'next/server'
-import prisma from '../../../../lib/database'
-
-const roundToTwoDecimals = (num: number): number => {
-  return Math.round(num * 100) / 100
-}
+import { NextRequest } from 'next/server'
+import { withAuth } from '@/lib/api/middleware/auth'
+import { validateQuery } from '@/lib/api/middleware/validation'
+import { getUserHoldingQuerySchema } from '@/lib/api/validators/holding.schema'
+import { holdingService } from '@/lib/services/holding.service'
+import { ApiResponse } from '@/lib/api/utils/response'
 
 export async function GET(request: NextRequest) {
-  try {
-    const { searchParams } = new URL(request.url)
-    const userId = searchParams.get('userId')
-    const asset = searchParams.get('asset')
-    
-    if (!userId) {
-      return NextResponse.json({
-        success: false,
-        error: '사용자 ID가 필요합니다.'
-      }, { status: 400 })
-    }
-    
-    if (asset) {
-      const holding = await prisma.holding.findUnique({
-        where: { userId_asset: { userId, asset } }
-      })
-      
-      return NextResponse.json({
-        success: true,
-        holding: holding ? {
-          ...holding,
-          quantity: roundToTwoDecimals(holding.quantity),
-          averagePrice: roundToTwoDecimals(holding.averagePrice),
-          totalAmount: roundToTwoDecimals(holding.totalAmount)
-        } : { quantity: 0, averagePrice: 0, totalAmount: 0 }
-      })
-    }
-    
-    const holdings = await prisma.holding.findMany({
-      where: { userId },
-      select: {
-        asset: true,
-        quantity: true,
-        averagePrice: true,
-        totalAmount: true
+  return withAuth(request, async (request, authenticatedUserId) => {
+    return validateQuery(request, getUserHoldingQuerySchema, async (request, query) => {
+      try {
+        if (query.userId !== authenticatedUserId) {
+          return ApiResponse.forbidden('권한이 없습니다')
+        }
+
+        if (query.asset) {
+          const holding = await holdingService.getUserHoldingsByAsset(query.userId, query.asset)
+          return ApiResponse.success({ data: holding })
+        }
+
+        const holdings = await holdingService.getUserHoldings(query.userId)
+        return ApiResponse.success({ data: holdings })
+      } catch (error: any) {
+        if (error.statusCode) {
+          return ApiResponse.error(error.message, error.statusCode)
+        }
+        return ApiResponse.serverError('보유 자산 조회 중 오류가 발생했습니다')
       }
     })
-    
-    const roundedHoldings = holdings.map(holding => ({
-      ...holding,
-      quantity: roundToTwoDecimals(holding.quantity),
-      averagePrice: roundToTwoDecimals(holding.averagePrice),
-      totalAmount: roundToTwoDecimals(holding.totalAmount)
-    }))
-    
-    return NextResponse.json({
-      success: true,
-      holdings: roundedHoldings
-    })
-    
-  } catch (error) {
-    return NextResponse.json({
-      success: false,
-      error: '보유 자산 조회 중 오류가 발생했습니다.'
-    }, { status: 500 })
-    }
+  })
 }

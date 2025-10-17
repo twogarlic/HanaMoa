@@ -1,99 +1,32 @@
-import { NextRequest, NextResponse } from 'next/server'
-import prisma from '../../../lib/database'
+import { NextRequest } from 'next/server'
+import { withAuth } from '@/lib/api/middleware/auth'
+import { validateQuery } from '@/lib/api/middleware/validation'
+import { getTransactionsQuerySchema } from '@/lib/api/validators/transaction.schema'
+import { transactionService } from '@/lib/services/transaction.service'
+import { ApiResponse } from '@/lib/api/utils/response'
 
 export async function GET(request: NextRequest) {
-  try {
-    const { searchParams } = new URL(request.url)
-    const userId = searchParams.get('userId')
-    const accountId = searchParams.get('accountId')
-    const type = searchParams.get('type')
-    const limit = parseInt(searchParams.get('limit') || '50')
-    const offset = parseInt(searchParams.get('offset') || '0')
-
-    if (!userId) {
-      return NextResponse.json(
-        { success: false, error: '사용자 ID가 필요합니다.' },
-        { status: 400 }
-      )
-    }
-
-    const where: any = { userId }
-    if (accountId) where.accountId = accountId
-    if (type) where.type = type
-
-    const transactions = await prisma.transaction.findMany({
-      where,
-      include: {
-        account: {
-          select: {
-            id: true,
-            accountNumber: true,
-            accountName: true
-          }
+  return withAuth(request, async (request, authenticatedUserId) => {
+    return validateQuery(request, getTransactionsQuerySchema, async (request, query) => {
+      try {
+        if (query.userId !== authenticatedUserId) {
+          return ApiResponse.forbidden('권한이 없습니다')
         }
-      },
-      orderBy: { createdAt: 'desc' },
-      take: limit,
-      skip: offset
-    })
 
-    const totalCount = await prisma.transaction.count({ where })
+        const result = await transactionService.getTransactions(
+          query.userId,
+          query.type,
+          query.page,
+          query.limit
+        )
 
-    return NextResponse.json({
-      success: true,
-      data: transactions,
-      total: totalCount,
-      hasMore: offset + limit < totalCount
-    })
-  } catch (error) {
-    return NextResponse.json(
-      { success: false, error: '거래 내역 조회에 실패했습니다.' },
-      { status: 500 }
-    )
-    }
-}
-
-export async function POST(request: NextRequest) {
-  try {
-    const body = await request.json()
-    const { userId, accountId, type, amount, balance, description, referenceId } = body
-
-    if (!userId || !accountId || !type || amount === undefined || balance === undefined) {
-      return NextResponse.json(
-        { success: false, error: '필수 필드가 누락되었습니다.' },
-        { status: 400 }
-      )
-    }
-
-    const transaction = await prisma.transaction.create({
-      data: {
-        userId,
-        accountId,
-        type,
-        amount,
-        balance,
-        description,
-        referenceId
-      },
-      include: {
-        account: {
-          select: {
-            id: true,
-            accountNumber: true,
-            accountName: true
-          }
+        return ApiResponse.success(result)
+      } catch (error: any) {
+        if (error.statusCode) {
+          return ApiResponse.error(error.message, error.statusCode)
         }
+        return ApiResponse.serverError('거래 내역 조회 중 오류가 발생했습니다')
       }
     })
-
-    return NextResponse.json({
-      success: true,
-      data: transaction
-    })
-  } catch (error) {
-    return NextResponse.json(
-      { success: false, error: '거래 내역 생성에 실패했습니다.' },
-      { status: 500 }
-    )
-    }
+  })
 }

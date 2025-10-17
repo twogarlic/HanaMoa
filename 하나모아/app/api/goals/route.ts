@@ -1,93 +1,48 @@
-import { NextRequest, NextResponse } from 'next/server'
-import prisma from '../../../lib/database'
+import { NextRequest } from 'next/server'
+import { withAuth } from '@/lib/api/middleware/auth'
+import { validateQuery, validateBody } from '@/lib/api/middleware/validation'
+import { getGoalsQuerySchema, createGoalSchema } from '@/lib/api/validators/goal.schema'
+import { goalService } from '@/lib/services/goal.service'
+import { ApiResponse } from '@/lib/api/utils/response'
 
 export async function GET(request: NextRequest) {
-  try {
-    const { searchParams } = new URL(request.url)
-    const userId = searchParams.get('userId')
+  return withAuth(request, async (request, authenticatedUserId) => {
+    return validateQuery(request, getGoalsQuerySchema, async (request, query) => {
+      try {
+        if (query.userId !== authenticatedUserId) {
+          return ApiResponse.forbidden('권한이 없습니다')
+        }
 
-    if (!userId) {
-      return NextResponse.json({
-        success: false,
-        error: '사용자 ID가 필요합니다.'
-      }, { status: 400 })
-    }
+        const goals = await goalService.getGoals(query.userId, query.status)
 
-    const goals = await prisma.goal.findMany({
-      where: {
-        userId: userId
-      },
-      orderBy: {
-        createdAt: 'desc'
+        return ApiResponse.success({ data: goals })
+      } catch (error: any) {
+        if (error.statusCode) {
+          return ApiResponse.error(error.message, error.statusCode)
+        }
+        return ApiResponse.serverError('목표 목록 조회 중 오류가 발생했습니다')
       }
     })
-
-    return NextResponse.json({
-      success: true,
-      data: goals
-    })
-
-  } catch (error) {
-    return NextResponse.json({
-      success: false,
-      error: '목표 목록 조회 중 오류가 발생했습니다.'
-    }, { status: 500 })
-  }
+  })
 }
 
 export async function POST(request: NextRequest) {
-  try {
-    const body = await request.json()
-    const { userId, title, targetAmount, startDate, targetDate, asset, description, color } = body
+  return withAuth(request, async (request, authenticatedUserId) => {
+    return validateBody(request, createGoalSchema, async (request, data) => {
+      try {
+        if (data.userId !== authenticatedUserId) {
+          return ApiResponse.forbidden('권한이 없습니다')
+        }
 
-    if (!userId || !title || !targetAmount || !startDate || !targetDate || !asset) {
-      return NextResponse.json({
-        success: false,
-        error: '모든 필수 항목을 입력해주세요.'
-      }, { status: 400 })
-    }
+        const goal = await goalService.createGoal(data)
 
-    if (targetAmount <= 0) {
-      return NextResponse.json({
-        success: false,
-        error: '목표 금액은 0보다 커야 합니다.'
-      }, { status: 400 })
-    }
-
-    const startDateObj = new Date(startDate)
-    const targetDateObj = new Date(targetDate)
-    
-    if (targetDateObj <= startDateObj) {
-      return NextResponse.json({
-        success: false,
-        error: '목표 날짜는 시작 날짜보다 늦어야 합니다.'
-      }, { status: 400 })
-    }
-
-    const goal = await prisma.goal.create({
-      data: {
-        userId,
-        title,
-        targetAmount,
-        startDate: startDateObj,
-        targetDate: targetDateObj,
-        asset,
-        description: description || null,
-        color: color || '#03856E',
-        currentAmount: 0,
-        status: 'ACTIVE'
+        return ApiResponse.success({ data: goal })
+      } catch (error: any) {
+        if (error.statusCode) {
+          return ApiResponse.error(error.message, error.statusCode)
+        }
+        return ApiResponse.serverError('목표 생성 중 오류가 발생했습니다')
       }
     })
-
-    return NextResponse.json({
-      success: true,
-      data: goal
-    })
-
-  } catch (error) {
-    return NextResponse.json({
-      success: false,
-      error: '목표 생성 중 오류가 발생했습니다.'
-    }, { status: 500 })
-  }
+  })
 }

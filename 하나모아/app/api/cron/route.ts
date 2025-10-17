@@ -15,9 +15,6 @@ const CRAWLER_SCRIPTS: Record<AssetType, string> = {
   cny: 'cny_crawler.py'
 }
 
-/**
- * Python 크롤러 실행
- */
 function runCrawler(asset: AssetType): Promise<any> {
   return new Promise((resolve, reject) => {
     const scriptPath = path.join(process.cwd(), 'scripts', CRAWLER_SCRIPTS[asset])
@@ -55,9 +52,6 @@ function runCrawler(asset: AssetType): Promise<any> {
   })
 }
 
-/**
- * 텍스트 출력 파싱 (fallback)
- */
 function parseTextOutput(data: string) {
   const lines = data.trim().split('\n')
   const result: any = {}
@@ -81,9 +75,6 @@ function parseTextOutput(data: string) {
   return result
 }
 
-/**
- * 실시간 시세 업데이트
- */
 async function updateRealTimePrice(asset: AssetType): Promise<void> {
   try {
     

@@ -1,10 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import prismaPrice from '../../../../lib/database-price'
 
-/**
- * 최근 거래일 조회 API
- * chartPrice 테이블에서 해당 자산의 가장 최근 거래일을 찾습니다.
- */
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)

@@ -1,6 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server'
-import prisma from '../../../../lib/database'
-import prismaPrice from '../../../../lib/database-price'
+import { NextRequest } from 'next/server'
+import { withAuth } from '@/lib/api/middleware/auth'
+import { ApiResponse } from '@/lib/api/utils/response'
+import prisma from '@/lib/database'
+import prismaPrice from '@/lib/database-price'
 import OpenAI from 'openai'
 
 interface PortfolioAnalysis {
@@ -54,12 +56,12 @@ const getAssetName = (asset: string): string => {
 
 const analyzePortfolioWithAI = async (holdings: any[], totalValue: number, totalInvestment: number, totalProfitLoss: number, totalProfitLossRatio: number) => {
   try {
-  const herfindahlIndex = holdings.reduce((sum, holding) => {
-    const weight = holding.currentValue / totalValue
-    return sum + (weight * weight)
-  }, 0)
+    const herfindahlIndex = holdings.reduce((sum, holding) => {
+      const weight = holding.currentValue / totalValue
+      return sum + (weight * weight)
+    }, 0)
     const diversificationScore = Math.round((1 - herfindahlIndex) * 100)
-    
+
     const maxWeight = Math.max(...holdings.map(holding => holding.currentValue / totalValue))
     const concentrationRisk = Math.round(maxWeight * 100)
 
@@ -131,7 +133,7 @@ ${JSON.stringify(assetDetails, null, 2)}
     })
 
     const analysis = JSON.parse(completion.choices[0].message.content || '{}')
-    
+
     return {
       diversificationScore,
       concentrationRisk,
@@ -148,26 +150,26 @@ ${JSON.stringify(assetDetails, null, 2)}
       },
       recommendations: analysis.recommendations || []
     }
-  } catch (error) {    
+  } catch (error) {
     const herfindahlIndex = holdings.reduce((sum, holding) => {
       const weight = holding.currentValue / totalValue
       return sum + (weight * weight)
     }, 0)
     const diversificationScore = Math.round((1 - herfindahlIndex) * 100)
-  const maxWeight = Math.max(...holdings.map(holding => holding.currentValue / totalValue))
-  const concentrationRisk = Math.round(maxWeight * 100)
+    const maxWeight = Math.max(...holdings.map(holding => holding.currentValue / totalValue))
+    const concentrationRisk = Math.round(maxWeight * 100)
 
     let diversificationLevel = '보통'
     if (diversificationScore >= 70) diversificationLevel = '우수'
     else if (diversificationScore >= 50) diversificationLevel = '양호'
     else if (diversificationScore < 30) diversificationLevel = '부족'
-    
+
     let riskLevel = '보통'
     if (concentrationRisk > 70) riskLevel = '매우 높음'
     else if (concentrationRisk > 50) riskLevel = '높음'
     else if (concentrationRisk < 30) riskLevel = '낮음'
 
-  return { 
+    return {
       diversificationScore,
       concentrationRisk,
       diversification: {
@@ -176,14 +178,14 @@ ${JSON.stringify(assetDetails, null, 2)}
         description: '포트폴리오 분산투자 수준을 분석했습니다.'
       },
       riskAnalysis: {
-    level: riskLevel, 
+        level: riskLevel,
         score: concentrationRisk,
         description: '포트폴리오의 리스크 수준을 평가했습니다.',
-    concentrationRisk 
+        concentrationRisk
       },
       recommendations: [
         {
-      type: 'diversification',
+          type: 'diversification',
           title: '분산투자 검토',
           description: '포트폴리오의 분산투자 수준을 점검해보세요.',
           priority: 'medium'
@@ -194,113 +196,107 @@ ${JSON.stringify(assetDetails, null, 2)}
 }
 
 export async function GET(request: NextRequest) {
-  try {
-    const { searchParams } = new URL(request.url)
-    const userId = searchParams.get('userId')
-    
-    if (!userId) {
-      return NextResponse.json({
-        success: false,
-        error: '사용자 ID가 필요합니다.'
-      }, { status: 400 })
-    }
-    
-    const holdings = await prisma.holding.findMany({
-      where: { userId },
-      orderBy: { updatedAt: 'desc' }
-    })
-    
-    if (holdings.length === 0) {
-      return NextResponse.json({
-        success: true,
-        analysis: {
-          totalValue: 0,
-          totalInvestment: 0,
-          totalProfitLoss: 0,
-          totalProfitLossRatio: 0,
-          diversification: { score: 0, level: '없음', description: '보유 자산이 없습니다.' },
-          riskAnalysis: { level: '없음', score: 0, description: '보유 자산이 없습니다.', concentrationRisk: 0 },
-          assetBreakdown: [],
-          recommendations: [{
-            type: 'start',
-            title: '투자 시작하기',
-            description: '하나모아에서 금, 은, 외환 투자를 시작해보세요.',
-            priority: 'high'
-          }]
+  return withAuth(request, async (request, authenticatedUserId) => {
+    try {
+      const { searchParams } = new URL(request.url)
+      const userId = searchParams.get('userId')
+
+      if (!userId) {
+        return ApiResponse.badRequest('사용자 ID가 필요합니다')
+      }
+
+      if (userId !== authenticatedUserId) {
+        return ApiResponse.forbidden('권한이 없습니다')
+      }
+
+      const holdings = await prisma.holding.findMany({
+        where: { userId },
+        orderBy: { updatedAt: 'desc' }
+      })
+
+      if (holdings.length === 0) {
+        return ApiResponse.success({
+          analysis: {
+            totalValue: 0,
+            totalInvestment: 0,
+            totalProfitLoss: 0,
+            totalProfitLossRatio: 0,
+            diversification: { score: 0, level: '없음', description: '보유 자산이 없습니다.' },
+            riskAnalysis: { level: '없음', score: 0, description: '보유 자산이 없습니다.', concentrationRisk: 0 },
+            assetBreakdown: [],
+            recommendations: [{
+              type: 'start',
+              title: '투자 시작하기',
+              description: '하나모아에서 금, 은, 외환 투자를 시작해보세요.',
+              priority: 'high'
+            }]
+          }
+        })
+      }
+
+      const realTimePrices = await prismaPrice.realTimePrice.findMany({
+        where: {
+          asset: { in: holdings.map(h => h.asset) }
         }
       })
-    }
-    
-    const realTimePrices = await prismaPrice.realTimePrice.findMany({
-      where: {
-        asset: { in: holdings.map(h => h.asset) }
+
+      const holdingsWithPrices = holdings.map(holding => {
+        const realTimePrice = realTimePrices.find((rtp: any) => rtp.asset === holding.asset)
+        const currentPrice = realTimePrice?.currentPrice || 0
+        const currentValue = currentPrice * holding.quantity
+        const profitLoss = currentValue - holding.totalAmount
+        const profitLossRatio = holding.totalAmount > 0 ? (profitLoss / holding.totalAmount) * 100 : 0
+
+        return {
+          ...holding,
+          currentPrice,
+          currentValue,
+          profitLoss,
+          profitLossRatio
+        }
+      })
+
+      const totalValue = holdingsWithPrices.reduce((sum, holding) => sum + holding.currentValue, 0)
+      const totalInvestment = holdingsWithPrices.reduce((sum, holding) => sum + holding.totalAmount, 0)
+      const totalProfitLoss = totalValue - totalInvestment
+      const totalProfitLossRatio = totalInvestment > 0 ? (totalProfitLoss / totalInvestment) * 100 : 0
+
+      const aiAnalysis = await analyzePortfolioWithAI(
+        holdingsWithPrices,
+        totalValue,
+        totalInvestment,
+        totalProfitLoss,
+        totalProfitLossRatio
+      )
+
+      const assetBreakdown = holdingsWithPrices
+        .filter(holding => holding.currentValue > 0)
+        .map(holding => ({
+          asset: holding.asset,
+          assetName: getAssetName(holding.asset),
+          quantity: holding.quantity,
+          currentValue: holding.currentValue,
+          percentage: totalValue > 0 ? (holding.currentValue / totalValue) * 100 : 0,
+          profitLoss: holding.profitLoss,
+          profitLossRatio: holding.profitLossRatio
+        }))
+        .sort((a, b) => b.percentage - a.percentage)
+
+      const analysis: PortfolioAnalysis = {
+        totalValue,
+        totalInvestment,
+        totalProfitLoss,
+        totalProfitLossRatio,
+        diversification: aiAnalysis.diversification,
+        riskAnalysis: aiAnalysis.riskAnalysis,
+        assetBreakdown,
+        recommendations: aiAnalysis.recommendations
       }
-    })
-    
-    const holdingsWithPrices = holdings.map(holding => {
-      const realTimePrice = realTimePrices.find((rtp: any) => rtp.asset === holding.asset)
-      const currentPrice = realTimePrice?.currentPrice || 0
-      const currentValue = currentPrice * holding.quantity
-      const profitLoss = currentValue - holding.totalAmount
-      const profitLossRatio = holding.totalAmount > 0 ? (profitLoss / holding.totalAmount) * 100 : 0
-      
-      return {
-        ...holding,
-        currentPrice,
-        currentValue,
-        profitLoss,
-        profitLossRatio
-      }
-    })
-    
-    const totalValue = holdingsWithPrices.reduce((sum, holding) => sum + holding.currentValue, 0)
-    const totalInvestment = holdingsWithPrices.reduce((sum, holding) => sum + holding.totalAmount, 0)
-    const totalProfitLoss = totalValue - totalInvestment
-    const totalProfitLossRatio = totalInvestment > 0 ? (totalProfitLoss / totalInvestment) * 100 : 0
-    
-    const aiAnalysis = await analyzePortfolioWithAI(
-      holdingsWithPrices,
-      totalValue,
-      totalInvestment,
-      totalProfitLoss,
-      totalProfitLossRatio
-    )
-    
-    const assetBreakdown = holdingsWithPrices
-      .filter(holding => holding.currentValue > 0)
-      .map(holding => ({
-        asset: holding.asset,
-        assetName: getAssetName(holding.asset),
-        quantity: holding.quantity,
-        currentValue: holding.currentValue,
-        percentage: totalValue > 0 ? (holding.currentValue / totalValue) * 100 : 0,
-        profitLoss: holding.profitLoss,
-        profitLossRatio: holding.profitLossRatio
-      }))
-      .sort((a, b) => b.percentage - a.percentage)
-    
-    const analysis: PortfolioAnalysis = {
-      totalValue,
-      totalInvestment,
-      totalProfitLoss,
-      totalProfitLossRatio,
-      diversification: aiAnalysis.diversification,
-      riskAnalysis: aiAnalysis.riskAnalysis,
-      assetBreakdown,
-      recommendations: aiAnalysis.recommendations
+
+      return ApiResponse.success({ analysis })
+
+    } catch (error) {
+      return ApiResponse.serverError('포트폴리오 분석 중 오류가 발생했습니다')
     }
-    
-    return NextResponse.json({
-      success: true,
-      analysis
-    })
-    
-  } catch (error) {
-    return NextResponse.json({
-      success: false,
-      error: '포트폴리오 분석 중 오류가 발생했습니다.'
-    }, { status: 500 })
-    }
+  })
 }
-
-

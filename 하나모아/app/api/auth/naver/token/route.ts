@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
       client_id: naverClientId,
       client_secret: naverClientSecret,
       code: code,
-      state: 'test' // 실제로는 요청 시 사용한 state를 사용해야 함
+      state: 'test' 
     })
 
     const response = await fetch(`${tokenUrl}?${params.toString()}`, {

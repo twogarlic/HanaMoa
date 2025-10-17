@@ -1,46 +1,27 @@
-import { NextRequest, NextResponse } from 'next/server'
-import prisma from '../../../lib/database'
+import { NextRequest } from 'next/server'
+import { withAuth } from '@/lib/api/middleware/auth'
+import { validateQuery } from '@/lib/api/middleware/validation'
+import { getCoinboxQuerySchema } from '@/lib/api/validators/coinbox.schema'
+import { coinboxService } from '@/lib/services/coinbox.service'
+import { ApiResponse } from '@/lib/api/utils/response'
 
 export async function GET(request: NextRequest) {
-  try {
-    const { searchParams } = new URL(request.url)
-    const userId = searchParams.get('userId')
-
-    if (!userId) {
-      return NextResponse.json(
-        { success: false, error: '사용자 ID가 필요합니다.' },
-        { status: 400 }
-      )
-    }
-
-    const coinbox = await prisma.coinbox.findUnique({
-      where: { userId },
-      include: {
-        user: {
-          select: {
-            id: true,
-            name: true,
-            userId: true
-          }
+  return withAuth(request, async (request, authenticatedUserId) => {
+    return validateQuery(request, getCoinboxQuerySchema, async (request, query) => {
+      try {
+        if (query.userId !== authenticatedUserId) {
+          return ApiResponse.forbidden('권한이 없습니다')
         }
+
+        const coinboxes = await coinboxService.getCoinboxes(query.userId)
+
+        return ApiResponse.success({ data: coinboxes })
+      } catch (error: any) {
+        if (error.statusCode) {
+          return ApiResponse.error(error.message, error.statusCode)
+        }
+        return ApiResponse.serverError('저금통 조회 중 오류가 발생했습니다')
       }
     })
-
-    if (!coinbox) {
-      return NextResponse.json(
-        { success: false, error: '저금통이 개설되지 않았습니다.' },
-        { status: 404 }
-      )
-    }
-
-    return NextResponse.json({
-      success: true,
-      data: coinbox
-    })
-  } catch (error) {
-    return NextResponse.json(
-      { success: false, error: '저금통 조회에 실패했습니다.' },
-      { status: 500 }
-    )
-  }
+  })
 }

@@ -1,5 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 import coolsms from 'coolsms-node-sdk'
+import { ApiResponse } from '@/lib/api/utils/response'
 
 declare global {
   var verificationCodes: Map<string, { code: string; expires: number }> | undefined
@@ -15,10 +16,7 @@ export async function POST(request: NextRequest) {
     const { phone } = await request.json()
 
     if (!phone || !/^01[0-9]{8,9}$/.test(phone.replace(/-/g, ''))) {
-      return NextResponse.json(
-        { success: false, message: '유효하지 않은 전화번호입니다.' },
-        { status: 400 }
-      )
+      return ApiResponse.badRequest('유효하지 않은 전화번호입니다')
     }
 
     const verificationCode = Math.floor(100000 + Math.random() * 900000).toString()
@@ -35,18 +33,17 @@ export async function POST(request: NextRequest) {
       autoTypeDetect: true
     })
 
-
     let isSuccess = false
-    
+
     if (Array.isArray(result) && result.length > 0) {
       const firstResult = result[0]
-      isSuccess = firstResult.statusCode === '2000' || 
+      isSuccess = firstResult.statusCode === '2000' ||
                  firstResult.status === 'success' ||
                  firstResult.statusMessage === 'success' ||
                  (firstResult && Object.keys(firstResult).length > 0)
     } else if (result && typeof result === 'object') {
-      isSuccess = result.success === true || 
-                 result.statusCode === '2000' || 
+      isSuccess = result.success === true ||
+                 result.statusCode === '2000' ||
                  result.status === 'success' ||
                  result.errorCount === 0 ||
                  (result && !result.error && Object.keys(result).length > 0)
@@ -57,20 +54,16 @@ export async function POST(request: NextRequest) {
     if (isSuccess) {
       const expires = Date.now() + 1 * 60 * 1000
       verificationCodes.set(phone.replace(/-/g, ''), { code: verificationCode, expires })
-      
-      return NextResponse.json({
-        success: true,
-        message: '인증번호가 발송되었습니다.',
-        verificationCode
-      })
+
+      return ApiResponse.success(
+        { verificationCode },
+        '인증번호가 발송되었습니다'
+      )
     } else {
       throw new Error(`SMS 발송 실패: ${JSON.stringify(result)}`)
     }
 
   } catch (error) {
-    return NextResponse.json(
-      { success: false, message: '인증번호 발송에 실패했습니다.' },
-      { status: 500 }
-    )
+    return ApiResponse.serverError('인증번호 발송에 실패했습니다')
   }
 }

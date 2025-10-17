@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-const SPARK_URL = process.env.SPARK_ANALYTICS_URL || 'http://localhost:8000'
+const SPARK_URL = process.env.SPARK_ANALYTICS_URL
 
 export async function GET(
   request: NextRequest,

@@ -1,9 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import prismaPrice from '../../../../lib/database-price'
 
-/**
- * USD 회차 차트 데이터 조회 API
- */
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
@@ -11,10 +8,10 @@ export async function GET(request: NextRequest) {
     
     let targetDateStr: string
     if (dateParam) {
-      targetDateStr = dateParam // 이미 YYYYMMDD 형식으로 전달됨
+      targetDateStr = dateParam 
     } else {
       const today = new Date()
-      targetDateStr = today.toISOString().split('T')[0].replace(/-/g, '') // YYYYMMDD 형식
+      targetDateStr = today.toISOString().split('T')[0].replace(/-/g, '') 
     }
     
     const chartPrices = await prismaPrice.chartPrice.findMany({
@@ -24,7 +21,7 @@ export async function GET(request: NextRequest) {
           startsWith: targetDateStr
         }
       },
-      orderBy: { degreeCount: 'asc' } // 회차 순으로 정렬
+      orderBy: { degreeCount: 'asc' } 
     })
 
     if (chartPrices.length === 0) {
@@ -48,8 +45,8 @@ export async function GET(request: NextRequest) {
       code: "CMDT_USD",
       infoType: "marketindex",
       periodType: "day",
-      openPrice: chartPrices[chartPrices.length - 1]?.price || 0, // 첫 번째 가격 (오래된 순)
-      lastClosePrice: chartPrices[0]?.price || 0, // 마지막 가격 (최신 순)
+      openPrice: chartPrices[chartPrices.length - 1]?.price || 0, 
+      lastClosePrice: chartPrices[0]?.price || 0, 
       tradeBaseAt: realTimePrice?.rawDateTime?.substring(0, 8) || new Date().toISOString().split('T')[0].replace(/-/g, ''),
       lastTradeBaseAt: chartPrices[chartPrices.length - 1]?.dateTime?.substring(0, 8) || new Date().toISOString().split('T')[0].replace(/-/g, ''),
       localDateTimeNow: realTimePrice?.rawDateTime || new Date().toISOString().replace(/[T:-]/g, '').substring(0, 14),

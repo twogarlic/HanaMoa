@@ -1,79 +1,59 @@
-import { NextRequest, NextResponse } from 'next/server'
-import prisma from '../../../../../lib/database'
+import { NextRequest } from 'next/server'
+import { withAuth, optionalAuth } from '@/lib/api/middleware/auth'
+import { communityService } from '@/lib/services/community.service'
+import { ApiResponse } from '@/lib/api/utils/response'
+import { z } from 'zod'
+
+const deletePostSchema = z.object({
+  userId: z.string().min(1, '사용자 ID가 필요합니다')
+})
+
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  return optionalAuth(request, async (request, userId) => {
+    try {
+      const { id } = await params
+
+      const post = await communityService.getPost(id)
+
+      return ApiResponse.success({ data: post })
+    } catch (error: any) {
+      if (error.statusCode === 404) {
+        return ApiResponse.notFound(error.message)
+      }
+      return ApiResponse.serverError('게시글 조회 중 오류가 발생했습니다')
+    }
+  })
+}
 
 export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  try {
-    
-    const { id: postId } = await params
-    
-    const body = await request.json()
-    
-    const { userId } = body
+  return withAuth(request, async (request, authenticatedUserId) => {
+    try {
+      const { id } = await params
+      const body = await request.json()
+      const validated = deletePostSchema.safeParse(body)
 
-    if (!userId) {
-      return NextResponse.json(
-        { success: false, error: '사용자 ID가 필요합니다.' },
-        { status: 400 }
-      )
-    }
-
-
-    const post = await prisma.post.findUnique({
-      where: { id: postId },
-      select: {
-        id: true,
-        userId: true,
-        isDeleted: true
+      if (!validated.success) {
+        return ApiResponse.badRequest(validated.error.errors[0].message)
       }
-    })
 
-
-    if (!post) {
-      return NextResponse.json(
-        { success: false, error: '게시글을 찾을 수 없습니다.' },
-        { status: 404 }
-      )
-    }
-
-    if (post.isDeleted) {
-      return NextResponse.json(
-        { success: false, error: '이미 삭제된 게시글입니다.' },
-        { status: 400 }
-      )
-    }
-
-    if (post.userId !== userId) {
-      return NextResponse.json(
-        { success: false, error: '게시글을 삭제할 권한이 없습니다.' },
-        { status: 403 }
-      )
-    }
-
-
-    await prisma.post.update({
-      where: { id: postId },
-      data: {
-        isDeleted: true
+      if (validated.data.userId !== authenticatedUserId) {
+        return ApiResponse.forbidden('권한이 없습니다')
       }
-    })
 
+      await communityService.deletePost(id, validated.data.userId)
 
-    return NextResponse.json({
-      success: true,
-      message: '게시글이 삭제되었습니다.'
-    })
-
-  } catch (error) {
-    return NextResponse.json(
-      { 
-        success: false, 
-        error: '게시글 삭제에 실패했습니다.',
-        details: error instanceof Error ? error.message : '알 수 없는 오류'
-      },
-      { status: 500 }
-    )
+      return ApiResponse.success({}, '게시글이 삭제되었습니다')
+    } catch (error: any) {
+      if (error.statusCode) {
+        return ApiResponse.error(error.message, error.statusCode)
+      }
+      return ApiResponse.serverError('게시글 삭제 중 오류가 발생했습니다')
     }
+  })
 }

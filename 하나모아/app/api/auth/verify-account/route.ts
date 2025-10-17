@@ -1,48 +1,36 @@
-import { NextRequest, NextResponse } from 'next/server'
-import prisma from '../../../../lib/database'
+import { NextRequest } from 'next/server'
+import { validateBody } from '@/lib/api/middleware/validation'
+import { z } from 'zod'
+import { userRepository } from '@/lib/repositories/user.repository'
+import { ApiResponse } from '@/lib/api/utils/response'
+
+const verifyAccountSchema = z.object({
+  userId: z.string().min(1, '사용자 ID가 필요합니다'),
+  name: z.string().min(1, '이름이 필요합니다'),
+  ssn: z.string().min(1, '주민등록번호가 필요합니다'),
+  phone: z.string().min(1, '전화번호가 필요합니다')
+})
 
 export async function POST(request: NextRequest) {
-  try {
-    const { userId, name, ssn, phone } = await request.json()
+  return validateBody(request, verifyAccountSchema, async (request, data) => {
+    try {
+      const user = await userRepository.findByUserId(data.userId)
 
-    if (!userId || !name || !ssn || !phone) {
-      return NextResponse.json({
-        success: false,
-        message: '모든 필드를 입력해주세요.'
-      }, { status: 400 })
+      if (!user) {
+        return ApiResponse.notFound('존재하지 않는 계정입니다')
+      }
+
+      const isNameMatch = user.name === data.name
+      const isSsnMatch = user.ssn === data.ssn
+      const isPhoneMatch = user.phone === data.phone
+
+      if (!isNameMatch || !isSsnMatch || !isPhoneMatch) {
+        return ApiResponse.badRequest('입력하신 정보가 등록된 정보와 일치하지 않습니다')
+      }
+
+      return ApiResponse.success({}, '계정 정보가 확인되었습니다')
+    } catch (error) {
+      return ApiResponse.serverError('계정 확인 중 오류가 발생했습니다')
     }
-
-    const user = await prisma.user.findUnique({
-      where: { userId: userId }
-    })
-
-    if (!user) {
-      return NextResponse.json({
-        success: false,
-        message: '존재하지 않는 계정입니다.'
-      }, { status: 404 })
-    }
-
-    const isNameMatch = user.name === name
-    const isSsnMatch = user.ssn === ssn
-    const isPhoneMatch = user.phone === phone
-
-    if (!isNameMatch || !isSsnMatch || !isPhoneMatch) {
-      return NextResponse.json({
-        success: false,
-        message: '입력하신 정보가 등록된 정보와 일치하지 않습니다.'
-      }, { status: 400 })
-    }
-
-    return NextResponse.json({
-      success: true,
-      message: '계정 정보가 확인되었습니다.'
-    })
-
-  } catch (error) {
-    return NextResponse.json({
-      success: false,
-      message: '서버 오류가 발생했습니다.'
-    }, { status: 500 })
-    }
+  })
 }

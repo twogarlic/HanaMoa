@@ -35,19 +35,19 @@ export async function GET(request: NextRequest) {
             gte: '2013-01-01'
           }
         },
-        orderBy: { date: 'asc' } // 오래된 순으로
+        orderBy: { date: 'asc' } 
       })
     } else {
       let limit = 30
       switch (timeframe) {
         case '일':
-          limit = 90 // 3개월 (90일)
+          limit = 90 
           break
         case '주':
-          limit = 180 // 6개월 (약 180일)
+          limit = 180 
           break
         case '월':
-          limit = 1095 // 3년 (약 1095일)
+          limit = 1095 
           break
       }
       
@@ -57,7 +57,7 @@ export async function GET(request: NextRequest) {
         take: limit
       })
       
-      dailyPrices = recentData.reverse() // 오래된 순으로 정렬
+      dailyPrices = recentData.reverse() 
     }
 
     if (dailyPrices.length === 0) {
@@ -72,7 +72,7 @@ export async function GET(request: NextRequest) {
 
     switch (timeframe) {
       case '일':
-        const recentDailyPrices = dailyPrices.slice(-90) // 최근 90일
+        const recentDailyPrices = dailyPrices.slice(-90) 
         processedData = recentDailyPrices.map(price => ({
           date: price.date,
           price: price.close,
@@ -128,7 +128,7 @@ function groupByWeek(dailyPrices: any[]) {
   })
 
   const sortedWeeks = Object.keys(weeklyData).sort()
-  const recentWeeks = sortedWeeks.slice(-26) // 최근 26주
+  const recentWeeks = sortedWeeks.slice(-26) 
 
   return recentWeeks.map(weekKey => {
     const weekPrices = weeklyData[weekKey]
@@ -137,9 +137,9 @@ function groupByWeek(dailyPrices: any[]) {
     
     return {
       date: weekKey,
-      price: lastPrice.close, // 주말 종가
-      change: lastPrice.close - firstPrice.close, // 주간 변화
-      ratio: ((lastPrice.close - firstPrice.close) / firstPrice.close) * 100 // 주간 변화율
+      price: lastPrice.close, 
+      change: lastPrice.close - firstPrice.close, 
+      ratio: ((lastPrice.close - firstPrice.close) / firstPrice.close) * 100 
     }
   })
 }
@@ -158,7 +158,7 @@ function groupByMonth(dailyPrices: any[]) {
   })
 
   const sortedMonths = Object.keys(monthlyData).sort()
-  const recentMonths = sortedMonths.slice(-36) // 최근 36개월
+  const recentMonths = sortedMonths.slice(-36) 
 
   return recentMonths.map(monthKey => {
     const monthPrices = monthlyData[monthKey]
@@ -166,10 +166,10 @@ function groupByMonth(dailyPrices: any[]) {
     const lastPrice = monthPrices[monthPrices.length - 1]
     
     return {
-      date: monthKey + '-01', // 월의 첫째 날
-      price: lastPrice.close, // 월말 종가
-      change: lastPrice.close - firstPrice.close, // 월간 변화
-      ratio: ((lastPrice.close - firstPrice.close) / firstPrice.close) * 100 // 월간 변화율
+      date: monthKey + '-01', 
+      price: lastPrice.close, 
+      change: lastPrice.close - firstPrice.close, 
+      ratio: ((lastPrice.close - firstPrice.close) / firstPrice.close) * 100 
     }
   })
 }
@@ -198,10 +198,10 @@ function groupByYear(dailyPrices: any[]) {
     const lastPrice = yearPrices[yearPrices.length - 1]
     
     return {
-      date: yearKey + '-01-01', // 연초
-      price: lastPrice.close, // 연말 종가
-      change: lastPrice.close - firstPrice.close, // 연간 변화
-      ratio: ((lastPrice.close - firstPrice.close) / firstPrice.close) * 100 // 연간 변화율
+      date: yearKey + '-01-01', 
+      price: lastPrice.close,
+      change: lastPrice.close - firstPrice.close,
+      ratio: ((lastPrice.close - firstPrice.close) / firstPrice.close) * 100 
     }
   })
 }

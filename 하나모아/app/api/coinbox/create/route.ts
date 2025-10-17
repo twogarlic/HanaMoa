@@ -1,91 +1,30 @@
-import { NextRequest, NextResponse } from 'next/server'
-import prisma from '../../../../lib/database'
+import { NextRequest } from 'next/server'
+import { withAuth } from '@/lib/api/middleware/auth'
+import { validateBody } from '@/lib/api/middleware/validation'
+import { createCoinboxSchema } from '@/lib/api/validators/coinbox.schema'
+import { coinboxService } from '@/lib/services/coinbox.service'
+import { ApiResponse } from '@/lib/api/utils/response'
 
 export async function POST(request: NextRequest) {
-  try {
-    const body = await request.json()
-    const { userId } = body
-
-    if (!userId) {
-      return NextResponse.json(
-        { success: false, error: '사용자 ID가 필요합니다.' },
-        { status: 400 }
-      )
-    }
-
-    const user = await prisma.user.findUnique({
-      where: { id: userId }
-    })
-
-    if (!user) {
-      return NextResponse.json(
-        { success: false, error: '사용자를 찾을 수 없습니다.' },
-        { status: 404 }
-      )
-    }
-
-    const existingCoinbox = await prisma.coinbox.findUnique({
-      where: { userId }
-    })
-
-    if (existingCoinbox) {
-      return NextResponse.json(
-        { success: false, error: '이미 저금통이 개설되어 있습니다.' },
-        { status: 400 }
-      )
-    }
-
-    const generateAccountNumber = async (): Promise<string> => {
-      let accountNumber: string = ''
-      let isUnique = false
-      let attempts = 0
-      const maxAttempts = 10
-      
-      while (!isUnique && attempts < maxAttempts) {
-        const firstPart = Math.floor(Math.random() * 1000000).toString().padStart(6, '0')
-        const secondPart = Math.floor(Math.random() * 1000000).toString().padStart(6, '0')
-        accountNumber = `282-${firstPart}-${secondPart}`
-        
-        const existingAccount = await prisma.account.findFirst({
-          where: { accountNumber }
-        })
-        
-        if (!existingAccount) {
-          isUnique = true
+  return withAuth(request, async (request, authenticatedUserId) => {
+    return validateBody(request, createCoinboxSchema, async (request, data) => {
+      try {
+        if (data.userId !== authenticatedUserId) {
+          return ApiResponse.forbidden('권한이 없습니다')
         }
-        
-        attempts++
-      }
-      
-      if (!isUnique) {
-        throw new Error('고유한 계좌번호를 생성할 수 없습니다.')
-      }
-      
-      return accountNumber
-    }
-    
-    const accountNumber = await generateAccountNumber()
 
-    const coinbox = await prisma.coinbox.create({
-      data: {
-        userId,
-        accountNumber,
-        accountName: '하나모아 저금통',
-        balance: 0,
-        maxLimit: 100000,
-        isActive: true
+        const coinbox = await coinboxService.createCoinbox(data)
+
+        return ApiResponse.success(
+          { data: coinbox },
+          '저금통이 생성되었습니다'
+        )
+      } catch (error: any) {
+        if (error.statusCode) {
+          return ApiResponse.error(error.message, error.statusCode)
+        }
+        return ApiResponse.serverError('저금통 생성 중 오류가 발생했습니다')
       }
     })
-
-
-    return NextResponse.json({
-      success: true,
-      data: coinbox
-    })
-  } catch (error) {
-    return NextResponse.json(
-      { success: false, error: '저금통 개설에 실패했습니다.' },
-      { status: 500 }
-    )
-  }
+  })
 }
