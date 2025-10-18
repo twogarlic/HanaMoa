@@ -107,7 +107,6 @@ export class AdvancedRAGService {
 
       return response.choices[0]?.message?.content || "";
     } catch (error) {
-      console.error('HyDE 생성 오류:', error);
       return userMessage; 
     }
   }
@@ -118,7 +117,6 @@ export class AdvancedRAGService {
       const hydeDocument = await this.generateHyDEQuery(userMessage);
       return await this.vectorStoreManager.searchSimilarDocuments(hydeDocument, k);
     } catch (error) {
-      console.error('HyDE 검색 오류:', error);
       return [];
     }
   }
@@ -146,7 +144,6 @@ ${userMessage}`;
 
       return queries.length > 0 ? queries : [userMessage];
     } catch (error) {
-      console.error('Multi-Query 생성 오류:', error);
       return [userMessage];
     }
   }
@@ -165,7 +162,6 @@ ${userMessage}`;
 
       return allResults;
     } catch (error) {
-      console.error('Multi-Query 검색 오류:', error);
       return [];
     }
   }
@@ -278,7 +274,6 @@ ${userMessage}`;
   // Cross-Encoder 리랭킹 
   async crossEncoderRerank(query: string, documents: Document[]): Promise<Document[]> {
     try {
-      console.log('🤖 Cross-Encoder 배치 리랭킹 시작');
       
       // 배치 처리 방식 사용 
       const rankedDocs = await this.crossEncoderService.rerankDocumentsBatch(
@@ -290,7 +285,6 @@ ${userMessage}`;
       
       rankedDocs.forEach((doc: Document, index: number) => {
         const score = doc.metadata?.crossEncoderScore;
-        console.log(`  ${index + 1}. 점수: ${score ? score.toFixed(3) : 'N/A'} - ${doc.pageContent.substring(0, 100)}...`);
       });
       
       return rankedDocs;
@@ -545,7 +539,6 @@ ${context || "관련 정보 없음"}
           controller.enqueue(encoder.encode(`data: ${finalData}\n\n`));
           controller.close();
         } catch (error) {
-          console.error('스트리밍 에러:', error);
           controller.error(error);
         }
       },
@@ -630,9 +623,7 @@ ${context || "관련 정보 없음"}
   async initializeRAG(): Promise<void> {
     try {
       await this.vectorStoreManager.initializeVectorStore();
-      console.log('고급 RAG 시스템이 초기화되었습니다.');
     } catch (error) {
-      console.error('고급 RAG 초기화 중 오류:', error);
       throw error;
     }
   }
