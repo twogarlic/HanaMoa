@@ -6,7 +6,7 @@ import { getCrossEncoderService } from "./crossEncoder";
 import https from 'https';
 import http from 'http';
 
-// HTTP/2 에이전트 설정 (연결 재사용 및 멀티플렉싱)
+// HTTP/2 에이전트 설정 
 const httpAgent = new http.Agent({
   keepAlive: true,
   keepAliveMsecs: 30000,
@@ -33,9 +33,9 @@ export class AdvancedRAGService {
   private crossEncoderService: any;
   private connectionPool: OpenAI[] = [];
   private poolIndex: number = 0;
+  private useLoRA: boolean;
 
   constructor() {
-    // HuggingFace Router API를 통해 Llama3 모델 사용
     this.client = new OpenAI({
       baseURL: "https://router.huggingface.co/v1",
       apiKey: process.env.HUGGINGFACE_API_KEY,
@@ -44,40 +44,47 @@ export class AdvancedRAGService {
     });
     this.model = process.env.HUGGINGFACE_MODEL || "MLP-KTLim/llama-3-Korean-Bllossom-8B:featherless-ai";
     
+    // OpenAI API 클라이언트 
     this.openaiClient = new OpenAI({
       apiKey: process.env.OPENAI_API_KEY,
-      // @ts-ignore
+      // @ts-ignore - HTTP/2 최적화를 위한 에이전트 설정
       httpAgent: httpsAgent,
     });
     
     this.vectorStoreManager = getVectorStoreManager();
     this.priceService = new PriceService();
     this.crossEncoderService = getCrossEncoderService();
+    this.useLoRA = process.env.USE_LORA_ADAPTER === "true";
     
-    // 연결 풀링
+    // LoRA 병합 모델 사용 
+    if (this.useLoRA) {
+      this.model = "twogarlic/hana-moai-llama3-merged"; 
+    }
+    
+    // 연결 풀링: 미리 3개의 HuggingFace 클라이언트 생성 (HTTP/2 지원)
     for (let i = 0; i < 3; i++) {
       this.connectionPool.push(new OpenAI({
         baseURL: "https://router.huggingface.co/v1",
         apiKey: process.env.HUGGINGFACE_API_KEY,
-        // @ts-ignore
+        // @ts-ignore - HTTP/2 최적화를 위한 에이전트 설정
         httpAgent: httpsAgent,
       }));
     }
   }
 
-  // 다음 클라이언트 가져오기 
+  // 연결 풀에서 다음 클라이언트 가져오기 
   private getNextClient(): OpenAI {
     const client = this.connectionPool[this.poolIndex];
     this.poolIndex = (this.poolIndex + 1) % this.connectionPool.length;
     return client;
   }
 
-  // HyDE
+  // HyDE: 가상 문서 생성 후 검색
   async generateHyDEQuery(userMessage: string): Promise<string> {
     try {
       const hydePrompt = `당신은 하나모아 서비스에 대해 잘 알고 있는 금융 전문 컨설턴트입니다.
 아래 질문에 대해 하나모아 서비스 정보를 바탕으로,
-전문적이지만 이해하기 쉬운 설명형 문서(200~250자)를 작성해주세요.
+전문적이지만 이해하기 쉬운 설명형 문서(300~500자)를 작성해주세요.
 
 요구사항:
 1. 오직 하나모아의 서비스 정보만 포함할 것
@@ -100,16 +107,18 @@ export class AdvancedRAGService {
 
       return response.choices[0]?.message?.content || "";
     } catch (error) {
+      console.error('HyDE 생성 오류:', error);
       return userMessage; 
     }
   }
 
-  // HyDE 검색
+  // HyDE 검색 
   async searchWithHyDE(userMessage: string, k: number = 3): Promise<Document[]> {
     try {
       const hydeDocument = await this.generateHyDEQuery(userMessage);
       return await this.vectorStoreManager.searchSimilarDocuments(hydeDocument, k);
     } catch (error) {
+      console.error('HyDE 검색 오류:', error);
       return [];
     }
   }
@@ -124,7 +133,7 @@ ${userMessage}`;
         model: "gpt-4o-mini",
         messages: [{ role: "user", content: multiQueryPrompt }],
         max_tokens: 100, 
-        temperature: 0.5
+        temperature: 0.5 
       });
 
       const content = response.choices[0]?.message?.content || "";
@@ -133,10 +142,11 @@ ${userMessage}`;
         .filter(line => line.trim().length > 0)
         .map(line => line.replace(/^\d+\.\s*/, '').replace(/^[-*]\s*/, '').trim())
         .filter(line => line.length > 5)
-        .slice(0, 2);
+        .slice(0, 2); 
 
       return queries.length > 0 ? queries : [userMessage];
     } catch (error) {
+      console.error('Multi-Query 생성 오류:', error);
       return [userMessage];
     }
   }
@@ -150,10 +160,12 @@ ${userMessage}`;
         queries.map(query => this.vectorStoreManager.searchSimilarDocuments(query, k))
       );
       
+      // 결과 평탄화
       const allResults = allResultsArrays.flat();
 
       return allResults;
     } catch (error) {
+      console.error('Multi-Query 검색 오류:', error);
       return [];
     }
   }
@@ -162,12 +174,14 @@ ${userMessage}`;
   reciprocalRankFusion(resultsA: Document[], resultsB: Document[], k: number = 60): Document[] {
     const docScores = new Map<string, { doc: Document; score: number }>();
 
+    // 결과 A 점수 계산
     resultsA.forEach((doc, index) => {
       const docId = this.getDocumentId(doc);
       const score = 1 / (k + index + 1);
       docScores.set(docId, { doc, score: (docScores.get(docId)?.score || 0) + score });
     });
 
+    // 결과 B 점수 계산
     resultsB.forEach((doc, index) => {
       const docId = this.getDocumentId(doc);
       const score = 1 / (k + index + 1);
@@ -198,6 +212,7 @@ ${userMessage}`;
     const selected: Document[] = [];
     const remaining = [...documents];
 
+    // 첫 번째 문서는 가장 관련성 높은 것
     if (remaining.length > 0) {
       selected.push(remaining.shift()!);
     }
@@ -207,17 +222,17 @@ ${userMessage}`;
       let bestScore = -Infinity;
 
       for (const doc of remaining) {
-        // 관련성 점수
+        // 관련성 점수 
         const relevanceScore = this.calculateRelevance(doc, query);
         
-        // 다양성 점수
+        // 다양성 점수 
         const diversityScore = Math.min(
           ...selected.map(selectedDoc => 
             this.calculateSimilarity(doc, selectedDoc)
           )
         );
 
-        // MMR
+        // MMR 점수 = λ * 관련성 - (1-λ) * 다양성
         const mmrScore = lambda * relevanceScore - (1 - lambda) * diversityScore;
 
         if (mmrScore > bestScore) {
@@ -237,7 +252,7 @@ ${userMessage}`;
     return selected;
   }
 
-  // 관련성 점수 계산
+  // 관련성 점수 계산 
   private calculateRelevance(doc: Document, query: string): number {
     const queryWords = query.toLowerCase().split(/\s+/);
     const docWords = doc.pageContent.toLowerCase().split(/\s+/);
@@ -263,20 +278,24 @@ ${userMessage}`;
   // Cross-Encoder 리랭킹 
   async crossEncoderRerank(query: string, documents: Document[]): Promise<Document[]> {
     try {
-      // 배치 처리 방식 사용
+      console.log('🤖 Cross-Encoder 배치 리랭킹 시작');
+      
+      // 배치 처리 방식 사용 
       const rankedDocs = await this.crossEncoderService.rerankDocumentsBatch(
         query, 
         documents, 
-        3,  
-        10  
+        3,  // topK
+        10  // batchSize: 10개씩 동시 처리
       );
       
       rankedDocs.forEach((doc: Document, index: number) => {
         const score = doc.metadata?.crossEncoderScore;
+        console.log(`  ${index + 1}. 점수: ${score ? score.toFixed(3) : 'N/A'} - ${doc.pageContent.substring(0, 100)}...`);
       });
       
       return rankedDocs;
-    } catch (error) {     
+    } catch (error) {
+      
       const scoredDocs = documents.map(doc => {
         const score = this.calculateRelevance(doc, query);
         return { doc, score };
@@ -319,7 +338,7 @@ ${userMessage}`;
       
       const allQueries = [hydeQuery, ...multiQueries];
       const allResults = await this.vectorStoreManager.searchSimilarDocumentsBatch(allQueries, 3);
-
+      
       const hydeResults = allResults.slice(0, 3);
       const multiQueryResults = allResults.slice(3);
       
@@ -345,7 +364,11 @@ ${userMessage}`;
 
       const llmStart = Date.now();
       const response = await this.generateLLMResponseStream(userMessage, context, history);
-      timings['7_LLM스트림시작'] = Date.now() - llmStart;
+
+      const totalTime = Date.now() - startTime;
+      Object.entries(timings).forEach(([step, time]) => {
+        const percentage = ((time / totalTime) * 100).toFixed(1);
+      });
 
       return response;
 
@@ -408,6 +431,9 @@ ${userMessage}`;
       timings['7_LLM응답'] = Date.now() - llmStart;
 
       const totalTime = Date.now() - startTime;
+      Object.entries(timings).forEach(([step, time]) => {
+        const percentage = ((time / totalTime) * 100).toFixed(1);
+      });
       return response;
 
     } catch (error) {
@@ -462,8 +488,7 @@ ${context || "관련 정보 없음"}
       }
     ];
 
-    // 대화 히스토리 추가 
-    const recentHistory = history.slice(-2);
+    const recentHistory = history.slice(-6);
     for (const turn of recentHistory) {
       if (turn.role === 'user') {
         messages.push({
@@ -478,7 +503,6 @@ ${context || "관련 정보 없음"}
       }
     }
 
-    // 현재 사용자 메시지 추가
     messages.push({
       role: "user" as const,
       content: userMessage
@@ -488,13 +512,13 @@ ${context || "관련 정보 없음"}
     const stream = await client.chat.completions.create({
       model: this.model,
       messages: messages,
-      max_tokens: 800,
+      max_tokens: 800, 
       temperature: 0.7,
       stream: true, 
     });
 
     const encoder = new TextEncoder();
-    const self = this; 
+    const self = this;
     const readableStream = new ReadableStream({
       async start(controller) {
         try {
@@ -505,7 +529,6 @@ ${context || "관련 정보 없음"}
             
             const cleanedContent = self.cleanMarkdown(content);
             
-            // 실시간으로 클라이언트에 전송
             const data = JSON.stringify({ 
               content: cleanedContent, 
               done: false 
@@ -513,7 +536,6 @@ ${context || "관련 정보 없음"}
             controller.enqueue(encoder.encode(`data: ${data}\n\n`));
           }
 
-          // 스트리밍 완료
           const cleanedFullText = self.cleanMarkdown(fullText);
           const finalData = JSON.stringify({ 
             content: '', 
@@ -523,6 +545,7 @@ ${context || "관련 정보 없음"}
           controller.enqueue(encoder.encode(`data: ${finalData}\n\n`));
           controller.close();
         } catch (error) {
+          console.error('스트리밍 에러:', error);
           controller.error(error);
         }
       },
@@ -537,7 +560,6 @@ ${context || "관련 정보 없음"}
     });
   }
 
-  // LLM 응답 생성
   private async generateLLMResponse(
     userMessage: string,
     context: string,
@@ -563,8 +585,7 @@ ${context || "관련 정보 없음"}
       }
     ];
 
-      // 대화 히스토리 추가
-      const recentHistory = history.slice(-2);
+      const recentHistory = history.slice(-6);
       for (const turn of recentHistory) {
         if (turn.role === 'user') {
           messages.push({
@@ -579,7 +600,6 @@ ${context || "관련 정보 없음"}
         }
       }
 
-      // 현재 사용자 메시지 추가
       messages.push({
         role: "user" as const,
         content: userMessage
@@ -594,7 +614,6 @@ ${context || "관련 정보 없음"}
       stream: true, 
     });
 
-    // 스트림에서 텍스트 수집
     let rawResponse = '';
     for await (const chunk of stream) {
       const content = chunk.choices[0]?.delta?.content || '';
@@ -608,17 +627,17 @@ ${context || "관련 정보 없음"}
     return this.cleanMarkdown(rawResponse);
   }
 
-  // 벡터 스토어 초기화
   async initializeRAG(): Promise<void> {
     try {
       await this.vectorStoreManager.initializeVectorStore();
+      console.log('고급 RAG 시스템이 초기화되었습니다.');
     } catch (error) {
+      console.error('고급 RAG 초기화 중 오류:', error);
       throw error;
     }
   }
 }
 
-// 싱글톤 인스턴스
 let advancedRAGService: AdvancedRAGService | null = null;
 
 export function getAdvancedRAGService(): AdvancedRAGService {
